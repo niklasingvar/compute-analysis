@@ -187,6 +187,12 @@ Snittet av alla länder, rensat för offentlig sektor: **~2 000-4 000 H100-eq**
 4. **Nordiska grannar** (Finland, Danmark) investerar proportionellt mer per capita än Sverige gör idag
 5. **Digital mognad** (hög i Sverige) är en nödvändig men inte tillräcklig förutsättning – det krävs dedikerad AI-infrastruktur
 
+### Slutsats i förhållande till analysens bas-scenario
+
+Skalningsjämförelserna ovan konvergerar kring **~2 000–4 000 H100-eq** för 2029 (se syntesintervall). Det ligger nära **bas-scenariot** (~3 500) i [03-berakningsmodell.md](03-berakningsmodell.md) men visar också att **bas är ett försiktigt mittläge**: flera jämförbara länder satsar så att skalat till Sverige hamnar de i intervallets **övre del**, vilket ligger närmare **hög-scenariot** (~8 000) än låg. Med andra ord: internationell praxis ger stöd åt att **inte** nöja sig med det absolut lägsta intervallet om målet är att följa grannars ambitionsnivå.
+
+**Suveränitetsmotivet** som driver investeringar i flera av dessa länder är samma typ av argument som utvecklas strategiskt i [08-filosofi.md](08-filosofi.md) (teknisk suveränitet, leverantörsberoende, data och jurisdiktion).
+
 ### Skalningsmetodik – begränsningar:
 - Ren befolkningsskalning underskattar länder med starka forskningskluster
 - BNP-skalning överskattar för länder med stor privat sektor

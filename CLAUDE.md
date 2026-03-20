@@ -20,9 +20,10 @@ Policyanalys — inga kodfiler, enbart markdown-dokument.
 - Engelska tekniska termer behålls där de är vedertagna (GPU, inference, fine-tuning, etc.)
 
 ### Målgrupp
-Dubbelt lager:
-1. **Sammanfattning** (06-sammanfattning.md): beslutsfattare (minister, statssekreterare)
+Tre lager:
+1. **Sammanfattning** (06-sammanfattning.md): beslutsfattare (minister, statssekreterare) — leder med **triangulering** och ambitionsval, inte en enskild siffra
 2. **Teknisk bilaga** (07-teknisk-bilaga.md): IT-strateger och tekniska rådgivare
+3. **Filosofi** (08-filosofi.md): strategisk ram (konkurrenskraft, beroende, varför bas vs hög är politiskt)
 
 ### Filstruktur
 ```
@@ -37,6 +38,6 @@ Dubbelt lager:
 ```
 
 ### Kvalitetskontroll
-- Konvergerar botten-upp, topp-ned och storbolagstrianguleringen?
+- Konvergerar botten-upp, topp-ned och storbolagstrianguleringen? (Metodstyrkan — inte punktprecision — är huvudargumentet.)
 - Är alla antaganden rimliga och spårbara?
-- Kan en icke-teknisk läsare följa sammanfattningen?
+- Kan en icke-teknisk läsare följa sammanfattningen och se varför ambitionsnivå (låg/bas/hög) spelar roll?

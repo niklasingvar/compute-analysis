@@ -7,6 +7,8 @@ Alla antaganden är numrerade (A1-A50) och klassificerade efter känslighet. Var
 - **M** (medel): rimlig uppskattning, viss osäkerhet
 - **H** (hög): stor osäkerhet, stor påverkan på slutresultat
 
+Antaganden under **Tier 4 – suverän träning** (A33–A39) och flera poster med känslighet **H** speglar inte bara teknisk osäkerhet utan **politiska ambitionsval** — hur mycket nationell modellkapacitet, adoption och finansiering som förutsätts. Motivering för varför detta är strategiskt, inte enbart tekniskt, finns i [08-filosofi.md](08-filosofi.md).
+
 ---
 
 ## A. Offentlig sektors storlek och struktur

@@ -364,8 +364,10 @@ Antagande: 60% on-prem (egna/delade datacenter), 40% moln (burst, flexibilitet) 
 
 ### Scenario-sammanfattning:
 
-**Låg-scenario** (1 500 H100-eq 2029): Långsam adoption, strikt budget, effektiva modeller, begränsad suverän träning.
+Scenarierna är inte bara tekniska extrapolationer (adoption × modellstorlek × effektivitet) utan också **ambitionsval**. Koppling till strategisk resonemang finns i [08-filosofi.md](08-filosofi.md).
 
-**Bas-scenario** (3 500 H100-eq 2029): Rimlig S-kurva, politisk vilja till suverän kapacitet, modeller växer men optimeras.
+**Låg-scenario** (1 500 H100-eq 2029): **Defensivt minimum** — långsam adoption, strikt budget, effektiva modeller, begränsad suverän träning. Motsvarar ungefär "tillräckligt för att köra det vi redan har" utan att bygga ut kompetens- eller innovationskapacitet i samma takt.
 
-**Hög-scenario** (8 000 H100-eq 2029): Snabb adoption drivet av EU-reglering, ambitiös suverän modellträning, större modeller som standard.
+**Bas-scenario** (3 500 H100-eq 2029): **Pragmatiskt** — rimlig S-kurva, politisk vilja till viss suverän kapacitet, modeller växer men optimeras. Ger volym för drift och begränsad nationell modellaktivitet; **frontier-kapacitet** kan fortfarande i stor utsträckning komma från utländska leverantörer.
+
+**Hög-scenario** (8 000 H100-eq 2029): **Ambitionsscenario** — snabb adoption (bl.a. EU-reglering), ambitiös suverän modellträning, större modeller som standard. Motsvarar investering i **kompetens, innovation och strategisk handlingsfrihet** på egna eller gemensamma villkor — inte bara i beräkningsvolym utan i förmåga att utbilda, forska och anpassa modeller utan att vara låst till en enda API-leverantör (jfr 08).

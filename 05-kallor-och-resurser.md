@@ -230,3 +230,9 @@ Alla externa källor som refereras i analysen. Varje post anger: titel, URL, vil
 - **URL**: https://commission.europa.eu/topics/strengthening-european-competitiveness/eu-competitiveness-looking-ahead_en
 - **Data**: Innovations- och investeringsgap EU–USA/Kina, rekommenderad skala på årliga satsningar, digital infrastruktur och industristruktur
 - **Användning**: Internationell policykontext för varför compute- och AI-kapacitet är strategisk (jfr [08-filosofi.md](08-filosofi.md), [resources/links.md](resources/links.md) **L1**)
+
+---
+
+## 8. Policy- och strategikällor (kompletterande register)
+
+För [08-filosofi.md](08-filosofi.md) används en separat, nyckelstyrd källlista med fullständiga URL:er och kort metadata: **[resources/links.md](resources/links.md)** (nycklar **L1**–**L11** — bl.a. SOU 2025:12, Europaparlamentet om teknisk suveränitet, CLOUD Act/Schrems II, eSam, Epoch AI, Mistral, GPT-SW3, EU AI Act). Detta avsnitt i 05 behåller övergripande källor för beräkningsmodellen; dubblera inte alla L-poster här om inte särskild anledning finns.

@@ -4,6 +4,10 @@
 
 Uppskatta den svenska offentliga sektorns (exkl. försvar) behov av AI-beräkningskapacitet 2026-2031, med tillräcklig rigorositet för att stödja politiska investeringsbeslut.
 
+**Analysens huvudbidrag** är inte en enskild punkt-siffra utan **triangulering**: tre oberoende metoder som antingen konvergerar eller synliggör osäkerhet. I ett fält där modeller, adoption och politiska beslut förändras snabbt är **konvergens mellan oberoende spår** det starkaste underlaget vi kan ge för storleksordningen — starkare än en enda detaljerad kalkyl som kan vara fel om ett fåtal antaganden slår fel.
+
+Alla estimat presenteras som **intervall** (låg / bas / hög) så att beslutsfattare kan välja **ambitionsnivå**; vad som skiljer minimum från ambition utvecklas i [08-filosofi.md](08-filosofi.md).
+
 ## Metodik: Tre trianguleringsspår
 
 Ingen enskild metod kan ge ett trovärdigt svar på frågan "hur mycket compute behöver offentlig sektor?" Vi använder tre oberoende spår och söker konvergens:
@@ -12,7 +16,22 @@ Ingen enskild metod kan ge ett trovärdigt svar på frågan "hur mycket compute 
 2. **Topp-ned**: Internationella investeringar skalade till Sverige
 3. **Storbolagstriangulering**: Vad kostar det att träna/köra de modeller offentlig sektor behöver, jämfört med vad storbolagen spenderar?
 
-Där spåren konvergerar har vi högre konfidens. Där de divergerar identifierar vi osäkerhet.
+Där spåren konvergerar har vi högre konfidens i **storleksordningen**. Där de divergerar identifierar vi osäkerhet och redovisar den explicit. Frågan blir då i praktiken inte bara *om* investering behövs utan *på vilken ambitionsnivå* — se scenarier i [03-berakningsmodell.md](03-berakningsmodell.md) och slutsats i [06-sammanfattning.md](06-sammanfattning.md).
+
+---
+
+## Dokumentöversikt
+
+| Dokument | Roll |
+|----------|------|
+| **01** (detta) | Ramverk, triangulering, drivare |
+| **02** | Antaganderegister (A1–A50), spårbarhet |
+| **03** | Full härledning, låg/bas/hög-scenarier |
+| **04** | Internationella jämförelser (topp-ned-validering) |
+| **05** | Källregister |
+| **06** | **Sammanfattning för beslutsfattare** — läs denna för helhetsbudskap |
+| **07** | Teknisk bilaga, ordlista |
+| **08** | **Strategisk ram**: konkurrenskraft, beroende, varför "tillräcklig volym" inte räcker för kompetens och innovation på egna villkor |
 
 ---
 
