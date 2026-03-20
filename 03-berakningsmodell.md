@@ -59,20 +59,25 @@ _Not: Agentandelen (A52) ökar successivt genom perioden, samtidigt som tokens p
 
 ### Tier 2: Specialiserad inference
 
-Medicinsk bildanalys (2029 bas):
+Tier 2 har två huvudkomponenter: **(a) sjukvårdens specialiserade inference** och **(b) övrig domän-AI**. Sjukvårdsposten har tidigare varit kraftigt underskattad — en detaljerad botten-upp-analys per vårdkedja visar att den verkliga compute-nivån är ~50x nuvarande "~6 sustained" ([13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md)).
 
-| Parameter                           | Värde      | Antagande                 |
-| ----------------------------------- | ---------- | ------------------------- |
-| Undersökningar/år                   | 9 000 000  | A22                       |
-| AI-adoption 2029                    | 40%        | Estimat                   |
-| AI-analyserade undersökningar       | 3 600 000  |                           |
-| GPU-sekunder per undersökning       | 15         | A23 (medel)               |
-| Total GPU-sekunder/år               | 54 000 000 |                           |
-| Fördelat över 250 arbetsdagar × 10h | 6 GPU-s/s  |                           |
-| Sustained H100-eq                   | ~6         | Relativt lite i sustained |
-| Peak (batch-körningar, rapport)     | ~20-50     | Burst vid nattlig batch   |
+**Dubbelräkningskontroll**: Sjukvårdspersonalens copilot/agent-användning (transkription, journaldokumentation, patientbrev) fångas redan av Tier 1. Tier 2 avser enbart specialiserad inference: bilddiagnostik, patologi, kliniskt beslutsstöd, kronisk övervakning och genomik.
 
-Komplexa resonemangsuppgifter (2029 bas):
+#### a) Sjukvårdens specialiserade inference (2029 bas)
+
+Fem vårdkedjor (skelettfrakturer, lungröntgen, diabetes typ 2, psykisk ohälsa, cancerdiagnostik) analyseras i detalj i [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md). De täcker ~12–15% av nationella vårdkontakter men inkluderar de mest compute-intensiva specialiteterna.
+
+| Komponent                        | Bas (H100-eq) | Antagande              |
+| -------------------------------- | ------------- | ---------------------- |
+| 5 vårdkedjor (direkt Tier 2)     | ~44           | A81–A87                |
+| Extrapolering till hela sjukvården (×8, justerat ×0,5) | ~180 | Konservativt: de 5 är tyngre än snitt |
+| Agentisk reasoning-overhead (×2,5) | ~450         | 2029-modeller: MoE, chain-of-thought |
+| Redundans + testmiljöer (×1,3)   | ~600          |                        |
+| **Sjukvård Tier 2 bas 2029**     | **~450–600**  | A88                    |
+
+Spann: ~200 (låg: lägre adoption, enklare modeller) till ~1 500 (hög: bred adoption, alla vårdkedjor, reasoning-tung).
+
+#### b) Komplexa resonemangsuppgifter (2029 bas)
 
 | Parameter               | Värde     | Antagande                     |
 | ----------------------- | --------- | ----------------------------- |
@@ -82,7 +87,7 @@ Komplexa resonemangsuppgifter (2029 bas):
 | Sustained H100-eq       | ~1        |                               |
 | Burst/peak              | ~10-30    |                               |
 
-Geospatial + bedrägeri + övrig domän-AI (2029 bas):
+#### c) Geospatial + bedrägeri + övrig domän-AI (2029 bas)
 
 | Domän                                   | Dedikerad kapacitet (H100-eq) | Antagande    |
 | --------------------------------------- | ----------------------------- | ------------ |
@@ -91,16 +96,27 @@ Geospatial + bedrägeri + övrig domän-AI (2029 bas):
 | Klimat/miljömodellering                 | 20-50                         | Uppskattning |
 | Övrig specialiserad AI                  | 30-100                        | Uppskattning |
 
-Tier 2 tidsserie (agentisk ärendehandläggning ökar reasoning-volymer):
+#### Tier 2 summering (2029 bas)
+
+| Subkomponent                      | Bas (H100-eq) |
+| --------------------------------- | ------------- |
+| Sjukvård (specialiserad inference) | ~500          |
+| Komplexa resonemangsuppgifter      | ~20           |
+| Geospatial + bedrägeri + övrigt    | ~280          |
+| **Tier 2 totalt**                  | **~800**      |
+
+Tier 2 tidsserie:
 
 | År   | H100-eq (låg) | H100-eq (bas) | H100-eq (hög) |
 | ---- | ------------- | ------------- | ------------- |
-| 2026 | 50            | 120           | 300           |
-| 2027 | 100           | 250           | 600           |
-| 2028 | 200           | 500           | 1 200         |
-| 2029 | 400           | 900           | 2 000         |
-| 2030 | 600           | 1 400         | 3 500         |
-| 2031 | 900           | 2 000         | 5 000         |
+| 2026 | 80            | 200           | 500           |
+| 2027 | 150           | 400           | 1 000         |
+| 2028 | 300           | 800           | 2 000         |
+| 2029 | 500           | 1 500         | 3 500         |
+| 2030 | 800           | 2 500         | 6 000         |
+| 2031 | 1 200         | 4 000         | 9 000         |
+
+_Not: Den stora uppjusteringen jämfört med tidigare Tier 2-estimat (~900 bas 2029) drivs framför allt av att sjukvårdens specialiserade inference nu fångas fullständigt (bilddiagnostik, patologi, beslutsstöd, kronisk övervakning, genomik) istället för enbart "~6 sustained" radiologi._
 
 ---
 
@@ -170,14 +186,14 @@ Tier 4 tidsserie (burst-kapacitet):
 
 | År   | Tier 1 | Tier 2 | Tier 3 | Tier 4 | Total (bas) | Låg   | Hög    |
 | ---- | ------ | ------ | ------ | ------ | ----------- | ----- | ------ |
-| 2026 | 120    | 120    | 100    | 500    | 840         | 420   | 1 850  |
-| 2027 | 400    | 250    | 200    | 1 200  | 2 050       | 830   | 4 200  |
-| 2028 | 1 000  | 500    | 350    | 2 500  | 4 350       | 1 750 | 8 300  |
-| 2029 | 2 200  | 900    | 600    | 4 500  | 8 200       | 3 000 | 17 000 |
-| 2030 | 3 500  | 1 400  | 800    | 6 000  | 11 700      | 5 250 | 25 000 |
-| 2031 | 5 000  | 2 000  | 1 200  | 8 000  | 16 200      | 7 500 | 36 000 |
+| 2026 | 120    | 200    | 100    | 500    | 920         | 450   | 2 050  |
+| 2027 | 400    | 400    | 200    | 1 200  | 2 200       | 880   | 4 700  |
+| 2028 | 1 000  | 800    | 350    | 2 500  | 4 650       | 1 850 | 9 000  |
+| 2029 | 2 200  | 1 500  | 600    | 4 500  | 8 800       | 3 200 | 19 000 |
+| 2030 | 3 500  | 2 500  | 800    | 6 000  | 12 800      | 5 500 | 28 000 |
+| 2031 | 5 000  | 4 000  | 1 200  | 8 000  | 18 200      | 8 000 | 40 000 |
 
-Tier 1 och Tier 4 står tillsammans för huvuddelen av uppsidan. Tier 2 och Tier 3 växer, men det är kombinationen av agentisk användning och suverän modellambition som förklarar varför huvudscenariot ligger väsentligt över det rent copilot-baserade läget.
+Tier 1 och Tier 4 står tillsammans för huvuddelen av uppsidan, men Tier 2 har vuxit betydligt efter att sjukvårdens specialiserade inference nu fångas fullständigt ([13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md)). Det är kombinationen av agentisk användning, sjukvårds-AI och suverän modellambition som förklarar varför huvudscenariot ligger väsentligt över det rent copilot-baserade läget.
 
 ---
 
@@ -290,11 +306,11 @@ Sverige behöver INTE träna frontier-modeller från scratch. Men Sverige behöv
 
 ### Nyckelinsikt: Storbolagsjämförelsen
 
-> Sveriges hela offentliga sektors 5-åriga compute-behov (~43 000 H100-eq-år kumulativt, 2026–2031) motsvarar fortfarande bara en liten bråkdel av vad ledande AI-aktörer spenderar på compute under ett enskilt år.
+> Sveriges hela offentliga sektors 5-åriga compute-behov (~48 000 H100-eq-år kumulativt, 2026–2031) motsvarar fortfarande bara en liten bråkdel av vad ledande AI-aktörer spenderar på compute under ett enskilt år.
 
 Uppställning:
 
-- Offentlig sektor 2026-2031 kumulativt: ~43 000 H100-eq-år × ~$30K/GPU-år ≈ ~$1,3 mdr totalt
+- Offentlig sektor 2026-2031 kumulativt: ~48 000 H100-eq-år × ~$30K/GPU-år ≈ ~$1,4 mdr totalt
 - Anthropic compute-spend 2026: ~$10–14 mdr _per år_ (härledd från $19 mdr ARR, <50% bruttomarginal)
 - xAI Colossus: 100 000 H100 — ett enda kluster
 - Hyperscalar capex 2026: ~$700 mdr (Big 5 ensamt, A72)
@@ -318,14 +334,14 @@ Politisk slutsats: Även huvudscenariot är en rundningsdifferens i global konte
 
 | Spår       | Låg    | Bas    | Hög     |
 | ---------- | ------ | ------ | ------- |
-| Botten-upp | 3 000  | 8 200  | 17 000  |
+| Botten-upp | 3 200  | 8 800  | 19 000  |
 | Topp-ned   | 2 200  | 4 100  | 7 800   |
 | Storbolag  | 2 500  | 7 600  | 15 000  |
-| Syntes     | ~3 000 | ~6 600 | ~13 300 |
+| Syntes     | ~3 000 | ~7 000 | ~14 000 |
 
-Botten-upp och storbolagsspåren konvergerar kring ~7 500–8 500 H100-eq för basscenariot 2029. Topp-ned hamnar lägre (~4 100), vilket reflekterar att internationella jämförelser och offentliga investeringsplaner ofta är pre-agentiska och därmed konservativa.
+Botten-upp och storbolagsspåren konvergerar kring ~8 000–9 000 H100-eq för basscenariot 2029. Topp-ned hamnar lägre (~4 100), vilket reflekterar att internationella jämförelser och offentliga investeringsplaner ofta är pre-agentiska och därmed konservativa.
 
-Syntesens basscenario sätts därför till **~8 000 H100-eq** 2029. Det ligger nära de två efterfrågebaserade spåren, samtidigt som topp-ned-spåret används som konservativt golv snarare än centrum.
+Syntesens basscenario sätts till **~9 000 H100-eq** 2029. Det ligger nära de två efterfrågebaserade spåren, samtidigt som topp-ned-spåret används som konservativt golv snarare än centrum. Uppjusteringen jämfört med ett rent copilot-scenario drivs av tre faktorer: agentisk AI (Tier 1), sjukvårdens specialiserade inference (Tier 2, [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md)) och suverän modellambition (Tier 4).
 
 Kompletterande sanity check — tokens per capita: En alternativ topp-ned-modell baserad på ~250 000 tokens/capita/dag (hela Sveriges befolkning, moget AI-scenario 2030) ger ~35 000–50 000 H100-eq _nationellt_. Isolerat till offentlig sektor (~15–20% med hög AI-intensitet) motsvarar det ~5 000–10 000 H100-eq — i linje med huvudscenariot. Fullständig härledning: [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md).
 
@@ -344,11 +360,11 @@ Det centrala tolkningsvalet är därför att använda topp-ned-spåret som **kon
 | År   | Låg   | Bas    | Hög    | Enhet   |
 | ---- | ----- | ------ | ------ | ------- |
 | 2026 | 400   | 900    | 2 000  | H100-eq |
-| 2027 | 800   | 2 000  | 4 500  | H100-eq |
-| 2028 | 1 600 | 4 000  | 9 000  | H100-eq |
-| 2029 | 3 000 | 8 000  | 18 000 | H100-eq |
-| 2030 | 5 000 | 12 000 | 28 000 | H100-eq |
-| 2031 | 7 000 | 16 000 | 40 000 | H100-eq |
+| 2027 | 900   | 2 200  | 5 000  | H100-eq |
+| 2028 | 1 800 | 4 500  | 9 500  | H100-eq |
+| 2029 | 3 000 | 9 000  | 20 000 | H100-eq |
+| 2030 | 5 500 | 13 000 | 30 000 | H100-eq |
+| 2031 | 8 000 | 18 000 | 42 000 | H100-eq |
 
 _Bas inkluderar agentisk AI-mix och 200B+-träning. Hög inkluderar hög agentandel, 400B+-modeller och kontinuerlig RL i skala._
 
@@ -360,7 +376,7 @@ Behovsmodellen ovan beskriver **efterfrågan**. Den beskriver inte automatiskt v
 
 1. **Kapacitet är inte bara en budgetfråga.** ASML/EUV, HBM och TSMC:s ledande noder gör att den globala tillgången på AI-acceleratorer växer långsammare än efterfrågan.
 2. **Tidiga avtal blir strategiska.** I en marknad med 12–24 månaders ledtider kan en svensk offentlig köpare inte anta att kapacitet går att köpa “när den behövs”.
-3. **Huvudscenariot kräver tidig aktivering.** Ett behov på ~8 000 H100-eq 2029 innebär inte att Sverige måste köpa allt 2026, men att upphandling, nätanslutning, partnerskap och ramavtal måste starta i god tid.
+3. **Huvudscenariot kräver tidig aktivering.** Ett behov på ~9 000 H100-eq 2029 innebär inte att Sverige måste köpa allt 2026, men att upphandling, nätanslutning, partnerskap och ramavtal måste starta i god tid.
 
 Modellen ska därför läsas som: **detta är den kapacitet som sannolikt behövs**, inte **detta är den kapacitet som spontant kommer finnas att köpa**.
 
@@ -383,11 +399,11 @@ Antagande: 60% on-prem (egna/delade datacenter), 40% moln (burst, flexibilitet) 
 | År   | Bas H100-eq | Kostnad låg (MSEK) | Kostnad bas (MSEK) | Kostnad hög (MSEK) |
 | ---- | ----------- | ------------------ | ------------------ | ------------------ |
 | 2026 | 900         | 80                 | 200                | 500                |
-| 2027 | 2 000       | 200                | 440                | 1 100              |
-| 2028 | 4 000       | 400                | 880                | 2 200              |
-| 2029 | 8 000       | 700                | 1 750              | 4 400              |
-| 2030 | 12 000      | 1 000              | 2 600              | 6 800              |
-| 2031 | 16 000      | 1 300              | 3 500              | 9 800              |
+| 2027 | 2 200       | 200                | 480                | 1 200              |
+| 2028 | 4 500       | 420                | 990                | 2 400              |
+| 2029 | 9 000       | 700                | 2 000              | 4 900              |
+| 2030 | 13 000      | 1 100              | 2 800              | 7 300              |
+| 2031 | 18 000      | 1 500              | 3 900              | 10 300             |
 
 _Inkluderar compute-kostnad. Personal, mjukvara och data tillkommer separat. Molnpriser ligger högre än den gamla deflationslogiken antydde (A69: ~$2,40/h, stigande)._
 
@@ -396,13 +412,13 @@ _Inkluderar compute-kostnad. Personal, mjukvara och data tillkommer separat. Mol
 | År   | Bas H100-eq | Facility power (MW) vid PUE 1.25 | Anmärkning                  |
 | ---- | ----------- | -------------------------------- | --------------------------- |
 | 2026 | 900         | ~0,8                             | Mestadels moln              |
-| 2027 | 2 000       | ~1,6                             |                             |
-| 2028 | 4 000       | ~3,2                             | Blackwell: ~0,8 kW/H100-eq  |
-| 2029 | 8 000       | ~5,6                             | Rubin-gen: ~0,7 kW/H100-eq  |
-| 2030 | 12 000      | ~7,2                             | Post-Rubin: ~0,6 kW/H100-eq |
-| 2031 | 16 000      | ~8,0                             | Fortsatt effektivisering    |
+| 2027 | 2 200       | ~1,8                             |                             |
+| 2028 | 4 500       | ~3,6                             | Blackwell: ~0,8 kW/H100-eq  |
+| 2029 | 9 000       | ~6,3                             | Rubin-gen: ~0,7 kW/H100-eq  |
+| 2030 | 13 000      | ~7,8                             | Post-Rubin: ~0,6 kW/H100-eq |
+| 2031 | 18 000      | ~9,0                             | Fortsatt effektivisering    |
 
-_~6 MW (2029) motsvarar ett medelstort datacenter — jämförbart med Facebooks initiala Luleå-kapacitet (~40 MW). 8 MW (2031) är fortfarande en bråkdel av de GW-skaliga datacenter som byggs i USA._
+_~6,3 MW (2029) motsvarar ett medelstort datacenter — jämförbart med Facebooks initiala Luleå-kapacitet (~40 MW). 8 MW (2031) är fortfarande en bråkdel av de GW-skaliga datacenter som byggs i USA._
 
 ---
 
@@ -413,7 +429,7 @@ _~6 MW (2029) motsvarar ett medelstort datacenter — jämförbart med Facebooks
 | Parameter                                | Effekt på 2029 bas-estimat                         |
 | ---------------------------------------- | -------------------------------------------------- |
 | Agentandel + tokens per agent (A52, A55) | Flyttar Tier 1 från ~1 200 till ~3 500 H100-eq     |
-| Adoptionsgrad 2029 (A59)                 | Flyttar huvudscenariot ungefär mellan ~7 000 och ~9 500 |
+| Adoptionsgrad 2029 (A59)                 | Flyttar huvudscenariot ungefär mellan ~7 500 och ~10 500 |
 | Suverän tränings-ambition (A61-A65)      | Flyttar Tier 4 ungefär mellan ~3 000 och ~6 000    |
 | Effektivitetsförbättring (A47-A50)       | Motverkar en del av uppgången men ändrar inte riktningen |
 | AI-budget som andel av IT (A10-A12)      | Begränsar vad som är realistiskt i topp-ned-spåret |
@@ -423,6 +439,6 @@ _~6 MW (2029) motsvarar ett medelstort datacenter — jämförbart med Facebooks
 
 **Låg** (~3 000 H100-eq 2029): Defensivt minimum — drift, viss specialiserad AI och begränsad nationell modellförmåga. Räcker för att minska de värsta flaskhalsarna men inte för att bygga ett starkt ekosystem.
 
-**Bas** (~8 000 H100-eq 2029): Bred offentlig AI-användning med agentisk komponent, meningsfull suverän modellförmåga och tillräcklig kapacitet för att kombinera drift med kompetensuppbyggnad.
+**Bas** (~9 000 H100-eq 2029): Bred offentlig AI-användning med agentisk komponent och fullständigt fångad sjukvårds-AI, meningsfull suverän modellförmåga och tillräcklig kapacitet för att kombinera drift med kompetensuppbyggnad.
 
-**Hög** (~18 000 H100-eq 2029): Strategisk handlingsfrihet — hög agentandel, stark forsknings- och utbildningsmiljö, större träningsprogram och mer robust kapacitet för känsliga domäner. Strategisk motivering: [08-strategi.md](08-strategi.md).
+**Hög** (~20 000 H100-eq 2029): Strategisk handlingsfrihet — hög agentandel, stark forsknings- och utbildningsmiljö, större träningsprogram och mer robust kapacitet för känsliga domäner. Strategisk motivering: [08-strategi.md](08-strategi.md).

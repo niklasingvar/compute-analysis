@@ -1,6 +1,6 @@
 # 02 – Antaganden och data
 
-Alla antaganden är numrerade (A1-A80) och klassificerade efter känslighet. Varje central siffra i [03-berakningsmodell.md](03-berakningsmodell.md) och [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) ska vara spårbar till ett antagande här.
+Alla antaganden är numrerade (A1–A88) och klassificerade efter känslighet. Varje central siffra i [03-berakningsmodell.md](03-berakningsmodell.md), [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) och [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) ska vara spårbar till ett antagande här.
 
 Känslighetsklasser:
 
@@ -64,6 +64,21 @@ Men med peaks, batching-overhead och redundans: ~0,001 – 0,003 H100-eq i provi
 | A25 | GPU-tid per komplext resonemang                    | ~10-60 sekunder H100-eq (chain-of-thought, längre kontext) | Uppskattning baserat på o1/o3-liknande modeller | H          |
 | A26 | Geospatial analys (Lantmäteriet, MSB)              | ~50-200 H100-eq dedikerad kapacitet                        | Uppskattning                                    | H          |
 | A27 | Bedrägeridetektering (Skatteverket, FK)            | ~20-100 H100-eq dedikerad kapacitet                        | Uppskattning baserat på transaktionsvolymer     | H          |
+
+## D2. Tier 2 – Sjukvårdens specialiserade inference
+
+Sjukvårdens AI-compute delas i Tier 1 (copilot/agent: transkription, dokumentation, kommunikation — ingår redan i A13/A51–A60) och Tier 2 (specialiserad inference: bilddiagnostik, patologi, kliniskt beslutsstöd, kronisk övervakning, genomik). Följande antaganden avser enbart den Tier 2-unika delen. Fullständig härledning: [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md).
+
+| #   | Antagande                                             | Värde                       | Källa                                                       | Känslighet |
+| --- | ----------------------------------------------------- | --------------------------- | ----------------------------------------------------------- | ---------- |
+| A81 | Radiologiska undersökningar per år (alla modaliteter) | ~8–10 miljoner              | SSM rapport 2025:07, Socialstyrelsen                        | M          |
+| A82 | GPU-sekunder per radiologisk AI-analys (Tier 2-del)   | ~27–65 (thorax), 54–137 (fraktur) | NVIDIA NIM VISTA-3D benchmarks; Geo-MIL (Nature 2025)  | M          |
+| A83 | Cancerdiagnostik: utredningar per år                  | ~200 000–300 000            | Socialstyrelsen Cancerregistret 2024 (~60 000 bekräftade)   | M          |
+| A84 | GPU-sekunder per cancerutredning (Tier 2-del)         | ~140–560                    | WSI gigapixelanalys, genomik, MDK-förberedelse              | H          |
+| A85 | Diabetes typ 2: patienter under aktiv vård            | ~450 000–550 000            | NDR; prevalens ~7,5% (2021, ökande)                         | L          |
+| A86 | Kronisk övervakning GPU-sek per patient/år            | ~70–330                     | CGM-dataanalys + proaktiv flaggning                         | H          |
+| A87 | AI-adoption sjukvård 2029 (specialiserad inference)   | ~40–70%                     | AI Sweden Vårdkartan 2025: 13% fullt implementerat (bas); accelererande | H |
+| A88 | Tier 2 sjukvård totalt (2029 bas, med peak + redundans) | ~450–600 H100-eq          | Härlett från A81–A87, extrapolerat från 5 vårdkedjor        | H          |
 
 ## E. Tier 3 – Finjustering och anpassning
 
@@ -203,12 +218,13 @@ De antaganden med högst påverkan på slutresultatet:
 
 1. A57–A60 (agentisk AI-mix, adoption, bakgrundsagenter) – driver Tier 1-volymen
 2. A61–A65 (suverän träning: 200B+, RL) – driver Tier 4, den största enskilda posten
-3. A50 (netto-effektivitet vs växande modeller) – påverkar hela tidsserien
-4. A66–A72 (supply-constraints) – begränsar vad som kan anskaffas oavsett budget; driver urgensargument
-5. A10-A12 (AI-andel av IT-budget) – budgetrestriktion som kan göra topp-ned-spåret för konservativt
-6. A73–A80 (repoövergripande kalibrering) – styr hur stresstest, källor och praktiska restriktioner ska tolkas
+3. A81–A88 (sjukvårdens specialiserade inference) – visar att Tier 2 är kraftigt underskattat utan vårdkedjeanalys
+4. A50 (netto-effektivitet vs växande modeller) – påverkar hela tidsserien
+5. A66–A72 (supply-constraints) – begränsar vad som kan anskaffas oavsett budget; driver urgensargument
+6. A10-A12 (AI-andel av IT-budget) – budgetrestriktion som kan göra topp-ned-spåret för konservativt
+7. A73–A80 (repoövergripande kalibrering) – styr hur stresstest, källor och praktiska restriktioner ska tolkas
 
-## Topp 10 antaganden – påverkan på 2029
+## Topp 12 antaganden – påverkan på 2029
 
 | Antagande | Roll i modellen | Rimligt basspann | Ungefärlig påverkan på 2029 |
 |-----------|-----------------|------------------|-----------------------------|
@@ -216,6 +232,8 @@ De antaganden med högst påverkan på slutresultatet:
 | **A55** | Tokens/dag för agentanvändare | 300K–500K | Driver nästan hela uppsidan i Tier 1 |
 | **A52** | Andel agentanvändare | 20–30% | Avgör hur mycket copilot som blir agentisk belastning |
 | **A60** | Bakgrundsagenter | 20–50 slots per större organisation | Adderar kontinuerlig belastning utanför kontorstid |
+| **A88** | Sjukvårdens Tier 2-compute | ~450–600 H100-eq | Största enskilda uppjusteringen av Tier 2 |
+| **A87** | AI-adoption sjukvård 2029 | 40–70% | Avgör hur snabbt sjukvårdens specialiserade AI skalar |
 | **A61** | Modellstorlek för svensk grundmodell | 200B+ | Bestämmer om Tier 4 är nischad eller strategiskt ambitiös |
 | **A62** | Träningsh för 200B-modell | 3M–8M H100-h | Avgör hur tung huvudkörningen blir |
 | **A63** | RL per modell | 200K–1M H100-h | Kan förvandla en enstaka träningskörning till ett program |
@@ -223,4 +241,4 @@ De antaganden med högst påverkan på slutresultatet:
 | **A11** | AI som andel av IT-budget 2029 | 5–12% | Sätter ett realistiskt tak i topp-ned-spåret |
 | **A71** | Ledtid för chip-allokering | 12–24 månader | Påverkar inte behovet, men avgör om behovet kan realiseras i tid |
 
-Huvudpoängen är att **A52, A55, A59 och A60** driver inference-delen, medan **A61–A64** driver den strategiska modellambitionen. Det är kombinationen av dessa två block som avgör om 2029 landar nära låg, bas eller hög.
+Huvudpoängen är att **A52, A55, A59 och A60** driver den generella inference-delen, **A81–A88** visar att sjukvårdens specialiserade inference är underskattat i nuvarande modell, medan **A61–A64** driver den strategiska modellambitionen.
