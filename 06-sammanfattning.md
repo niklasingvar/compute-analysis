@@ -81,6 +81,7 @@ En konkret genomgång av bygga vs. köpa vs. hybrid finns i [09-tanke-exempel.md
 - **Suverän ambition**: Politiska beslut om svensk modellträning avgör Tier 4-behovets storlek.
 - **EU-reglering**: AI Act kan både öka behov av europeisk infra och lägga compliance-last på budget.
 - **Budgetverklighet**: Kommuner under press 2025–2027 kan adoptera långsammare.
+- **"Kan vi vänta?"**: Hårdvara blir billigare, men upphandling, kompetensuppbyggnad och strategi har ledtider som inte krymper — se [10-kan-vi-vanta.md](10-kan-vi-vanta.md).
 
 ---
 

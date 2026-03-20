@@ -42,6 +42,8 @@ Dessa punkter motiverar att politiska slutsatser om **"smarta" tokens** och moln
 
 **Öppna eller villkorat licensierade modellvikter** (t.ex. Llama-familjen, europeiska aktörer som Mistral med öppna vikter (**L9**), samt svenska **GPT-SW3** (**L10**)) kan **minska låsning** till en enda kommersiell API-leverantör av **"smarta" tokens**. Samtidigt flyttas kostnaden: för att uppnå samma kapabilitet **on-prem**, i europeiskt moln eller i nationell forskningsinfrastruktur krävs **beräkningskraft**, kompetens och drift – ofta i samma storleksordning som analysen i **03–06** redovisar. Nationellt tränade eller finjusterade modeller (jfr **L10**) är därför inte ett substitut för compute-investeringar; de **förutsätter** dem.
 
+Framväxten av **öppna resonemangsmodeller** (t.ex. DeepSeek-R1, Qwen, Llama-baserade varianter) förstärker denna dynamik. Dessa modeller når konkurrenskraftig kvalitet på många uppgifter — men chain-of-thought-resonemang genererar 5–50x fler tokens per fråga, vilket **ökar** inference-behovet per interaktion. Öppna resonerangsmodeller gör egen infrastruktur mer *värdefull* (fullständigt oberoende av slutna API:er blir möjligt) men inte mindre *nödvändig*.
+
 ---
 
 ## Två nivåer av ambition: "tillräckligt" räcker inte

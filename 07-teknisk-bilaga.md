@@ -126,6 +126,12 @@ Moderna GPU-datacenter (H100+) kräver i allt högre grad vätskekylning:
 
 **Rekommendation**: Ny AI-infrastruktur bör planeras med direct-to-chip eller immersion cooling. Traditionell luftkylning är otillräcklig för B200-generationens ~1 kW per GPU.
 
+### Elnätsbegränsning — en praktisk constraint
+
+Analysens effektbehov (~3 MW bas 2029, ~5 MW 2031) är tekniskt hanterbart, men **nätanslutning** kan vara den hårdaste flaskhalsen i Mellansverige (elområde SE3). Ledtider för ny nätkapacitet är 2–5 år i belastade områden. Norra Sverige (SE1–SE2) har överskottskapacitet men längre avstånd till slutanvändare (latens för realtids-inference).
+
+**Implikation**: Val av datacenter-lokalisering styrs i praktiken av var nätkapacitet finns, inte av var behovet är störst. Nätanslutning bör planeras parallellt med GPU-upphandling — inte sekventiellt. Se [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md) för fördjupad diskussion.
+
 ---
 
 ## 4. Inference-beräkningar i detalj

@@ -104,7 +104,7 @@ Men med peaks, batching-overhead och redundans: ~0,001 – 0,003 H100-eq i provi
 | A47 | Algoritmisk effektivisering (inference) | ~2x per 18-24 månader | Epoch AI, historisk trend | M |
 | A48 | Hårdvarueffektivisering (nya GPU-generationer) | ~2-3x per generation (2 år) | NVIDIA roadmap: H100→B200→post-Blackwell | M |
 | A49 | Kvantisering och optimering | Ytterligare ~1,5-2x genom INT8/FP8-inference | Forskning, NVIDIA TensorRT | L |
-| A50 | Netto-effekt: behov i H100-eq reduceras med ~30-50% per 2 år i *fysiska* GPU:er, men modellerna blir större och mer kapabla → nettoefterfrågan ökar ändå | Komplext samspel – modellerad som ~20% årlig ökning i efterfrågan trots effektivisering | Egen syntes | H |
+| A50 | Netto-effekt: behov i H100-eq reduceras med ~30-50% per 2 år i *fysiska* GPU:er, men modellerna blir större och mer kapabla → nettoefterfrågan ökar ändå. Öppna resonemangsmodeller (chain-of-thought) förstärker trenden: 5–50x fler tokens per fråga jämfört med standardinference, vilket motverkar effektiviseringsvinster. | Komplext samspel – modellerad som ~20% årlig ökning i efterfrågan trots effektivisering | Egen syntes | H |
 
 ---
 

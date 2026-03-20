@@ -43,6 +43,8 @@ Tre lager:
 07-teknisk-bilaga.md              # Teknisk bilaga
 08-strategi.md                    # Konkurrenskraft, beroende, ambition (strategisk ram)
 09-tanke-exempel.md               # Bygga vs. köpa — konkret tankeexperiment
+10-kan-vi-vanta.md                # "Kan vi vänta?" — stresstest av avvakta-strategin
+11-kompletterande-perspektiv.md   # Praktiker-stresstest (elnät, tokens/capita, NVIDIA-kö)
 ```
 
 ### Kvalitetskontroll

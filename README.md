@@ -81,6 +81,8 @@ Valet mellan bas och hög är i stor utsträckning ett politiskt beslut om ambit
 | [07-teknisk-bilaga.md](07-teknisk-bilaga.md) | GPU-specifikationer, ordlista |
 | [08-strategi.md](08-strategi.md) | Strategisk ram: konkurrenskraft, beroende, ambition |
 | [09-tanke-exempel.md](09-tanke-exempel.md) | Bygga vs. köpa — konkret tankeexperiment |
+| [10-kan-vi-vanta.md](10-kan-vi-vanta.md) | "Kan vi vänta?" — stresstest av avvakta-strategin |
+| [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md) | Praktiker-stresstest: elnät, tokens/capita, NVIDIA-orderkö |
 
 Policykällor: [resources/links.md](resources/links.md) (L1–L11). Projektkonventioner: [CLAUDE.md](CLAUDE.md).
 

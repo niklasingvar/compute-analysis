@@ -295,6 +295,8 @@ Baserat på ovanstående back-calculation:
 
 Bas-scenarierna konvergerar väl kring **~2 500-3 500 H100-eq för 2029**. Topp-ned ger ett något lägre tal, vilket är rimligt – internationella investeringar inkluderar inte alltid alla dimensioner vi fångar botten-upp.
 
+**Kompletterande sanity check — tokens per capita**: En alternativ topp-ned-modell baserad på ~250 000 tokens/capita/dag (hela Sveriges befolkning, moget AI-scenario 2030) ger ~35 000–50 000 H100-eq *nationellt*. Isolerat till offentlig sektor (~15–20% med hög AI-intensitet) motsvarar det ~5 000–10 000 H100-eq — i linje med hög-scenariot. Denna modell inkluderar inte Tier 4 (träning) men fångar effekten av resonerangsmodeller med hög token-volym. Fullständig härledning: [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md).
+
 ### Kombinerat estimat (slutligt):
 
 | År | Låg | Bas | Hög | Enhet |
