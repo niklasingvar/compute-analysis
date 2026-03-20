@@ -1,125 +1,122 @@
 # 09 – Bygga vs. köpa: ett tankeexperiment
 
-Vad kostar det att äga AI-infrastrukturen jämfört med att hyra den? Detta kapitel sätter beräkningsmodellens siffror (se [03](03-berakningsmodell.md)) i konkret perspektiv genom tre scenarier för hur Sverige kan förvärva den beräkningskapacitet som offentlig sektor behöver.
+Detta kapitel översätter huvudscenariot i [03-berakningsmodell.md](03-berakningsmodell.md) till tre praktiska anskaffningsstrategier. Frågan är inte bara hur mycket compute offentlig sektor behöver, utan **hur** Sverige bör säkra den.
+
+Utgångspunkt: **basscenario 2029 = ~8 000 H100-ekvivalenter**.
 
 ---
 
-## Tre scenarier
+## Tre anskaffningsmodeller
 
-### Scenario A: "Köp" — rent moln/API
+### Scenario A – Rent moln / API
 
-All beräkningskapacitet hyrs via utländska molntjänster (Azure, AWS, GCP) och frontier-modeller konsumeras via API.
+All kapacitet hyras via externa moln- och API-leverantörer.
 
-| Post | Värde (basscenario 2029) | Källa |
-|------|--------------------------|-------|
-| Sustained inference (Tier 1-2) | ~800 H100-eq × ~300 KSEK/år | A42, 03 |
-| Finjustering (Tier 3) | ~300 H100-eq burst × ~300 KSEK/år | A32 |
-| Frontier-API (istället för suverän träning) | ~50–150 MSEK/år (token-baserad) | Uppskattning |
-| **Total årskostnad** | **~480–530 MSEK/år** | |
+| Post | Indikativ nivå 2029 |
+|------|---------------------|
+| Tier 1–2 drift | ~3 100 H100-eq motsvarande löpande molnkapacitet |
+| Tier 3 finjustering | ~600 H100-eq i burst |
+| Tier 4 ersätts med externa modeller / API-konsumtion | Ja |
+| Total årskostnad | ~1 300–1 700 MSEK |
 
-**Fördelar:**
-- Snabbt: inget bygge, ingen upphandling av hårdvara
-- Skalbart: kapacitet kan ökas på dagar
-- Låg initial investering
+**Fördelar**
 
-**Risker:**
-- Strukturellt beroende av leverantörer under icke-europeisk jurisdiktion
-- Pris kan stiga: AI-molnpriser har historiskt inte följt generell molndeflation
-- Data lämnar Sverige — spänning mot GDPR, CLOUD Act, sekretesslagstiftning (se [08](08-strategi.md), L4–L6)
-- Ingen kompetensuppbyggnad: Sverige konsumerar men lär sig inte
-- Suverän träning omöjlig — Tier 4 faller bort helt, ingen GPT-SW3-successor
+- snabbt att komma igång
+- låg initial kapitalbindning
+- hög flexibilitet när belastningen varierar
 
-### Scenario B: "Bygg" — nationell on-prem
+**Nackdelar**
 
-Eget kluster i Sverige (via NAISS/Arrhenius eller dedikerad kapacitet), all beräkning sker nationellt.
+- svag kontroll över data, prissättning och tillgång
+- låg robusthet för känsliga arbetslaster
+- i praktiken ingen suverän träningsförmåga
+- hög risk att temporär lösning blir permanent beroende
 
-| Post | Värde (basscenario 2029) | Källa |
-|------|--------------------------|-------|
-| Systempris 3 500 H100-eq (vid ~60 KSEK/GPU) | ~2 100 MSEK (engångsinvestering) | A41 |
-| Amortering 4 år | ~525 MSEK/år | |
-| El (3 MW × 8 760h × 0,75 SEK/kWh) | ~20 MSEK/år | A45, PUE 1,2 |
-| Underhåll, personal, nätverk | ~50–80 MSEK/år | Uppskattning |
-| **Total årskostnad (amorterad)** | **~600–630 MSEK/år** | |
-| **Kostnad per H100-eq/år** | **~170–180 KSEK** | |
+### Scenario B – Rent on-prem
 
-**Fördelar:**
-- Full kontroll: data stannar i Sverige, ingen tredjelandsproblematik
-- Kompetens byggs: drift, optimering, forskningssamarbete
-- Suverän träning möjlig (Tier 4)
-- Lägre löpande kostnad per GPU-timme efter initial investering
+Sverige bygger eller reserverar egen nationell kapacitet för i princip hela behovet.
 
-**Risker:**
-- Hög initial investering (~2 100 MSEK)
-- Risk för under- eller överkapacitet: om behovet avviker från prognosen
-- Teknisk skuld: hårdvara föråldras på 4–5 år
-- Kräver kompetent driftsorganisation
-- LOU-upphandling tar 6–18 månader
+| Post | Indikativ nivå 2029 |
+|------|---------------------|
+| Dimensionering | ~8 000 H100-eq |
+| Engångsinvestering | ~4 500–5 500 MSEK |
+| Årlig kostnad (amorterad + drift) | ~1 350–1 600 MSEK |
+| Facility power | ~5,6 MW |
 
-### Scenario C: "Hybrid" — rekommenderat
+**Fördelar**
 
-On-prem för sustained kapacitet och känslig data, moln för burst och icke-känsliga arbetsbelastningar. Motsvarar den 60/40-mix som används i beräkningsmodellen ([03](03-berakningsmodell.md)).
+- maximal kontroll över känslig data och drift
+- bäst för nationell modellförmåga och forskningsmiljö
+- lägre marginalkostnad per GPU-år när kapaciteten väl är på plats
 
-| Post | Värde (basscenario 2029) | Källa |
-|------|--------------------------|-------|
-| On-prem: 2 100 H100-eq (60%) × ~180 KSEK/år | ~380 MSEK/år | |
-| Moln: 1 400 H100-eq (40%) × ~300 KSEK/år | ~420 MSEK/år | |
-| **Total årskostnad** | **~770–800 MSEK/år** | 03, kostnadsöversättning |
-| **Kostnad per H100-eq/år (vägt snitt)** | **~220–230 KSEK** | |
+**Nackdelar**
 
-**Fördelar:**
-- Balansar kontroll med flexibilitet
-- Känslig data och suverän träning on-prem
-- Burst-kapacitet via moln utan att överdimensionera egen infra
-- Upphandling kan ske parallellt: hårdvara (on-prem) + ramavtal (moln)
+- hög initial investering
+- större risk för över- eller underdimensionering
+- mer känsligt för felaktigt platsval, nätanslutning eller teknikskifte
 
-**Risker:**
-- Komplexare drift: två miljöer att hantera
-- Kräver tydlig policy: vilken data får gå var?
-- Molndelen har samma jurisdiktionsrisker som scenario A (men begränsas till icke-känsligt)
+### Scenario C – Hybrid
 
----
+Sverige bygger en egen kärna och använder moln som komplement för burst och icke-känsliga arbetslaster.
 
-## Jämförelsetabell: 5-årskostnad (2027–2031, basscenario)
+| Post | Indikativ nivå 2029 |
+|------|---------------------|
+| On-prem-del | ~4 800 H100-eq |
+| Moln-del | ~3 200 H100-eq |
+| Årlig kostnad | ~1 700–1 900 MSEK |
+| Suverän träning möjlig | Ja |
 
-| Dimension | A: Rent moln | B: Rent on-prem | C: Hybrid |
-|-----------|-------------|-----------------|-----------|
-| **5-års totalkostnad** | ~2 500–3 000 MSEK | ~3 000–3 200 MSEK | ~3 200–3 500 MSEK |
-| **Initial investering** | Låg (~50 MSEK) | Hög (~2 100 MSEK) | Medel (~1 300 MSEK) |
-| **Kostnad per H100-eq/år** | ~280–350 KSEK | ~170–180 KSEK | ~220–230 KSEK |
-| **Suverän träning (Tier 4)** | Nej | Ja | Ja (on-prem-delen) |
-| **Datakontroll** | Begränsad | Full | Hög (känslig data on-prem) |
-| **Juridisk risk** | Hög (CLOUD Act, Schrems II) | Låg | Medel (moln för icke-känsligt) |
-| **Kompetensuppbyggnad** | Minimal | Hög | God |
-| **Flexibilitet** | Hög (kortsiktigt) | Låg | Hög |
-| **Leverantörsberoende** | Högt | Lågt | Medel |
+**Fördelar**
+
+- kombinerar kontroll med flexibilitet
+- bättre hantering av känslig kontra icke-känslig data
+- lägre risk att bygga för stort direkt
+- bättre anpassning till supply-side-osäkerhet
+
+**Nackdelar**
+
+- högre styrningskomplexitet
+- kräver tydlig datapolicy och arbetslastklassning
+- molndelen behåller vissa jurisdiktionsrisker
 
 ---
 
-## Konkret räkneexempel: 2029 basscenario
+## Jämförelse
 
-Ett sätt att se på det: vad kostar det att ge 225 000 offentliganställda daglig tillgång till AI-copilots, köra specialiserad AI inom vård och juridik, finjustera svenska modeller kvartalsvis, och träna en svensk 70B-grundmodell per år?
+| Dimension | Rent moln | Rent on-prem | Hybrid |
+|-----------|-----------|--------------|--------|
+| Initial investering | Låg | Hög | Medel |
+| Årlig kostnad 2029 | Medel-hög | Medel | Högst |
+| Datakontroll | Låg | Hög | Hög |
+| Suverän träning | Nej | Ja | Ja |
+| Flexibilitet | Hög | Låg-medel | Hög |
+| Leverantörsberoende | Högt | Lågt | Medel |
+| Robusthet mot känsliga use cases | Låg | Hög | Hög |
 
-| Komponent | H100-eq | On-prem (MSEK/år) | Moln (MSEK/år) | Hybrid (MSEK/år) |
-|-----------|---------|--------------------|--------------------|-------------------|
-| Copilots (Tier 1) | 300 | 54 | 90 | 68 |
-| Specialiserad AI (Tier 2) | 500 | 90 | 150 | 114 |
-| Finjustering (Tier 3) | 300 | 54 | 90 | 68 |
-| Suverän träning (Tier 4) | 2 000 | 360 | — (ej möjligt*) | 360 (on-prem) |
-| **Infrastruktur-overhead** | 400 | 72 | 120 | 90 |
-| **Total** | **3 500** | **~630** | **~450*** | **~700** |
+---
 
-*Rent moln: Tier 4 ersätts med API-konsumtion (~100 MSEK/år), men suverän modellförmåga saknas.
+## Vad kostar skillnaden egentligen?
+
+Det rena molnscenariot ser ofta billigast ut i ett kort tidsperspektiv eftersom investering flyttas till löpande konsumtion. Men den besparingen köps genom att Sverige avstår:
+
+- egen modellförmåga för känsliga domäner
+- robust tillgång när marknaden blir ansträngd
+- lärande i drift, optimering och styrning
+
+Hybridscenariot är därför inte "billigast", men det är det scenario som bäst balanserar ekonomi, genomförbarhet och strategisk frihet.
+
+---
+
+## Rekommenderad läsning av tankeexperimentet
+
+Detta kapitel ska inte läsas som ett exakt upphandlingsunderlag, utan som ett sätt att synliggöra valet:
+
+- **Rent moln** minimerar friktion nu men maximerar beroende senare
+- **Rent on-prem** maximerar kontroll men kräver hög precision i timing och dimensionering
+- **Hybrid** är den mest realistiska vägen från dagens läge till huvudscenariot i [06-sammanfattning.md](06-sammanfattning.md)
 
 ---
 
 ## Slutsats
 
-Rent moln (A) är billigast kortsiktigt men gör Sverige permanent beroende av utländska leverantörer och omöjliggör suverän modellträning. Rent on-prem (B) ger maximal kontroll men kräver stor initial investering och riskerar kapacitetsmismatch.
-
-**Hybrid (C)** balanserar kontroll med flexibilitet. On-prem-delen säkrar suverän träning och känslig data; molndelen ger burst-kapacitet och undviker överdimensionering. Merkostnaden jämfört med rent moln — ~200–500 MSEK över 5 år — är priset för strategisk handlingsfrihet och kompetensuppbyggnad.
-
-I en internationell jämförelse ([04](04-internationella-jamforelser.md)) är hela 5-årsinvesteringen — oavsett modell — en rundningsdifferens mot vad enskilda AI-lab spenderar på en enda modellträning. Frågan är inte om Sverige har råd att investera, utan om Sverige har råd att *inte* göra det.
-
----
-
-*Alla kostnadsantaganden bygger på [02-antaganden-och-data.md](02-antaganden-och-data.md) (A40–A45) och [03-berakningsmodell.md](03-berakningsmodell.md) (kostnadsöversättning). Priserna är 2025-nivå; faktiska inköp sker i framtidens hårdvara (B200/B300) med bättre prestanda per krona.*
+Om Sverige accepterar långsiktigt leverantörsberoende kan rent moln vara tillräckligt. Om målet däremot är offentlig AI-användning med verklig handlingsfrihet, känslig datahantering och nationell modellförmåga är **hybridscenariot** det mest rimliga huvudspåret.

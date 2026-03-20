@@ -1,235 +1,178 @@
 # 07 – Teknisk bilaga
 
-Fördjupat tekniskt underlag för beräkningsmodellen. Riktar sig till IT-strateger och tekniska rådgivare.
+Detta dokument fungerar som tekniskt appendix till [03-berakningsmodell.md](03-berakningsmodell.md) och [06-sammanfattning.md](06-sammanfattning.md). Syftet är att göra enheterna, översättningarna och de viktigaste tekniska antagandena transparenta.
 
 ---
 
-## 1. GPU-arkitekturer – jämförelse
+## 1. Referensenheten: H100-ekvivalent
 
-### Relevanta GPU-generationer
+Analysen uttrycker behovet i **H100-ekvivalenter** för att kunna jämföra över tid även när faktisk inköpt hårdvara byts ut.
 
-| GPU | Tillverkare | FP16 (TFLOPS) | HBM (GB) | TDP (W) | H100-eq faktor | Tillgänglighet |
-|-----|-------------|---------------|-----------|---------|-----------------|----------------|
-| A100 80GB | NVIDIA | 312 | 80 | 400 | 0,5x | 2020- (befintlig) |
-| H100 SXM | NVIDIA | 990 (med sparsity) | 80 | 700 | **1,0x** (referens) | 2023- |
-| H200 | NVIDIA | ~990 | 141 | 700 | ~1,3-1,5x (minnes-bound tasks) | 2024-2025 |
-| B200 | NVIDIA | ~2 250 | 192 | 1 000 | ~2-3x | 2025-2026 |
-| B300 (Vera Rubin-plattform) | NVIDIA | ~4 500 (est.) | 288+ (est.) | ~1 200 (est.) | ~4-6x (est.) | 2027-2028 |
-| MI300X | AMD | ~1 300 | 192 | 750 | ~1,0-1,3x (beroende på mjukvaruekosystem) | 2024- |
-| Gaudi 3 | Intel | ~1 800 (BF16) | 128 | 900 | ~0,8-1,2x (beroende på workload) | 2024-2025 |
+| GPU | H100-eq faktor | Kommentar |
+|-----|----------------|-----------|
+| A100 80GB | ~0,5x | Användbar historisk referens |
+| H100 SXM | 1,0x | Referensenhet i modellen |
+| H200 | ~1,3–1,5x | Framför allt starkare på minnesbundna arbetslaster |
+| B200 | ~2–3x | Tydligt steg upp i prestanda |
+| B300 / Rubin-klass | ~4–6x | Rimlig riktning för 2027–2029 |
+| MI300X | ~1,0–1,3x | Beroende på mjukvara och arbetslast |
 
-### Varför H100-ekvivalenter?
-
-H100 SXM används som referensenhet eftersom:
-1. Det är den mest utbredda datacenter-GPU:n för AI (2024-2025)
-2. Välbenchmarkad för både träning och inference
-3. Alla konkurrenter och efterföljare kan uttryckas som multipel av H100-prestanda
-4. Enklast att kommunicera till icke-teknisk publik
-
-**Konverteringsregel**: När nya GPU-generationer införs minskar antal *fysiska* GPU:er som krävs, men vi uttrycker behovet i H100-eq för jämförbarhet. Faktisk inköp 2029 sker i dåtidens hårdvara (sannolikt B200/B300-klass), vilket innebär färre fysiska enheter.
+H100-eq mäter alltså **kapacitet**, inte faktiskt antal köpta GPU:er.
 
 ---
 
-## 2. Enhetskonverteringar
+## 2. Från H100-eq till fysiska GPU:er
 
-### H100-eq till fysiska GPU:er (framtida hårdvara)
+### Basscenariot
 
-| År | Dominant GPU | H100-eq per fysisk GPU | Bas-behov (H100-eq) | Fysiska GPU:er |
-|----|-------------|----------------------|---------------------|----------------|
-| 2026 | H100/H200 | 1,0-1,3 | 400 | ~300-400 |
-| 2027 | H200/B200 | 1,3-2,5 | 1 000 | ~400-770 |
-| 2028 | B200 | 2,0-3,0 | 2 000 | ~670-1 000 |
-| 2029 | B200/B300 | 2,5-4,0 | 3 500 | ~875-1 400 |
-| 2030 | B300/post-Blackwell | 4,0-6,0 | 5 500 | ~920-1 375 |
-| 2031 | Post-Blackwell | 5,0-8,0 | 8 000 | ~1 000-1 600 |
+| År | Basbehov (H100-eq) | Trolig hårdvara | H100-eq per fysisk GPU | Fysiska GPU:er |
+|----|--------------------|-----------------|------------------------|----------------|
+| 2026 | 900 | H100/H200 | 1,0–1,3 | ~700–900 |
+| 2027 | 2 000 | H200/B200 | 1,3–2,5 | ~800–1 500 |
+| 2028 | 4 000 | B200 | 2,0–3,0 | ~1 300–2 000 |
+| 2029 | 8 000 | B200/B300 | 2,5–4,0 | ~2 000–3 200 |
+| 2030 | 12 000 | B300/post-Blackwell | 4,0–6,0 | ~2 000–3 000 |
+| 2031 | 16 000 | post-Blackwell | 5,0–8,0 | ~2 000–3 200 |
 
-### H100-eq till effekt (MW)
-
-```
-Facility power (MW) = H100-eq × (W per H100-eq under aktuell generation) × PUE / 1 000 000
-```
-
-| Komponent | Värde |
-|-----------|-------|
-| H100 TDP | 700 W |
-| Servernivå (CPU, RAM, NVLink, nätverk) | +30% ≈ 910 W |
-| PUE Norden (frikyla) | 1,15-1,30 |
-| **Facility power per H100 on-prem** | **~1,0-1,2 kW** |
-
-Med framtida effektivare generationer:
-
-| År | kW per H100-eq (facility) | Bas H100-eq | Facility MW |
-|----|--------------------------|-------------|-------------|
-| 2026 | 1,1 | 400 | 0,4 |
-| 2027 | 1,0 | 1 000 | 1,0 |
-| 2028 | 0,9 | 2 000 | 1,8 |
-| 2029 | 0,8 | 3 500 | 2,8 |
-| 2030 | 0,7 | 5 500 | 3,9 |
-| 2031 | 0,6 | 8 000 | 4,8 |
-
-*Not: Effekten per H100-eq sjunker eftersom nyare GPU:er levererar mer compute per watt. Men: nyare GPU:er drar mer effekt totalt (B200: 1 000W vs H100: 700W) – vinsten kommer från att färre fysiska GPU:er behövs.*
-
-### H100-eq till kostnad (MSEK)
-
-| Driftmodell | Kostnad per H100-eq/år | Kommentar |
-|-------------|----------------------|-----------|
-| Moln (on-demand) | ~350-500 KSEK | Flexibelt men dyrt |
-| Moln (1-3 år reserved) | ~200-350 KSEK | Förutsägbart, lägre pris |
-| On-prem (amortering 4 år) | ~150-250 KSEK | Låg löpande, hög initial investering |
-| Hybrid (60% on-prem / 40% moln) | ~190-260 KSEK | **Använd i basmodellen** |
-
-On-prem-kalkyl (per H100):
-- Systempris: ~600 KSEK (A41, ~$60K)
-- Amortering 4 år: 150 KSEK/år
-- El (700W × 8 760h × 0,75 SEK/kWh × PUE 1,2): ~55 KSEK/år
-- Underhåll, kylning, personal: ~30 KSEK/år
-- Nätverksinfrastruktur (amorterat): ~15 KSEK/år
-- **Total: ~250 KSEK/år on-prem**
+Detta förklarar varför behovet i H100-eq kan öka kraftigt samtidigt som antal faktiska GPU:er växer mindre än proportionellt.
 
 ---
 
-## 3. Effekt- och kylberäkningar för nordiska förhållanden
+## 3. Från H100-eq till effektbehov
 
-### Nordisk fördel: Frikyla
+Modellen i [03-berakningsmodell.md](03-berakningsmodell.md) använder följande storleksordning för facility power:
 
-Sverige har en betydande konkurrensfördel för AI-datacenter:
+| År | Bas H100-eq | Antagen facility-kW per H100-eq | Facility MW |
+|----|-------------|----------------------------------|-------------|
+| 2026 | 900 | ~0,9 | ~0,8 |
+| 2027 | 2 000 | ~0,8 | ~1,6 |
+| 2028 | 4 000 | ~0,8 | ~3,2 |
+| 2029 | 8 000 | ~0,7 | ~5,6 |
+| 2030 | 12 000 | ~0,6 | ~7,2 |
+| 2031 | 16 000 | ~0,5 | ~8,0 |
+
+Två krafter verkar samtidigt:
+
+- nyare generationer drar **mer effekt per fysisk GPU**
+- men levererar också **mer kapacitet per GPU**, vilket sänker effekt per H100-eq
+
+Det är därför effekten per H100-eq sjunker över tid trots att enskilda acceleratorkort blir energitätare.
+
+---
+
+## 4. Datacenterdimensionering i 2029 års basscenario
+
+2029 års basscenario motsvarar ungefär:
+
+| Parameter | Rimlig storleksordning |
+|-----------|-------------------------|
+| Kapacitet | ~8 000 H100-eq |
+| Fysiska GPU:er | ~2 000–3 200 |
+| IT-last | ~4,5–5,0 MW |
+| Facility power | ~5,6 MW |
+| Redundans / provisionerad nivå | ~6,5–7,0 MW |
+| Fysisk yta | ~1 000–1 600 m² GPU-tät miljö |
+
+Detta är ett betydande men inte extremt datacenterprojekt. Flaskhalsen ligger sällan i elpriset i sig, utan i:
+
+- nätanslutning
+- platsval
+- kylarkitektur
+- genomförandehastighet
+
+---
+
+## 5. Kylning och nordiska fördelar
+
+Sverige har strukturella fördelar för AI-drift:
 
 | Parameter | Norden | Centraleuropa |
 |-----------|--------|---------------|
-| Medeltemperatur | ~6°C | ~11°C |
-| Frikyla möjlig (mån/år) | 9-11 | 4-7 |
-| PUE (Power Usage Effectiveness) | 1,10-1,25 | 1,30-1,60 |
-| Elcertifiering (fossilfri) | ~95%+ | ~40-60% |
-| Elpris (bas) | 0,30-0,80 SEK/kWh | 0,80-2,00 SEK/kWh |
+| PUE | ~1,10–1,25 | ~1,30–1,60 |
+| Frikyla | 9–11 månader/år | 4–7 månader/år |
+| Elpris | ~0,30–0,80 SEK/kWh | ~0,80–2,00 SEK/kWh |
+| Fossilfri el | ~95%+ | lägre andel |
 
-### Datacenter-dimensionering (2029 basscenario)
+För H100/B200/B300-klass är vätskekylning i praktiken standard:
 
-| Parameter | Värde |
-|-----------|-------|
-| IT-last (3 500 H100-eq) | ~2,5 MW |
-| PUE 1,20 | ×1,20 |
-| **Total facility power** | **~3,0 MW** |
-| Redundans (N+1) | ~3,5 MW provisionerat |
-| Fysisk yta (GPU-tät) | ~500-800 m² |
-| Vätskekyld andel (H100/B200) | ~60-80% (GPU-rack) |
-
-### Vätskekylning (liquid cooling)
-
-Moderna GPU-datacenter (H100+) kräver i allt högre grad vätskekylning:
-
-| Kylmetod | TDP-kapacitet per rack | Lämplig för |
-|----------|----------------------|-------------|
-| Traditionell luftkylning | <20 kW/rack | Äldre GPU:er, CPU:er |
-| Rear-door heat exchangers | 20-40 kW/rack | Blandade miljöer |
-| Direct-to-chip liquid cooling | 40-80 kW/rack | H100/B200, rekommenderat |
-| Immersion cooling | 80-150 kW/rack | Maximal täthet, nyare teknik |
-
-**Rekommendation**: Ny AI-infrastruktur bör planeras med direct-to-chip eller immersion cooling. Traditionell luftkylning är otillräcklig för B200-generationens ~1 kW per GPU.
-
-### Elnätsbegränsning — en praktisk constraint
-
-Analysens effektbehov (~3 MW bas 2029, ~5 MW 2031) är tekniskt hanterbart, men **nätanslutning** kan vara den hårdaste flaskhalsen i Mellansverige (elområde SE3). Ledtider för ny nätkapacitet är 2–5 år i belastade områden. Norra Sverige (SE1–SE2) har överskottskapacitet men längre avstånd till slutanvändare (latens för realtids-inference).
-
-**Implikation**: Val av datacenter-lokalisering styrs i praktiken av var nätkapacitet finns, inte av var behovet är störst. Nätanslutning bör planeras parallellt med GPU-upphandling — inte sekventiellt. Se [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md) för fördjupad diskussion.
+| Kylmetod | TDP per rack | Kommentar |
+|----------|--------------|-----------|
+| Luftkylning | <20 kW | Otillräckligt för tät AI-drift |
+| Rear-door heat exchanger | 20–40 kW | Fungerar i blandade miljöer |
+| Direct-to-chip liquid cooling | 40–80 kW | Mest realistiskt för moderna AI-kluster |
+| Immersion cooling | 80–150 kW | Hög täthet, mer specialiserat |
 
 ---
 
-## 4. Inference-beräkningar i detalj
+## 6. Inferenceantaganden
 
-### Tokens per sekund per GPU
+Inference-throughput varierar kraftigt med modellstorlek, kvantisering och batching. Modellen använder **~3 000 tokens/s per H100** som ett rimligt genomsnitt för blandade arbetslaster.
 
-Beror starkt på modellstorlek, kvantisering och batching:
+| Modelltyp | Rimlig throughput per H100 | Kommentar |
+|-----------|----------------------------|-----------|
+| 7B-modell, väloptimerad | mycket hög | långt över modellantagandet |
+| 70B-modell | medelhög | nära modellens mittantagande med batching/kvantisering |
+| 200B+ / MoE / reasoning-tung | lägre | driver behovet av overhead i Tier 1 |
 
-| Modell | Precision | Batch size | Tokens/s per H100 | Källa |
-|--------|-----------|------------|-------------------|-------|
-| Llama 2 7B | FP16 | 1 | ~1 500 | Artificial Analysis |
-| Llama 2 7B | INT8 | 32 | ~15 000 | vLLM benchmarks |
-| Llama 2 70B | FP16 | 1 | ~100 | Artificial Analysis |
-| Llama 2 70B | INT8 | 16 | ~2 000 | vLLM benchmarks |
-| Llama 3 405B | FP8 | 8 | ~300-500 | Uppskattning (8 GPU tensor parallel) |
-| Mixture-of-Experts (typ Mixtral) | FP16 | 16 | ~3 000-5 000 | MoE använder färre aktiva parametrar |
+Det viktiga är därför inte ett exakt benchmarkvärde, utan att modellen explicit lägger på:
 
-**I beräkningsmodellen**: Vi antar genomsnittligt ~3 000 tokens/s per H100 (A20), vilket motsvarar en blandning av modellstorlekar med batching och kvantisering. Detta är konservativt – effektiva inference-stacks kan ge mer.
-
-### GPU-minne och modellstorlek
-
-| Modellstorlek | FP16 VRAM | FP8 VRAM | Min H100 (80GB) |
-|---------------|-----------|----------|------------------|
-| 7B | 14 GB | 7 GB | 1 |
-| 13B | 26 GB | 13 GB | 1 |
-| 70B | 140 GB | 70 GB | 2 (tensor parallel) |
-| 200B | 400 GB | 200 GB | 3-4 (tensor parallel) |
-| 405B | 810 GB | 405 GB | 6-8 (tensor parallel) |
-
-### TTFT (Time to First Token) och UX
-
-| Scenario | Acceptabel TTFT | Kräver |
-|----------|-----------------|--------|
-| Interaktiv copilot | <1s | Dedikerade inference-servrar, låg queue |
-| Batch-bearbetning | <10s | Kan dela resurser |
-| Medicinsk bildanalys | <30s | Kan köras asynkront |
+- peak-faktor
+- redundans
+- modellstorleks-/reasoning-overhead
 
 ---
 
-## 5. Träningsberäkningar i detalj
+## 7. Träningsantaganden
 
-### Skalningslagar (Chinchilla-optimal)
+### Storleksordningar för träning
 
-Optimal träning enligt Chinchilla-skalningslagarna:
-- **Tokens ≈ 20 × parametrar** (minimum, ofta mer)
-- **Compute (FLOP) ≈ 6 × parametrar × tokens**
+| Modell | Rimlig H100-timmarsnivå | Funktion i analysen |
+|--------|--------------------------|---------------------|
+| 70B | ~0,5–2,0 miljoner | Nedre referens och defensivt träningsspår |
+| 200B | ~3–8 miljoner | Huvudantagande i 2029 års bas |
+| 400B+ | klart högre | Del av högscenariot |
 
-| Modellstorlek | Chinchilla-tokens | Compute (FLOP) | H100-timmar (FP16) |
-|---------------|-------------------|----------------|---------------------|
-| 7B | 140B | ~5,9 × 10²¹ | ~1 500 |
-| 70B | 1,4T | ~5,9 × 10²³ | ~150 000 |
-| 200B | 4T | ~4,8 × 10²⁴ | ~1 200 000 |
-| 405B | 8T | ~1,9 × 10²⁵ | ~5 000 000 |
+### RL och fortsatt utveckling
 
-*I praktiken tränas modeller ofta på betydligt mer data (Llama 3 70B: 15T tokens, dvs ~100x Chinchilla-optimal).*
+I huvudmodellen behandlas RL inte som ett bihang utan som en separat compute-post:
 
-### Svensk 70B-modell – detaljkalkyl
+- **RL-tuning per modell**: ~200 000–1 000 000 H100-h
+- **kontinuerlig RL för domänmodeller**: ~100 000–500 000 H100-h/år
 
-| Parameter | Konservativt | Ambitiöst |
-|-----------|-------------|-----------|
-| Parametrar | 70B | 70B |
-| Träningsdata | 500B tokens (svensk text) | 2T tokens (svensk + nordisk + multilingual) |
-| Compute (FLOP) | ~2,1 × 10²³ | ~8,4 × 10²³ |
-| H100-timmar | ~500 000 | ~2 000 000 |
-| Klusterstorlek | 512 H100 | 2 048 H100 |
-| Träningstid | ~40 dagar | ~40 dagar |
-| Compute-kostnad | ~$15-25M | ~$60-100M |
-| Kostnad inkl. data, personal, iterationer | ~$30-50M | ~$100-200M |
+Detta är viktigt eftersom den strategiska skillnaden mellan ett mindre och ett större program ofta ligger i den återkommande modellen för förbättring, inte bara i första träningskörningen.
 
 ---
 
-## 6. Ordlista för icke-tekniska läsare
+## 8. Varför 70B inte räcker som huvudmålbild
+
+En 70B-modell är fortfarande användbar som referens och nedre ambitionsnivå. Men som huvudmålbild för 2029 blir den svag av tre skäl:
+
+1. den ger sämre långsiktig konkurrenskraft mot större öppna och slutna modeller
+2. den lämnar mindre utrymme för svenska domänanpassningar i känsliga miljöer
+3. den riskerar att bli en symbolisk snarare än strategisk investering
+
+Därför använder huvudmodellen **200B+** som bas för suverän modellförmåga.
+
+---
+
+## 9. Ordlista
 
 | Term | Förklaring |
 |------|-----------|
-| **GPU** (Graphics Processing Unit) | Processor optimerad för parallella beräkningar, ursprungligen för grafik men nu central för AI |
-| **H100** | NVIDIA:s datacenter-GPU från 2023, den nuvarande standardenheten för AI-beräkningar |
-| **H100-ekvivalent (H100-eq)** | Måttenhet: en H100-ekvivalent = beräkningskraften hos en NVIDIA H100 GPU. Framtida, effektivare GPU:er räknas om till denna enhet |
-| **Inference** | Att köra en redan tränad AI-modell för att generera svar. Varje gång du ställer en fråga till ChatGPT sker inference |
-| **Träning** | Att skapa en AI-modell genom att mata den med stora mängder data. Kräver enormt mycket compute under en begränsad period |
-| **Finjustering** (fine-tuning) | Att anpassa en befintlig modell till ett specifikt användningsområde, t.ex. svenska eller juridik. Kräver mindre compute än full träning |
-| **LLM** (Large Language Model) | Stor språkmodell – den typ av AI som driver ChatGPT, Claude, etc. |
-| **Token** | En textenhet som AI:n bearbetar, ungefär ¾ av ett ord. "Hej, hur mår du?" ≈ 6 tokens |
-| **"Smarta" tokens** | I policydokument [08-strategi.md](../08-strategi.md): output från avancerad inference – den kapabilitet som stora språk- och multimodella modeller levererar per token (beslutsstöd, generering, resonemang). Jfr **inference** och **token** ovan. |
-| **Frontier-modell** | En AI-modell i teknikens absoluta framkant (GPT-4, Claude, Gemini). Kostar $100M-$1B+ att träna |
-| **Suverän AI** | AI-infrastruktur och modeller som kontrolleras nationellt, för att undvika beroende av utländska aktörer |
-| **Teknisk suveränitet** | (EU-policy) Förmåga att i kritiska led av digital infrastruktur – inkl. moln, nät och beräkningskapacitet – inte vara utlämnad till enskilda tredjelandsleverantörer. Se [resources/links.md](../resources/links.md) (**L3**). |
-| **Strategisk autonomi** | (EU-policy) Minska riskfyllda beroenden i kritiska teknik- och försörjningskedjor; relevant för AI, halvledare och data. Överlappar med **teknisk suveränitet** men bredare (handel, industri, säkerhet). |
-| **CLOUD Act** | US-lag (2018) som under vissa förutsättningar ger amerikanska myndigheter rätt att kräva ut data från vissa leverantörer oavsett var data lagras; viktig för avvägningen vid molntjänster och GDPR. Se [resources/links.md](../resources/links.md) (**L4**). |
-| **PUE** (Power Usage Effectiveness) | Mått på datacenter-effektivitet: totalt effektuttag / IT-utrustningens effekt. PUE 1,0 = perfekt. PUE 1,2 = 20% overhead för kylning etc. |
-| **On-prem** (on-premises) | Utrustning som driftas i egna eller hyrda lokaler (jämfört med molntjänster) |
-| **Moln** (cloud) | Att hyra beräkningskapacitet från leverantörer som AWS, Azure eller GCP |
-| **FLOP** (Floating Point Operation) | En enskild beräkning. Används för att mäta total compute. Modern AI mäts i exaFLOP (10¹⁸) |
-| **VRAM** | Minnet på en GPU. Begränsar hur stora modeller som kan köras på en enskild GPU |
-| **Batch-inference** | Att bearbeta flera förfrågningar samtidigt för effektivare GPU-användning |
-| **MoE** (Mixture-of-Experts) | Modellarkitektur där bara en del av modellen aktiveras per fråga, vilket minskar compute-behovet |
-| **RAG** (Retrieval-Augmented Generation) | Teknik där AI:n söker i en kunskapsbas innan den svarar, för att ge mer precisa svar baserat på organisationens dokument |
-| **LOU** | Lagen om offentlig upphandling – reglerar hur offentlig sektor köper tjänster och produkter |
-| **S-kurva** | Adoptionsmönster där nya tekniker sprids långsamt först, sedan snabbt, och slutligen avtar. Typisk form för teknikadoption |
-| **MW** (megawatt) | Effektenhet. 1 MW = 1 000 kilowatt. Ett modernt AI-datacenter drar 5-50 MW |
-| **MSEK** | Miljoner svenska kronor |
+| **GPU** | Processor optimerad för parallella beräkningar, central för AI |
+| **H100-ekvivalent** | Kapacitetsmått som gör olika GPU-generationer jämförbara |
+| **Inference** | Att köra en tränad modell för att generera svar |
+| **Träning** | Att skapa eller vidareutveckla en modell på stora datamängder |
+| **Fine-tuning** | Anpassning av befintlig modell till ett specifikt användningsområde |
+| **RL** | Reinforcement learning; används för att förbättra modellbeteende efter grundträning |
+| **MoE** | Mixture-of-Experts; modellarkitektur där bara delar av modellen aktiveras per fråga |
+| **PUE** | Power Usage Effectiveness; mått på datacenters energieffektivitet |
+| **On-prem** | Drift i egen eller reserverad fysisk miljö |
+| **Moln** | Hyrd kapacitet från extern leverantör |
+| **CLOUD Act** | Amerikansk lag som påverkar juridisk risk vid molntjänster |
+
+---
+
+## Slutsats
+
+Den tekniska bilagan ändrar inte slutsatsen i huvudanalysen. Den visar varför ett basscenario på **~8 000 H100-ekvivalenter 2029** är tekniskt begripligt, översättbart till fysisk infrastruktur och förenligt med en hybridstrategi där både drift, träning och suveränitet vägs in.

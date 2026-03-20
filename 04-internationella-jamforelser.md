@@ -1,199 +1,68 @@
 # 04 – Internationella jämförelser
 
-Länderprofiler med AI-compute-investeringar, strategi och skalningsfaktorer till Sverige.
+Internationella jämförelser används som **topp-ned-validering**. De svarar inte på exakt hur mycket compute Sverige bör bygga, men de visar vilken storleksordning andra länder redan rör sig mot och vad som framstår som orimligt lågt.
 
 ---
 
-## Sammanfattande tabell
+## Huvudslutsats
 
-| Land | Befolkning (M) | Faktor vs SE | Annonserad AI-compute-investering | Skalat till SE (H100-eq) | Monad |
-|------|----------------|--------------|----------------------------------|--------------------------|-------|
-| **Storbritannien** | 67 | 6,4x | £1-2,5 mdr | 2 000-5 000 | Offentlig strategi med tydlig compute-komponent |
-| **Frankrike** | 68 | 6,5x | €1,5 mdr (France 2030) | 2 000-4 000 | Jean Zay-superdator, stark statlig styrning |
-| **Tyskland** | 84 | 8x | €3+ mdr (blandade program) | 1 500-3 000 | Fragmenterat, delstat-struktur |
-| **Finland** | 5,5 | 0,53x | LUMI (~€200M GPU-partition) | 3 000-5 000 | EuroHPC-värd, ambitiöst relativt BNP |
-| **Danmark** | 5,9 | 0,57x | Gefion (1 528 H100) + nationell strategi | 2 500-4 000 | Privat-offentligt partnerskap (NVIDIA-Novo Nordisk) |
-| **Estland** | 1,3 | 0,13x | Begränsad egen compute, moln-first | N/A (annat angreppssätt) | Digital mognad som enabler |
-| **Nederländerna** | 17,5 | 1,7x | Snellius + SURF | 2 000-3 500 | Forskningsfokus, pragmatisk approach |
+Skalat till svensk offentlig sektor pekar internationella jämförelser mot ett **konservativt golv på cirka 2 000–5 000 H100-ekvivalenter 2029**. Det ligger under huvudscenariot i [03-berakningsmodell.md](03-berakningsmodell.md), vilket är väntat: många offentliga investeringsplaner är skrivna före dagens agentiska användningsmönster och få fångar en mer ambitiös suverän träningsagenda.
+
+Det internationella spåret används därför som:
+
+- **golv** för vad som framstår som rimligt i offentlig sektor
+- **sanity check** mot att modellen inte har tappat verklighetskontakt
+- **jämförelsepunkt** för om Sverige väljer att följa, matcha eller överträffa grannländernas ambition
 
 ---
 
-## Detaljerade länderprofiler
+## Jämförande tabell
+
+| Land / program | Officiell referens | Vad som är känt | Skalat till Sverige | Tolkning för svensk offentlig sektor |
+|----------------|--------------------|-----------------|---------------------|--------------------------------------|
+| **Storbritannien** | AI Opportunities Action Plan + Isambard-AI | Regeringen talar om minst 20x sovereign compute till 2030; Isambard-AI är en konkret offentlig resurs | ~3 000–6 000 H100-eq | Visar att central statlig compute-kapacitet kan byggas snabbt när politisk prioritet finns |
+| **Finland** | LUMI / EuroHPC | Finland har tidig tillgång till mycket större forskningscompute än Sverige | ~2 000–4 000 H100-eq för offentlig sektor | Ger ett nordiskt ankare men fångar främst forskning, inte hela offentlig sektor |
+| **Danmark** | Gefion / DCAI | Gefion ger Danmark en konkret nationell AI-infrastruktur med suveränitetsargument | ~2 500–4 000 H100-eq | Stark jämförelsepunkt för nordisk ambitionsnivå och offentlig-privat modell |
+| **Frankrike** | France 2030 / Jean Zay / statlig AI-linje | Hög statlig styrning, tydligt suveränitetsmotiv | ~2 000–4 000 H100-eq | Viktig som jämförelse för länder som kopplar AI till strategisk autonomi |
+| **Tyskland** | Federala och delstatliga AI-satsningar | Stor total volym men mer fragmenterad modell | ~1 500–3 000 H100-eq | Visar att större ekonomi inte automatiskt ger snabb offentlig adoption |
+| **EU AI Factories** | EuroHPC AI Factories | EU bygger gemensam AI-infrastruktur med AI-optimiserade resurser | ~1 500–5 000 H100-eq | Viktig lägstanivå för vad ett europeiskt offentligt ambitionstak kan se ut |
+
+---
+
+## Fördjupning per jämförelsespår
 
 ### Storbritannien
 
-**Annonserad investering**: AI Opportunities Action Plan (jan 2025) – £1-2,5 mdr i offentlig AI-infrastruktur. Isambard-AI (Bristol): 5 448 H100, operationell. Planerad expansion.
-
-**Offentlig AI-strategi**:
-- Central AI-funktion i Cabinet Office (DSIT)
-- Mandatory AI-adoption targets för offentlig förvaltning
-- AI Safety Institute – fokus på utvärdering och säkerhet
-- National AI Research Resource för akademi och offentlig sektor
-
-**Skalningsfaktor**: UK har ~6,4x Sveriges befolkning och ~4,5x BNP (PPP-justerat).
-- £2,5 mdr → skalat med befolkning = ~400M → ~3 000-5 000 H100-eq
-- Men UK har mer centraliserad förvaltning = snabbare adoption
-- **Justerat estimat för Sverige: 2 000-4 000 H100-eq (2029)**
-
-**Nyckellärdomar**:
-- Central samordning accelererar (Sverige: DIGG/AI-kommissionen har liknande roll)
-- Mandatory targets driver adoption
-- Kombinerar on-prem superdatorer med molnramavtal
-
----
-
-### Frankrike
-
-**Annonserad investering**: €1,5 mdr genom France 2030 AI-strategi. Jean Zay V100/A100-kluster (IDRIS) uppgraderas. Ny investering i AI-compute post-2024.
-
-**Offentlig AI-strategi**:
-- Centralt styrd via SGPI (Secrétariat général pour l'investissement)
-- Mistral AI som nationell champion (privat men strategiskt stödd)
-- Fokus på suverän AI – franska/europeiska modeller
-- Albert: AI-assistent för offentlig förvaltning
-
-**Skalningsfaktor**: 6,5x Sveriges befolkning.
-- €1,5 mdr → skalat = ~€230M → ~3 000-4 000 H100-eq
-- Frankrike har starkare tradition av statlig industriell styrning
-- **Justerat estimat för Sverige: 2 000-3 500 H100-eq (2029)**
-
-**Nyckellärdomar**:
-- Suveränitetsmotivet driver investeringar (relevant för Sverige)
-- Albert-projektet visar hur en central offentlig AI-tjänst kan se ut
-- Frankrike investerar aktivt i modellträning, inte bara inference
-
----
-
-### Tyskland
-
-**Annonserad investering**: €3+ mdr i blandade AI-program (federal + delstat). Jülich Supercomputing Centre uppgraderar. NAKI-centra.
-
-**Offentlig AI-strategi**:
-- Fragmenterat: 16 delstater + federal nivå
-- Fokus på Mittelstand och industri-AI snarare än offentlig förvaltning
-- Deutsche KI-Strategie (2020, uppdaterad)
-- Långsammare offentlig adoption pga dataskyddkultur (DSGVO/GDPR-konservativt)
-
-**Skalningsfaktor**: 8x Sveriges befolkning.
-- €3 mdr → skalat = ~€375M → ~4 000-6 000 H100-eq
-- Men mycket av Tysklands investering är industriinriktad
-- Offentlig sektors andel: uppskattningsvis 20-30%
-- **Justerat estimat för Sverige: 1 500-3 000 H100-eq (2029)**
-
-**Nyckellärdomar**:
-- Fragmentering sänker tempot (Sverige: mer centraliserat, men 290 kommuner)
-- Dataskyddskultur som broms (liknande tendens i Sverige)
-- Industriell AI-styrka kompenserar inte automatiskt offentlig adoption
-
----
+Storbritannien är den starkaste jämförelsen för offentlig strategi. Regeringens svar på AI Opportunities Action Plan talar om att bygga ut sovereign compute kraftigt till 2030, samtidigt som Isambard-AI visar att det går att leverera konkret offentlig kapacitet på kort tid. För Sverige innebär det att ett scenario under några tusen H100-eq 2029 ser defensivt ut om målet är att hålla jämna steg.
 
 ### Finland
 
-**Annonserad investering**: LUMI:s GPU-partition (~5 000 H100-eq), nationellt AI-program, SitraFund-initiativ.
-
-**Offentlig AI-strategi**:
-- AuroraAI – nationellt program för AI-driven offentlig service
-- LUMI som EuroHPC-resurs (delad med EU, men Finland har prioriterad access)
-- Stark koppling forskning-offentlig sektor via VTT, Aalto
-- Digitalt föregångsland (e-tjänster, kanta.fi för hälsodata)
-
-**Skalningsfaktor**: 0,53x Sveriges befolkning.
-- LUMI GPU-partition ~5 000 H100-eq × (1/0,53) = ~9 400 skalat
-- Men: LUMI betjänar hela EuroHPC, inte bara Finland
-- Rensat för Finlands offentliga sektor: ~1 000-2 000 H100-eq
-- **Proportionellt skalat till Sverige: 2 000-4 000 H100-eq (2029)**
-
-**Nyckellärdomar**:
-- Att vara EuroHPC-värd ger strategiskt övertag (Sverige: Arrhenius)
-- AuroraAI visar ambitiös offentlig AI-tillämpning
-- Stark digital infrastruktur som förutsättning (Sverige: jämförbart)
-
----
+Finland visar vad tidig tillgång till EuroHPC-resurser och nationell samordning kan betyda. LUMI är inte en ren offentlig-sektorresurs, men den visar att den nordiska referensramen för avancerad AI-compute redan ligger betydligt högre än Sveriges faktiska tillgång i dag.
 
 ### Danmark
 
-**Annonserad investering**: Gefion – 1 528 NVIDIA H100 GPU:er. Nationell AI-strategi via Digitaliseringsstyrelsen. AAAI (Alliance for Applied AI).
+Gefion är särskilt relevant eftersom Danmark, liksom Sverige, är ett litet rikt land med hög digital mognad och starka life-science-intressen. Den danska modellen visar också att offentlig-privat samverkan är en realistisk väg till snabb uppskalning.
 
-**Offentlig AI-strategi**:
-- Gefion: offentlig-privat partnerskap (NVIDIA + Novo Nordisk Foundation + Export and Investment Fund of Denmark)
-- Fokus på life science och offentlig förvaltning
-- Digitaliseringsstyrelsen samordnar
-- Mindre befolkning = smalare fokus men snabbare beslut
+### Frankrike och Tyskland
 
-**Skalningsfaktor**: 0,57x Sveriges befolkning.
-- Gefion (1 528 H100) × (1/0,57) = ~2 700 skalat till Sverige
-- Nationell strategi totalt: ~2 500-4 000 H100-eq skalat
-- **Estimat för Sverige: 2 500-4 000 H100-eq (2029)**
-
-**Nyckellärdomar**:
-- Offentlig-privat partnerskap som modell (Gefion-modellen)
-- NVIDIA som partner snarare än leverantör
-- Life science som fokusdomän (relevant: Sverige har liknande styrka)
+Frankrike är relevant som exempel på ett land där suveränitetsmotiv tydligt driver investeringar. Tyskland är relevant av motsatt skäl: även stora budgetar ger inte alltid snabb offentlig effekt när styrningen är fragmenterad. Tillsammans visar de att styrning och målbild betyder nästan lika mycket som pengar.
 
 ---
 
-### Estland
+## Vad jämförelserna inte fångar
 
-**Annonserad investering**: Begränsad egen AI-compute. Fokus på molntjänster och partnerskap. "Kratt"-strategi.
+Internationella jämförelser underskattar sannolikt den del av efterfrågan som kommer från:
 
-**Offentlig AI-strategi**:
-- 50+ "Kratt" (AI-assistenter) i offentlig förvaltning – redan i produktion
-- Moln-first approach – Estland har inte råd med stora GPU-kluster
-- Bürokratt: AI-baserad kundtjänst för offentlig sektor
-- e-Estonia som världsledande digital förvaltning
+- **agentiska arbetsflöden** i stor skala
+- **bakgrundsagenter** och automatiserade processer
+- **suverän träning** och kontinuerlig RL för känsliga domäner
 
-**Skalningsfaktor**: 0,13x Sveriges befolkning. Inte meningsfullt att skala direkt.
-
-**Nyckellärdomar**:
-- Estland visar att moln-first kan fungera för små länder utan suveränitetskrav
-- Men: Estland accepterar beroende av utländska molntjänster som Sverige kanske inte bör
-- "Kratt"-programmet visar snabb iterativ deployment – inspirerande process-modell
-- Pragmatism framför perfektion
+Det är därför topp-ned-spåret i [03-berakningsmodell.md](03-berakningsmodell.md) hamnar lägre än botten-upp- och storbolagsspåren. De flesta offentliga planerna är skrivna för en värld där AI främst betyder copilots, inte agentisk drift.
 
 ---
 
-### Nederländerna
+## Slutsats
 
-**Annonserad investering**: Snellius-superdator (SURF), nationella AI-initiativ via NLAIC.
+Internationell praxis talar inte för ett svenskt behov på bara några hundra GPU:er. Den talar för att Sverige minst behöver ligga i intervallet **2 000–5 000 H100-ekvivalenter** om landet vill vara i linje med jämförbara offentliga satsningar.
 
-**Offentlig AI-strategi**:
-- SURF som nationell forsknings- och utbildnings-IT-organisation
-- NLAIC (Nederlandse AI Coalitie) samordnar
-- Pragmatisk approach: moln + on-prem hybrid
-- Europeisk snarare än nationell suveränitetsambition
-
-**Skalningsfaktor**: 1,7x Sveriges befolkning.
-- Nederländernas AI-compute-investering: uppskattningsvis €200-400M
-- Skalat till Sverige: €120-235M → ~2 000-3 500 H100-eq
-- **Estimat för Sverige: 2 000-3 500 H100-eq (2029)**
-
-**Nyckellärdomar**:
-- SURF-modellen intressant: gemensam IT-infrastruktur för offentlig sektor
-- Pragmatisk hybridstrategi (relevant för svensk kontext)
-- Mindre fokus på suveränitet, mer på nytta
-
----
-
-## Syntes: Vad säger jämförelserna?
-
-### Konvergensintervall (2029, skalat till Sverige):
-
-Snittet av alla länder, rensat för offentlig sektor: **~2 000-4 000 H100-eq**
-
-### Mönster:
-1. **Alla jämförda länder investerar aktivt** – Sverige riskerar att halka efter om ingen satsning görs
-2. **Suveränitets-motivet driver investeringar** i Frankrike, Finland och Danmark – detta resonerar i svensk kontext
-3. **Offentlig-privata partnerskap** är normen (Danmark, Nederländerna) – ren statlig finansiering räcker sällan
-4. **Nordiska grannar** (Finland, Danmark) investerar proportionellt mer per capita än Sverige gör idag
-5. **Digital mognad** (hög i Sverige) är en nödvändig men inte tillräcklig förutsättning – det krävs dedikerad AI-infrastruktur
-
-### Slutsats
-
-Skalningsjämförelserna konvergerar kring **~2 000–4 000 H100-eq** för 2029. Det ligger nära basscenariot (~3 500, se [03](03-berakningsmodell.md)) men visar att bas är ett **försiktigt mittläge**: flera jämförbara länder satsar så att skalat till Sverige hamnar de i intervallets övre del, närmare högscenariot (~8 000). Internationell praxis ger stöd åt att **inte** nöja sig med det lägsta intervallet om målet är att följa grannars ambitionsnivå.
-
-Samma **suveränitetsmotiv** (teknisk suveränitet, leverantörsberoende, data och jurisdiktion) driver investeringar i Frankrike, Finland och Danmark — se [08-strategi.md](08-strategi.md) för den strategiska ramen.
-
-### Skalningsmetodik – begränsningar:
-- Ren befolkningsskalning underskattar länder med starka forskningskluster
-- BNP-skalning överskattar för länder med stor privat sektor
-- Bästa proxy: antal offentliganställda × digital mognad × politisk ambition
+Huvudscenariot på **~8 000 H100-ekvivalenter 2029** ska därför inte läsas som ett avsteg från internationella jämförelser, utan som ett medvetet steg **ovanför** dagens publicerade offentliga planer för att fånga agentisk användning och en mer substantiell suverän modellförmåga.
