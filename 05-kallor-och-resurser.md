@@ -224,3 +224,9 @@ Alla externa källor som refereras i analysen. Varje post anger: titel, URL, vil
 - **URL**: https://www.regeringen.se/
 - **Data**: Kommissionens slutsatser om AI-infrastruktur, compute-behov, rekommendationer
 - **Användning**: Central referens – den viktigaste svenska policyrapporten om AI-behov
+
+### 7.6 Draghi-rapporten om EU:s konkurrenskraft
+- **Titel**: The future of European competitiveness (Part A / Part B) – Mario Draghi, särskild rådgivare
+- **URL**: https://commission.europa.eu/topics/strengthening-european-competitiveness/eu-competitiveness-looking-ahead_en
+- **Data**: Innovations- och investeringsgap EU–USA/Kina, rekommenderad skala på årliga satsningar, digital infrastruktur och industristruktur
+- **Användning**: Internationell policykontext för varför compute- och AI-kapacitet är strategisk (jfr [08-filosofi.md](08-filosofi.md), [resources/links.md](resources/links.md) **L1**)

@@ -33,6 +33,7 @@ Dubbelt lager:
 05-kallor-och-resurser.md         # Källregister (alla länkar, rapporter, datakällor)
 06-sammanfattning.md              # Sammanfattning (slutleverabel)
 07-teknisk-bilaga.md              # Teknisk bilaga
+08-filosofi.md                    # Konkurrenskraft, beroende, ambition (strategisk ram)
 ```
 
 ### Kvalitetskontroll
