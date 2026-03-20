@@ -2,17 +2,17 @@
 
 ## Sammanfattning för beslutsfattare
 
-Sveriges offentliga sektor behöver planera för **cirka 8 000 H100-ekvivalenter 2029** om målet är bred AI-användning, meningsfull nationell modellförmåga och rimlig strategisk handlingsfrihet. Ett lägre spår på **~3 000 H100-eq** är möjligt, men lämnar Sverige mer beroende av externa leverantörer och med svagare kapacitet för känsliga domäner. Ett högre spår på **~18 000 H100-eq** motsvarar en tydligt mer offensiv ambitionsnivå.
+Sveriges offentliga sektor behöver planera för **cirka 9 000 H100-ekvivalenter 2029** om målet är bred AI-användning, meningsfull nationell modellförmåga och rimlig strategisk handlingsfrihet. Ett lägre spår på **~3 000 H100-eq** är möjligt, men lämnar Sverige mer beroende av externa leverantörer och med svagare kapacitet för känsliga domäner. Ett högre spår på **~20 000 H100-eq** motsvarar en tydligt mer offensiv ambitionsnivå.
 
 Tre oberoende spår ligger bakom slutsatsen:
 
 | Spår | 2029-nivå | Vad spåret fångar |
 |------|-----------|-------------------|
-| Botten-upp | ~8 200 H100-eq | Användningsfall, adoption, agentisk belastning och suverän träning |
+| Botten-upp | ~8 800 H100-eq | Användningsfall, adoption, agentisk belastning och suverän träning |
 | Topp-ned | ~4 100 H100-eq | Dagens offentliga investeringsplaner och internationell praxis |
 | Storbolagstriangulering | ~7 600 H100-eq | Vad motsvarande modell- och driftförmåga kostar i global marknad |
 
-Två efterfrågebaserade spår konvergerar alltså nära **8 000**, medan topp-ned-spåret fungerar som ett konservativt golv.
+Två efterfrågebaserade spår konvergerar alltså nära **9 000**, medan topp-ned-spåret fungerar som ett konservativt golv.
 
 ---
 
@@ -28,7 +28,7 @@ Om Sverige vill kunna träna eller vidareutveckla modeller för känsliga data, 
 
 ### 3. Det som ser dyrt ut i svensk budgetlogik är hanterbart i strategisk kontext
 
-Huvudscenariot motsvarar ungefär **~1 750 MSEK per år i compute** och **~5,6 MW** i facility power 2029. Det är betydande men inte extraordinärt i internationell jämförelse. Den stora risken är inte att kapaciteten är omöjlig att finansiera, utan att Sverige agerar för sent i en marknad med långa ledtider.
+Huvudscenariot motsvarar ungefär **~2 000 MSEK per år i compute** och **~6,3 MW** i facility power 2029. Det är betydande men inte extraordinärt i internationell jämförelse. Den stora risken är inte att kapaciteten är omöjlig att finansiera, utan att Sverige agerar för sent i en marknad med långa ledtider.
 
 ---
 
@@ -37,17 +37,17 @@ Huvudscenariot motsvarar ungefär **~1 750 MSEK per år i compute** och **~5,6 M
 | År | Låg | Bas | Hög | Enhet |
 |----|-----|-----|-----|-------|
 | 2026 | 400 | 900 | 2 000 | H100-ekvivalenter |
-| 2027 | 800 | 2 000 | 4 500 | H100-ekvivalenter |
-| 2028 | 1 600 | 4 000 | 9 000 | H100-ekvivalenter |
-| 2029 | **3 000** | **8 000** | **18 000** | H100-ekvivalenter |
-| 2030 | 5 000 | 12 000 | 28 000 | H100-ekvivalenter |
-| 2031 | 7 000 | 16 000 | 40 000 | H100-ekvivalenter |
+| 2027 | 900 | 2 200 | 5 000 | H100-ekvivalenter |
+| 2028 | 1 800 | 4 500 | 9 500 | H100-ekvivalenter |
+| 2029 | **3 000** | **9 000** | **20 000** | H100-ekvivalenter |
+| 2030 | 5 500 | 13 000 | 30 000 | H100-ekvivalenter |
+| 2031 | 8 000 | 18 000 | 42 000 | H100-ekvivalenter |
 
 | Mått (basscenario 2029) | Värde |
 |-------------------------|-------|
-| Beräkningskapacitet | ~8 000 H100-ekvivalenter |
-| Årskostnad (compute) | ~1 750 MSEK |
-| Effektbehov | ~5,6 MW |
+| Beräkningskapacitet | ~9 000 H100-ekvivalenter |
+| Årskostnad (compute) | ~2 000 MSEK |
+| Effektbehov | ~6,3 MW |
 | Strategisk innebörd | Bred AI-användning + meningsfull nationell modellförmåga |
 
 ---
@@ -87,11 +87,11 @@ Compute utan styrning ger låg effekt. Beslutet bör därför paketeras tillsamm
 
 ## Vad 12-dokumentet betyder
 
-[12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) är ett medvetet stresstest av om även **~8 000 H100-eq** kan vara för lågt. Det dokumentet är viktigt, men det är inte huvudscenariot. Huvudlinjen i detta repo är att:
+[12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) är ett medvetet stresstest av om även **~9 000 H100-eq** kan vara för lågt. Det dokumentet är viktigt, men det är inte huvudscenariot. Huvudlinjen i detta repo är att:
 
 - **~3 000 H100-eq** är ett defensivt minimum
-- **~8 000 H100-eq** är ett rimligt huvudscenario
-- **~18 000 H100-eq** är en tydligt mer offensiv ambition
+- **~9 000 H100-eq** är ett rimligt huvudscenario
+- **~20 000 H100-eq** är en tydligt mer offensiv ambition
 
 ---
 

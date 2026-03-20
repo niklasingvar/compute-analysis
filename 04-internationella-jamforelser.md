@@ -65,4 +65,4 @@ Det är därför topp-ned-spåret i [03-berakningsmodell.md](03-berakningsmodell
 
 Internationell praxis talar inte för ett svenskt behov på bara några hundra GPU:er. Den talar för att Sverige minst behöver ligga i intervallet **2 000–5 000 H100-ekvivalenter** om landet vill vara i linje med jämförbara offentliga satsningar.
 
-Huvudscenariot på **~8 000 H100-ekvivalenter 2029** ska därför inte läsas som ett avsteg från internationella jämförelser, utan som ett medvetet steg **ovanför** dagens publicerade offentliga planer för att fånga agentisk användning och en mer substantiell suverän modellförmåga.
+Huvudscenariot på **~9 000 H100-ekvivalenter 2029** ska därför inte läsas som ett avsteg från internationella jämförelser, utan som ett medvetet steg **ovanför** dagens publicerade offentliga planer för att fånga agentisk användning och en mer substantiell suverän modellförmåga.

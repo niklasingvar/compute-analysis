@@ -48,7 +48,7 @@ Framväxten av öppna resonemangsmodeller (t.ex. DeepSeek-R1, Qwen, Llama-basera
 
 ## Tre nivåer av ambition: "tillräckligt" räcker inte
 
-Tre oberoende analysmetoder pekar sammantaget mot att svensk offentlig sektor inte klarar sig på symbolisk AI-kapacitet. I den kvantitativa modellen ligger **låg** kring ~3 000 H100-ekvivalenter 2029, **bas** kring ~8 000 och **hög** kring ~18 000. Kärnfrågan är därför inte _om_ investering behövs utan **vilken ambitionsnivå** Sverige väljer.
+Tre oberoende analysmetoder pekar sammantaget mot att svensk offentlig sektor inte klarar sig på symbolisk AI-kapacitet. I den kvantitativa modellen ligger **låg** kring ~3 000 H100-ekvivalenter 2029, **bas** kring ~9 000 och **hög** kring ~20 000. Kärnfrågan är därför inte _om_ investering behövs utan **vilken ambitionsnivå** Sverige väljer.
 
 Att dimensionera enbart efter beräkningsvolym — _se till att kapaciteten räcker_ — är nödvändigt men otillräckligt.
 
@@ -67,8 +67,8 @@ Ett ambitionsscenario innebär därför att målet inte bara är _kapacitet i gi
 I den kvantitativa modellen (03–06) motsvarar detta en tydlig koppling:
 
 - **Låg** (~3 000 H100-ekvivalenter 2029) är ett defensivt minimum som säkrar viss drift och begränsad nationell förmåga.
-- **Bas** (~8 000 H100-ekvivalenter 2029) är nivån där offentlig sektor kan kombinera bred användning med meningsfull suverän modellförmåga.
-- **Hög** (~18 000 H100-ekvivalenter 2029) ligger närmare ett tydligt ambitionsscenario där Sverige väljer starkare forskningsmiljö, högre agentisk användning och större strategisk handlingsfrihet.
+- **Bas** (~9 000 H100-ekvivalenter 2029) är nivån där offentlig sektor kan kombinera bred användning med meningsfull suverän modellförmåga.
+- **Hög** (~20 000 H100-ekvivalenter 2029) ligger närmare ett tydligt ambitionsscenario där Sverige väljer starkare forskningsmiljö, högre agentisk användning och större strategisk handlingsfrihet.
 
 Exakta intervall och antaganden återfinns i 02–03 och 06.
 

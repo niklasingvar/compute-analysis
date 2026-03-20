@@ -28,11 +28,11 @@ H100-eq mäter alltså **kapacitet**, inte faktiskt antal köpta GPU:er.
 | År | Basbehov (H100-eq) | Trolig hårdvara | H100-eq per fysisk GPU | Fysiska GPU:er |
 |----|--------------------|-----------------|------------------------|----------------|
 | 2026 | 900 | H100/H200 | 1,0–1,3 | ~700–900 |
-| 2027 | 2 000 | H200/B200 | 1,3–2,5 | ~800–1 500 |
-| 2028 | 4 000 | B200 | 2,0–3,0 | ~1 300–2 000 |
-| 2029 | 8 000 | B200/B300 | 2,5–4,0 | ~2 000–3 200 |
-| 2030 | 12 000 | B300/post-Blackwell | 4,0–6,0 | ~2 000–3 000 |
-| 2031 | 16 000 | post-Blackwell | 5,0–8,0 | ~2 000–3 200 |
+| 2027 | 2 200 | H200/B200 | 1,3–2,5 | ~900–1 700 |
+| 2028 | 4 500 | B200 | 2,0–3,0 | ~1 500–2 250 |
+| 2029 | 9 000 | B200/B300 | 2,5–4,0 | ~2 250–3 600 |
+| 2030 | 13 000 | B300/post-Blackwell | 4,0–6,0 | ~2 200–3 250 |
+| 2031 | 18 000 | post-Blackwell | 5,0–8,0 | ~2 250–3 600 |
 
 Detta förklarar varför behovet i H100-eq kan öka kraftigt samtidigt som antal faktiska GPU:er växer mindre än proportionellt.
 
@@ -45,11 +45,11 @@ Modellen i [03-berakningsmodell.md](03-berakningsmodell.md) använder följande 
 | År | Bas H100-eq | Antagen facility-kW per H100-eq | Facility MW |
 |----|-------------|----------------------------------|-------------|
 | 2026 | 900 | ~0,9 | ~0,8 |
-| 2027 | 2 000 | ~0,8 | ~1,6 |
-| 2028 | 4 000 | ~0,8 | ~3,2 |
-| 2029 | 8 000 | ~0,7 | ~5,6 |
-| 2030 | 12 000 | ~0,6 | ~7,2 |
-| 2031 | 16 000 | ~0,5 | ~8,0 |
+| 2027 | 2 200 | ~0,8 | ~1,8 |
+| 2028 | 4 500 | ~0,8 | ~3,6 |
+| 2029 | 9 000 | ~0,7 | ~6,3 |
+| 2030 | 13 000 | ~0,6 | ~7,8 |
+| 2031 | 18 000 | ~0,5 | ~9,0 |
 
 Två krafter verkar samtidigt:
 
@@ -66,11 +66,11 @@ Det är därför effekten per H100-eq sjunker över tid trots att enskilda accel
 
 | Parameter | Rimlig storleksordning |
 |-----------|-------------------------|
-| Kapacitet | ~8 000 H100-eq |
-| Fysiska GPU:er | ~2 000–3 200 |
-| IT-last | ~4,5–5,0 MW |
-| Facility power | ~5,6 MW |
-| Redundans / provisionerad nivå | ~6,5–7,0 MW |
+| Kapacitet | ~9 000 H100-eq |
+| Fysiska GPU:er | ~2 250–3 600 |
+| IT-last | ~5,0–5,7 MW |
+| Facility power | ~6,3 MW |
+| Redundans / provisionerad nivå | ~7,3–7,9 MW |
 | Fysisk yta | ~1 000–1 600 m² GPU-tät miljö |
 
 Detta är ett betydande men inte extremt datacenterprojekt. Flaskhalsen ligger sällan i elpriset i sig, utan i:
@@ -175,4 +175,4 @@ Därför använder huvudmodellen **200B+** som bas för suverän modellförmåga
 
 ## Slutsats
 
-Den tekniska bilagan ändrar inte slutsatsen i huvudanalysen. Den visar varför ett basscenario på **~8 000 H100-ekvivalenter 2029** är tekniskt begripligt, översättbart till fysisk infrastruktur och förenligt med en hybridstrategi där både drift, träning och suveränitet vägs in.
+Den tekniska bilagan ändrar inte slutsatsen i huvudanalysen. Den visar varför ett basscenario på **~9 000 H100-ekvivalenter 2029** är tekniskt begripligt, översättbart till fysisk infrastruktur och förenligt med en hybridstrategi där både drift, träning och suveränitet vägs in.

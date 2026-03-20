@@ -21,7 +21,7 @@ Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsm
 | Dokument   | Roll                                                              |
 | ---------- | ----------------------------------------------------------------- |
 | 01 (detta) | Ramverk, triangulering, drivare                                   |
-| 02         | Antaganderegister (A1–A80), spårbarhet och single source of truth |
+| 02         | Antaganderegister (A1–A88), spårbarhet och single source of truth |
 | 03         | Full härledning, låg/bas/hög-scenarier                            |
 | 04         | Internationella jämförelser (topp-ned-validering)                 |
 | 05         | Källregister                                                      |
@@ -32,6 +32,7 @@ Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsm
 | 10         | Kan vi vänta? — stresstest av avvakta-strategin                   |
 | 11         | Kompletterande perspektiv — praktikerstresstest                   |
 | 12         | Upprevidering-utmaning — stresstest av ett högre utfall           |
+| 13         | Sjukvårdens AI-compute — botten-upp per vårdkedja (stödjer Tier 2) |
 
 ---
 
@@ -42,8 +43,8 @@ Huvudanalysen använder tre nivåer:
 | Nivå | Funktion | 2029-nivå |
 | ---- | -------- | ---------- |
 | Låg  | Defensivt minimum — säkerställer drift men begränsad kompetensuppbyggnad | ~3 000 H100-eq |
-| Bas  | Dimensionering för bred offentlig AI-användning och meningsfull nationell modellförmåga | ~8 000 H100-eq |
-| Hög  | Ambitionsnivå för strategisk handlingsfrihet, starkare forsknings- och innovationsmiljöer | ~18 000 H100-eq |
+| Bas  | Dimensionering för bred offentlig AI-användning och meningsfull nationell modellförmåga | ~9 000 H100-eq |
+| Hög  | Ambitionsnivå för strategisk handlingsfrihet, starkare forsknings- och innovationsmiljöer | ~20 000 H100-eq |
 
 Om ett dokument analyserar ännu högre utfall ska det göras som stresstest eller uppsidesrisk, inte som en separat huvudmodell.
 

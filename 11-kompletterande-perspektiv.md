@@ -17,7 +17,7 @@ I ett nordiskt läge med relativt goda kylförutsättningar och fossilfri el är
 
 ## 2. Elnätet är en verklig restriktion, men inte en blockerare
 
-Basscenariot i 2029 motsvarar ungefär **~5,6 MW** facility power. Det är inte litet, men det är heller inte i sig en nationell omöjlighet. Den praktiska frågan är i stället:
+Basscenariot i 2029 motsvarar ungefär **~6,3 MW** facility power. Det är inte litet, men det är heller inte i sig en nationell omöjlighet. Den praktiska frågan är i stället:
 
 - var nätkapaciteten finns
 - hur snabbt anslutning kan säkras
@@ -45,7 +45,7 @@ Det är fullt möjligt att komma fram till att Sverige inte ska driva ett ambiti
 
 | Fråga | Effekt |
 |------|--------|
-| Tier 4 tas i stort sett bort | totalen 2029 faller från ~8 000 till ungefär ~3 500–4 000 H100-eq |
+| Tier 4 tas i stort sett bort | totalen 2029 faller från ~9 000 till ungefär ~4 500–5 000 H100-eq |
 | Kostnaden sjunker | lägre årskostnad och enklare uppstart |
 | Beroendet ökar | mer kapacitet måste köpas som tjänst eller via externa modellaktörer |
 
@@ -59,7 +59,7 @@ Ett annat sätt att stresstesta modellen är att börja uppifrån: hur många to
 
 Om man antar ett nationellt moget scenario på omkring **250 000 tokens per capita och dag**, hamnar hela Sveriges behov i storleksordningen **35 000–50 000 H100-eq**. Offentlig sektor är bara en del av detta, men en relativt AI-intensiv del. Översatt till offentlig sektor ger denna kontroll ungefär **5 000–10 000 H100-eq**, vilket ligger nära huvudscenariot och tydligt ovanför ett defensivt minimum.
 
-Poängen är inte att tokens-per-capita ska ersätta huvudmodellen, utan att den fungerar som ett oberoende stress-test som inte motsäger ett huvudscenario kring 8 000.
+Poängen är inte att tokens-per-capita ska ersätta huvudmodellen, utan att den fungerar som ett oberoende stress-test som inte motsäger ett huvudscenario kring 9 000.
 
 ---
 

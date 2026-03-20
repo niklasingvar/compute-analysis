@@ -4,7 +4,7 @@ Detta repository uppskattar hur mycket AI-beräkningskapacitet svensk offentlig 
 
 ## Kort slutsats
 
-Huvudscenariot i repo:t är att svensk offentlig sektor behöver ungefär **8 000 H100-ekvivalenter 2029**. Ett defensivt minimum ligger runt **3 000**, medan ett mer offensivt ambitionsscenario ligger runt **18 000**.
+Huvudscenariot i repo:t är att svensk offentlig sektor behöver ungefär **9 000 H100-ekvivalenter 2029**. Ett defensivt minimum ligger runt **3 000**, medan ett mer offensivt ambitionsscenario ligger runt **20 000**.
 
 Tre trianguleringsspår används:
 
@@ -17,11 +17,11 @@ Tre trianguleringsspår används:
 | År | Låg | Bas | Hög | Enhet |
 |----|-----|-----|-----|-------|
 | 2026 | 400 | 900 | 2 000 | H100-ekvivalenter |
-| 2027 | 800 | 2 000 | 4 500 | H100-ekvivalenter |
-| 2028 | 1 600 | 4 000 | 9 000 | H100-ekvivalenter |
-| 2029 | 3 000 | 8 000 | 18 000 | H100-ekvivalenter |
-| 2030 | 5 000 | 12 000 | 28 000 | H100-ekvivalenter |
-| 2031 | 7 000 | 16 000 | 40 000 | H100-ekvivalenter |
+| 2027 | 900 | 2 200 | 5 000 | H100-ekvivalenter |
+| 2028 | 1 800 | 4 500 | 9 500 | H100-ekvivalenter |
+| 2029 | 3 000 | 9 000 | 20 000 | H100-ekvivalenter |
+| 2030 | 5 500 | 13 000 | 30 000 | H100-ekvivalenter |
+| 2031 | 8 000 | 18 000 | 42 000 | H100-ekvivalenter |
 
 ## Hur repo:t ska läsas
 
@@ -35,7 +35,7 @@ Tre trianguleringsspår används:
 | Dokument | Roll |
 |----------|------|
 | [01-ramverk.md](01-ramverk.md) | Ramverk, trianguleringslogik och scenarioarkitektur |
-| [02-antaganden-och-data.md](02-antaganden-och-data.md) | Antaganderegister (A1–A80), single source of truth |
+| [02-antaganden-och-data.md](02-antaganden-och-data.md) | Antaganderegister (A1–A88), single source of truth |
 | [03-berakningsmodell.md](03-berakningsmodell.md) | Full kvantitativ modell |
 | [04-internationella-jamforelser.md](04-internationella-jamforelser.md) | Topp-ned-validering via andra länder |
 | [05-kallor-och-resurser.md](05-kallor-och-resurser.md) | Riskbaserat källregister |
@@ -46,6 +46,7 @@ Tre trianguleringsspår används:
 | [10-kan-vi-vanta.md](10-kan-vi-vanta.md) | Stresstest av väntestrategi |
 | [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md) | Praktiska kompletterande perspektiv |
 | [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) | Stresstest: varför även huvudscenariot kan vara för lågt |
+| [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) | Sjukvårdens AI-compute: botten-upp per vårdkedja (stödjer Tier 2) |
 
 ## Viktig tolkningsregel
 

@@ -9,7 +9,7 @@ Policyanalys — inga kodfiler, enbart markdown-dokument.
 ### Estimat
 
 - Alla uppskattningar anges som intervall (låg/bas/hög), aldrig enskilda punktvärden
-- Varje siffra ska vara spårbar till ett numrerat antagande (A1–A80), en angiven källa, eller en explicit härledning
+- Varje siffra ska vara spårbar till ett numrerat antagande (A1–A88), en angiven källa, eller en explicit härledning
 - "Fermi-estimering": transparenta approximationer framför ogenomskinlig precision
 
 ### Enheter
@@ -28,7 +28,7 @@ Policyanalys — inga kodfiler, enbart markdown-dokument.
 1. Evidensbaserad analys — varje slutsats leds i bevis. Dokumenten gör analysen, de berättar inte om den. Inga ord som "reviderad", "uppdaterad", "jämfört med tidigare" — texten _är_ analysen.
 2. Säkra att läsaren ser metodiken — metoden (triangulering, scenarioanalys) ska vara synlig och trovärdig, men som stöd bakom svaret, inte som rubrik.
 3. Triangulering bevisar siffran — varje central siffra ska stödjas av minst två oberoende spår (botten-upp, topp-ned, storbolagsjämförelse).
-4. Källor eller tydliga antaganden — varje påstående ska ha en källhänvisning (→ [resources/links.md](resources/links.md), [05-kallor-och-resurser.md](05-kallor-och-resurser.md)) eller ett spårbart antagande (A1–A80).
+4. Källor eller tydliga antaganden — varje påstående ska ha en källhänvisning (→ [resources/links.md](resources/links.md), [05-kallor-och-resurser.md](05-kallor-och-resurser.md)) eller ett spårbart antagande (A1–A88).
 5. Dubbelkolla källans URL — verifiera att länken fungerar innan den läggs till.
 6. Ingen meta-text — skriv inte "vi har reviderat", "i den nya analysen", "jämfört med förra versionen". Dokumenten ska läsas som fristående analys, inte ändringslogg.
 
@@ -57,7 +57,7 @@ Tre lager:
 
 ```
 01-ramverk.md                     # Analytiskt ramverk & metodik
-02-antaganden-och-data.md         # Numrerat antaganderegister (A1–A80), single source of truth
+02-antaganden-och-data.md         # Numrerat antaganderegister (A1–A88), single source of truth
 03-berakningsmodell.md            # Beräkningsmodell — offentlig sektor (tre trianguleringsspår)
 04-internationella-jamforelser.md # Internationella jämförelser
 05-kallor-och-resurser.md         # Källregister (alla länkar, rapporter, datakällor)
@@ -68,6 +68,7 @@ Tre lager:
 10-kan-vi-vanta.md                # "Kan vi vänta?" — stresstest av avvakta-strategin
 11-kompletterande-perspektiv.md   # Praktiker-stresstest (elnät, tokens/capita, NVIDIA-kö)
 12-upprevidering-utmaning.md      # Stresstest: varför även huvudscenariot kan vara för lågt
+13-sjukvard-compute-per-vardkedja.md # Sjukvårdens AI-compute: botten-upp per vårdkedja (stödjer Tier 2)
 ```
 
 ### Kvalitetskontroll

@@ -1,12 +1,12 @@
 # 12 – Upprevidering-utmaning
 
-Detta dokument stresstestar huvudscenariot i [03-berakningsmodell.md](03-berakningsmodell.md) och [06-sammanfattning.md](06-sammanfattning.md). Frågan är inte om huvudscenariot på **~8 000 H100-ekvivalenter 2029** är möjligt. Frågan är om det också kan vara **för lågt**.
+Detta dokument stresstestar huvudscenariot i [03-berakningsmodell.md](03-berakningsmodell.md) och [06-sammanfattning.md](06-sammanfattning.md). Frågan är inte om huvudscenariot på **~9 000 H100-ekvivalenter 2029** är möjligt. Frågan är om det också kan vara **för lågt**.
 
 Kort svar: **ja, men bara under tydliga och mer aggressiva antaganden än huvudmodellen använder**.
 
 ---
 
-## Vad som talar för att 8 000 kan vara för lågt
+## Vad som talar för att 9 000 kan vara för lågt
 
 Tre observationer talar för uppsidesrisk:
 
@@ -68,7 +68,7 @@ Detta dokument ska inte användas för att ersätta scenarioarkitekturen i huvud
 
 ## Slutsats
 
-Huvudscenariot på **~8 000 H100-ekvivalenter 2029** är fortfarande den mest rimliga mittpunkten för svensk offentlig sektor. Men det finns en tydlig uppsidesrisk om:
+Huvudscenariot på **~9 000 H100-ekvivalenter 2029** är fortfarande den mest rimliga mittpunkten för svensk offentlig sektor. Men det finns en tydlig uppsidesrisk om:
 
 - adoptionen går snabbare än väntat
 - agentiska arbetsflöden blir norm i större delar av förvaltningen

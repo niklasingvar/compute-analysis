@@ -2,7 +2,7 @@
 
 Detta kapitel översätter huvudscenariot i [03-berakningsmodell.md](03-berakningsmodell.md) till tre praktiska anskaffningsstrategier. Frågan är inte bara hur mycket compute offentlig sektor behöver, utan **hur** Sverige bör säkra den.
 
-Utgångspunkt: **basscenario 2029 = ~8 000 H100-ekvivalenter**.
+Utgångspunkt: **basscenario 2029 = ~9 000 H100-ekvivalenter**.
 
 ---
 
@@ -38,10 +38,10 @@ Sverige bygger eller reserverar egen nationell kapacitet för i princip hela beh
 
 | Post | Indikativ nivå 2029 |
 |------|---------------------|
-| Dimensionering | ~8 000 H100-eq |
+| Dimensionering | ~9 000 H100-eq |
 | Engångsinvestering | ~4 500–5 500 MSEK |
 | Årlig kostnad (amorterad + drift) | ~1 350–1 600 MSEK |
-| Facility power | ~5,6 MW |
+| Facility power | ~6,3 MW |
 
 **Fördelar**
 
