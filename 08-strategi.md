@@ -1,4 +1,4 @@
-# 08 – Filosofi: konkurrenskraft, beroende och ambition
+# 08 – Strategi: konkurrenskraft, beroende och ambition
 
 Källhänvisningar i texten använder nycklarna **L1**–**L11**; fullständiga länkar och metadata finns i [resources/links.md](resources/links.md).
 
@@ -46,9 +46,9 @@ Dessa punkter motiverar att politiska slutsatser om **"smarta" tokens** och moln
 
 ## Två nivåer av ambition: "tillräckligt" räcker inte
 
-**Trianguleringens konvergens** (tre oberoende spår i [01-ramverk.md](01-ramverk.md), [03-berakningsmodell.md](03-berakningsmodell.md), [04-internationella-jamforelser.md](04-internationella-jamforelser.md)) stödjer att behovet av beräkningskapacitet i offentlig sektor ligger i en viss **storleksordning** — det blir svårt att rationellt avfärda hela intervallet utan att underkänna samtliga spår. Därmed handlar kärnfrågan i allt högre grad inte om *om* utan om **på vilken ambitionsnivå** samhället väljer att investera. Valet mellan **bas** och **hög** scenario (se [06-sammanfattning.md](06-sammanfattning.md)) är därmed i stor utsträckning ett **politiskt beslut om kompetens, suverän modellförmåga och leverantörsberoende** — inte en fin teknisk justering inom ett snävt korridor.
+Tre oberoende analysmetoder konvergerar kring ett behov av **2 500–3 500 H100-ekvivalenter** i basscenariot 2029. Det gör det svårt att avfärda behovet. Kärnfrågan är därför inte *om* investering behövs utan **på vilken ambitionsnivå**. Valet mellan bas (~3 500) och hög (~8 000 H100-eq) är i stor utsträckning ett **politiskt beslut om kompetens, suverän modellförmåga och leverantörsberoende** — inte en teknisk finjustering.
 
-Analysen av **beräkningsbehov** (compute i H100-ekvivalenter, kostnad, effekt) kan lätt tolkas som ett mål i sig: *se till att volymen räcker*. Det är en nödvändig men **otillräcklig** ram.
+Att dimensionera enbart efter beräkningsvolym — *se till att kapaciteten räcker* — är nödvändigt men **otillräckligt**.
 
 Ett **minimumscenario** ("vi har tillräckligt med compute för att köra dagens arbetsflöden") löser kortsiktiga flaskhalsar men adresserar inte:
 
@@ -68,7 +68,6 @@ Därför är ren **konsumtion** av utländsk frontier-AI en **övergångsstrateg
 
 ---
 
-## Koppling till övriga dokument
+## Slutsats
 
-- **01–07** kvantifierar efterfrågan, antaganden och triangulering; **trianguleringens konvergens** (särskilt i **01**, **03**, **04**, **06**) ger trovärdighet åt storleksordningen. **08** anger *varför* siffrorna har politisk tyngd utöver budgetposten: konkurrenskraft, beroende, **teknisk suveränitet** och frihet att sätta villkor — och varför valet mellan bas och hög är ett ambitionsval.
-- Beslut om compute bör uttryckligen prövas mot båda nivåerna: **tillräcklig volym** *och* **tillräcklig strategisk ambition** så att Sverige och EU inte bara "hänger med" utan kan agera **konkurrenskraftigt och självständigt** på sina egna premisser där det spelar roll.
+Beslut om compute bör prövas mot båda nivåerna: **tillräcklig volym** *och* **tillräcklig strategisk ambition**. Ett Sverige som enbart säkrar driftskapacitet "hänger med" — men bygger inte förmåga att agera konkurrenskraftigt och självständigt där det spelar roll. Kvantitativa underlag, antaganden och internationella jämförelser finns i [01](01-ramverk.md)–[07](07-teknisk-bilaga.md); en konkret genomgång av bygga vs. köpa vs. hybrid i [09-tanke-exempel.md](09-tanke-exempel.md).

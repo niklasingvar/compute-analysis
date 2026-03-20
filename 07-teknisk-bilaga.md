@@ -209,7 +209,7 @@ Optimal träning enligt Chinchilla-skalningslagarna:
 | **Finjustering** (fine-tuning) | Att anpassa en befintlig modell till ett specifikt användningsområde, t.ex. svenska eller juridik. Kräver mindre compute än full träning |
 | **LLM** (Large Language Model) | Stor språkmodell – den typ av AI som driver ChatGPT, Claude, etc. |
 | **Token** | En textenhet som AI:n bearbetar, ungefär ¾ av ett ord. "Hej, hur mår du?" ≈ 6 tokens |
-| **"Smarta" tokens** | I policydokument [08-filosofi.md](../08-filosofi.md): output från avancerad inference – den kapabilitet som stora språk- och multimodella modeller levererar per token (beslutsstöd, generering, resonemang). Jfr **inference** och **token** ovan. |
+| **"Smarta" tokens** | I policydokument [08-strategi.md](../08-strategi.md): output från avancerad inference – den kapabilitet som stora språk- och multimodella modeller levererar per token (beslutsstöd, generering, resonemang). Jfr **inference** och **token** ovan. |
 | **Frontier-modell** | En AI-modell i teknikens absoluta framkant (GPT-4, Claude, Gemini). Kostar $100M-$1B+ att träna |
 | **Suverän AI** | AI-infrastruktur och modeller som kontrolleras nationellt, för att undvika beroende av utländska aktörer |
 | **Teknisk suveränitet** | (EU-policy) Förmåga att i kritiska led av digital infrastruktur – inkl. moln, nät och beräkningskapacitet – inte vara utlämnad till enskilda tredjelandsleverantörer. Se [resources/links.md](../resources/links.md) (**L3**). |

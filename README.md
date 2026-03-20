@@ -2,88 +2,88 @@
 
 ## Abstract
 
-Denna analys uppskattar Sveriges offentliga sektors (exkl. försvar) behov av AI-beräkningskapacitet 2026-2031. **Huvudbidraget är inte en enskild siffra utan metodiken:** tre oberoende trianguleringsspår (botten-upp, topp-ned, storbolagstriangulering) som konvergerar kring **2 500–3 500 H100-ekvivalenter** för 2029 i basscenariot. Konvergensen ger trovärdighet i **storleksordningen** och visar att frågan inte längre är *om* investering behövs utan *på vilken ambitionsnivå*.
-
-**Slutsats:** Basscenariot (~3 500 H100-eq 2029) ger "tillräcklig volym" för drift men garanterar inte kompetens, innovation eller strategisk handlingsfrihet på egna villkor. **Högscenariot** (~8 000 H100-eq 2029) motsvarar vad jämförbara länder faktiskt satsar per capita och är nödvändigt för att bygga varaktig förmåga utan långsiktigt leverantörsberoende.
+Sveriges offentliga sektor (exkl. försvar) behöver **3 500–8 000 H100-ekvivalenter** i AI-beräkningskapacitet 2029, beroende på ambitionsnivå. Kostnaden — ~600–2 000 MSEK/år — är en rundningsdifferens jämfört med vad enskilda techbolag investerar i en enda modellträning. Att *inte* investera innebär att offentlig sektor blir permanent beroende av utländska leverantörer för kritisk digital infrastruktur, med begränsad kontroll över data, prissättning och strategisk riktning.
 
 ---
 
 ## Executive Summary
 
-### Frågeställning
+### Sverige behöver betydande AI-beräkningskapacitet — och valet handlar om ambition
 
-Hur mycket AI-beräkningskapacitet behöver Sveriges offentliga sektor 2026-2031? Frågan kan inte besvaras med en enda kalkyl — fältet förändras för snabbt, adoption är osäker, och politiska beslut är inte fattade. Därför sätter denna analys **metodiken i centrum**: tre oberoende sätt att uppskatta samma behov.
+Offentlig sektor behöver AI-beräkningskapacitet för allt från handläggarstöd till suverän modellträning. Tre oberoende analysmetoder konvergerar kring samma storleksordning, vilket ger hög konfidens i behovsbilden:
 
-### Metod: Triangulering
+| Spår | Metod | 2029 bas (H100-eq) |
+|------|-------|---------------------|
+| Botten-upp | Användningsfall × adoption × compute/enhet | ~3 100 |
+| Topp-ned | Internationella investeringar skalade till Sverige | ~2 400 |
+| Storbolagstriangulering | Back-calculation från kända AI-investeringar | ~3 100 |
 
-**1. Botten-upp** — Användningsfall × adoption × compute per enhet  
-Detaljerad beräkning av AI-copilots, specialiserad AI, finjustering och suverän modellträning. Resultat 2029: ~3 100 H100-eq (bas).
-
-**2. Topp-ned** — Internationella jämförelser skalade till Sverige  
-EU AI Factories, UK, Finland, Danmark m.fl. Nordiska grannar investerar proportionellt mer per capita. Resultat 2029: ~2 400 H100-eq (bas).
-
-**3. Storbolagstriangulering** — Back-calculation från kända investeringar  
-Anthropic, Meta, OpenAI, xAI spenderar $100M–$1B+ per modellträning. Sveriges hela 5-åriga behov (~$500M) = en enda frontier-träningskörning. Resultat 2029: ~3 100 H100-eq (bas).
-
-> **Konvergens:** Spånen möts kring **2 500–3 500 H100-eq för 2029**. Detta är analysens huvudargument — konvergens mellan oberoende metoder ger starkare trovärdighet än en enskild punktprognos.
-
-### Resultat: Intervall, inte punktvärden
+### Resultat
 
 | År | Låg | Bas | Hög | Enhet |
 |----|-----|-----|-----|-------|
-| **2029** | 1 500 | **3 500** | 8 000 | H100-ekvivalenter |
+| **2026** | 200 | 400 | 800 | H100-ekvivalenter |
+| **2029** | 1 500 | **3 500** | 8 000 | |
 | **2031** | 3 500 | 8 000 | 18 000 | |
 
 **Basscenario 2029:** ~3 500 H100-eq, ~600–1 200 MSEK/år, ~3 MW effekt.
 
-Scenarierna är **ambitionsval**, inte bara tekniska extrapolationer:
-- **Låg** = defensivt minimum
+Scenarierna är ambitionsval:
+- **Låg** = defensivt minimum — drift utan kompetensuppbyggnad
 - **Bas** = pragmatisk volym, men fortsatt beroende för frontier-AI
-- **Hög** = kompetens, innovation och strategisk handlingsfrihet på egna villkor
+- **Hög** = investering i kompetens, innovation och strategisk handlingsfrihet
 
 ### Vad driver behovet?
 
-- **AI-copilots** (~10%) — daglig användning, hög volym
-- **Specialiserad AI** (~15%) — vård, juridik, bedrägeri
-- **Finjustering** (~10%) — svenska modeller, myndighetsanpassning
-- **Suverän träning** (~65%) — svenska grundmodeller, känslig-data-modeller
+| Typ | Andel 2029 | Karaktär |
+|-----|-----------|----------|
+| Suverän träning (grundmodeller, känslig data) | ~65% | Episodisk men massiv, politiskt driven |
+| Specialiserad AI (vård, juridik, bedrägeri) | ~15% | Domänspecifik, växande bevisbas |
+| AI-copilots (skrivstöd, sökning) | ~10% | Daglig, hög volym |
+| Finjustering (svenska modeller) | ~10% | Periodisk burst |
 
-Suverän modellträning dominerar. Om Sverige väljer att helt förlita sig på utländska modeller halveras compute-behovet — men till priset av strategiskt beroende.
+Om Sverige avstår suverän modellträning halveras compute-behovet — men till priset av strategiskt beroende och begränsad förmåga att hantera känsliga data.
 
-### Slutsats: Ambitionsnivå avgör
+### Perspektiv: Sveriges behov i internationell kontext
 
-Trianguleringen ger **konfidens i storleksordningen**: offentlig sektor behöver betydande kapacitet. Avfärdande av hela intervallet är svårt att förena med tre oberoende spår.
+| Aktör | Compute-investering |
+|-------|---------------------|
+| xAI (Colossus) | 100 000 H100 — ett enda kluster |
+| Meta | 600 000+ GPU:er planerade |
+| **Sverige, hela offentlig sektor (5 år, bas)** | **~3 500 H100-eq peak, ~$500M kumulativt** |
 
-**Basscenariot** löser många kortsiktiga flaskhalsar men **garanterar inte** att Sverige bygger egen kompetens, forskningsmiljöer och innovationskraft på **egna villkor** — eller att man undviker långsiktigt leverantörsberoende för frontier-AI.
+Den investering som krävs är modest i internationell jämförelse. Det som saknas är inte budget utan ett medvetet strategiskt beslut.
 
-**Högscenariot** ligger närmare vad **internationella jämförelser** visar när man skalar grannländer till Sverige, och motsvarar ett medvetet val att investera i **kapacitet + kompetens + styrning**.
+### Rekommendationer
 
-**Kärnan:** Valet mellan bas och hög är i stor utsträckning ett **politiskt beslut om ambition**, inte en teknisk finjustering. Trianguleringen säger att behovet av ordning **finns**; ambitionsnivån avgör om Sverige bara "hänger med" eller bygger varaktig förmåga.
+1. **Nationell AI-compute-plattform (2026–2027)** — minst ~1 000 H100-eq initialt. Hybrid moln/on-prem. Samordna via DIGG, Sunet/NAISS, AI Sweden. ~200–400 MSEK initialt.
+2. **Suverän modellträning (beslut 2026, kapacitet 2027–2028)** — successor till GPT-SW3 på 70B+-skala. ~1 000–2 000 H100-eq burst, ~100–300 MSEK per körning.
+3. **Upphandlingsförmåga och ramavtal (2026)** — LOU-processen (6–18 månader) är den akuta flaskhalsen.
 
-### Policyrekommendationer
+### Strategisk slutsats
 
-1. **Investera i nationell AI-compute-plattform (2026-2027)** — minst ~1 000 H100-eq initialt för piloter och utbildningsmiljöer
-2. **Planera för suverän modellträning (beslut 2026, kapacitet 2027-2028)** — ~1 000–2 000 H100-eq burst för successor till GPT-SW3
-3. **Säkerställ upphandlingsförmåga och ramavtal (2026)** — LOU-processen är den akuta flaskhalsen
+Basscenariot ger tillräcklig volym för drift men garanterar inte att Sverige bygger kompetens, forskningsmiljöer eller innovationskraft på egna villkor. Högscenariot ligger närmare vad jämförbara länder investerar per capita och motsvarar ett val att säkra kapacitet, kompetens och styrning — inte bara beräkningsvolym.
+
+Valet mellan bas och hög är i stor utsträckning ett politiskt beslut om ambition. Den strategiska ramen — konkurrenskraft, teknisk suveränitet och varför "tillräcklig volym" inte räcker — utvecklas i [08-strategi.md](08-strategi.md). En konkret genomgång av bygga vs. köpa vs. hybrid finns i [09-tanke-exempel.md](09-tanke-exempel.md).
+
+---
 
 ### Dokumentstruktur
 
 | Dokument | Innehåll |
 |----------|----------|
-| **[06-sammanfattning.md](06-sammanfattning.md)** | **Läs denna först** — sammanfattning för beslutsfattare |
-| [01-ramverk.md](01-ramverk.md) | Analytiskt ramverk, triangulering, drivare |
-| [02-antaganden-och-data.md](02-antaganden-och-data.md) | Antaganderegister (A1–A50), spårbarhet |
-| [03-berakningsmodell.md](03-berakningsmodell.md) | Full härledning, låg/bas/hög-scenarier |
-| [04-internationella-jamforelser.md](04-internationella-jamforelser.md) | Internationella jämförelser (validering) |
+| **[06-sammanfattning.md](06-sammanfattning.md)** | Sammanfattning för beslutsfattare |
+| [01-ramverk.md](01-ramverk.md) | Analytiskt ramverk, drivare, triangulering |
+| [02-antaganden-och-data.md](02-antaganden-och-data.md) | Antaganderegister (A1–A50) |
+| [03-berakningsmodell.md](03-berakningsmodell.md) | Full härledning, scenarier |
+| [04-internationella-jamforelser.md](04-internationella-jamforelser.md) | Internationella jämförelser |
 | [05-kallor-och-resurser.md](05-kallor-och-resurser.md) | Källregister |
 | [07-teknisk-bilaga.md](07-teknisk-bilaga.md) | GPU-specifikationer, ordlista |
-| **[08-filosofi.md](08-filosofi.md)** | **Strategisk ram:** konkurrenskraft, beroende, varför "tillräcklig volym" inte räcker |
+| [08-strategi.md](08-strategi.md) | Strategisk ram: konkurrenskraft, beroende, ambition |
+| [09-tanke-exempel.md](09-tanke-exempel.md) | Bygga vs. köpa — konkret tankeexperiment |
 
-### Ytterligare resurser
-
-- **Policykällor:** [resources/links.md](resources/links.md) (L1–L11) — Draghi-rapporten, SOU 2025:12, CLOUD Act, Schrems II, Epoch AI, Mistral m.fl.
-- **Projektkonventioner:** [CLAUDE.md](CLAUDE.md)
+Policykällor: [resources/links.md](resources/links.md) (L1–L11). Projektkonventioner: [CLAUDE.md](CLAUDE.md).
 
 ---
 
-**Analysen är framtagen mars 2026. Alla estimat bör revideras årligen då AI-fältet utvecklas snabbt.**
+*Analysen är framtagen mars 2026. Alla estimat bör revideras årligen då AI-fältet utvecklas snabbt.*

@@ -2,21 +2,17 @@
 
 ## Syfte
 
-Uppskatta den svenska offentliga sektorns (exkl. försvar) behov av AI-beräkningskapacitet 2026-2031, med tillräcklig rigorositet för att stödja politiska investeringsbeslut.
-
-**Analysens huvudbidrag** är inte en enskild punkt-siffra utan **triangulering**: tre oberoende metoder som antingen konvergerar eller synliggör osäkerhet. I ett fält där modeller, adoption och politiska beslut förändras snabbt är **konvergens mellan oberoende spår** det starkaste underlaget vi kan ge för storleksordningen — starkare än en enda detaljerad kalkyl som kan vara fel om ett fåtal antaganden slår fel.
-
-Alla estimat presenteras som **intervall** (låg / bas / hög) så att beslutsfattare kan välja **ambitionsnivå**; vad som skiljer minimum från ambition utvecklas i [08-filosofi.md](08-filosofi.md).
+Uppskatta den svenska offentliga sektorns (exkl. försvar) behov av AI-beräkningskapacitet 2026-2031, med tillräcklig rigorositet för att stödja politiska investeringsbeslut. Alla estimat presenteras som **intervall** (låg / bas / hög) så att beslutsfattare kan välja ambitionsnivå.
 
 ## Metodik: Tre trianguleringsspår
 
-Ingen enskild metod kan ge ett trovärdigt svar på frågan "hur mycket compute behöver offentlig sektor?" Vi använder tre oberoende spår och söker konvergens:
+Tre oberoende spår uppskattar samma behov. Där de konvergerar har vi hög konfidens i storleksordningen; där de divergerar redovisas osäkerheten explicit.
 
 1. **Botten-upp**: Användningsfall × adoption × compute per enhet
 2. **Topp-ned**: Internationella investeringar skalade till Sverige
 3. **Storbolagstriangulering**: Vad kostar det att träna/köra de modeller offentlig sektor behöver, jämfört med vad storbolagen spenderar?
 
-Där spåren konvergerar har vi högre konfidens i **storleksordningen**. Där de divergerar identifierar vi osäkerhet och redovisar den explicit. Frågan blir då i praktiken inte bara *om* investering behövs utan *på vilken ambitionsnivå* — se scenarier i [03-berakningsmodell.md](03-berakningsmodell.md) och slutsats i [06-sammanfattning.md](06-sammanfattning.md).
+Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsmodell.md). Sammanfattning: [06-sammanfattning.md](06-sammanfattning.md). Strategisk ram (varför ambitionsnivå spelar roll): [08-strategi.md](08-strategi.md).
 
 ---
 
@@ -31,7 +27,8 @@ Där spåren konvergerar har vi högre konfidens i **storleksordningen**. Där d
 | **05** | Källregister |
 | **06** | **Sammanfattning för beslutsfattare** — läs denna för helhetsbudskap |
 | **07** | Teknisk bilaga, ordlista |
-| **08** | **Strategisk ram**: konkurrenskraft, beroende, varför "tillräcklig volym" inte räcker för kompetens och innovation på egna villkor |
+| **08** | Strategisk ram: konkurrenskraft, beroende, ambition |
+| **09** | Bygga vs. köpa — konkret tankeexperiment |
 
 ---
 
