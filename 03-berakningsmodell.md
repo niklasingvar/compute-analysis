@@ -1,6 +1,21 @@
 # 03 – Beräkningsmodell
 
-Tre oberoende trianguleringsspår som korsvalideras. Modellen använder agentisk AI-segmentering (A51–A60), uppgraderad suverän träning (A61–A65) och supply-side-restriktioner (A66–A72). Ett separat stresstest av ett ännu högre utfall finns i [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md).
+Tre trianguleringsspår med olika metodansats som korsvalideras. Två är efterfrågebaserade (botten-upp, storbolag) och delar centrala antaganden; ett (topp-ned) är genuint oberoende. Modellen använder agentisk AI-segmentering (A51–A60), uppgraderad suverän träning (A61–A65) och supply-side-restriktioner (A66–A72). Ett separat stresstest av ett ännu högre utfall finns i [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md).
+
+---
+
+## Nuläge: Svensk offentlig sektors AI-compute 2025
+
+Ingen konsoliderad mätning av svensk offentlig sektors AI-compute existerar idag. Följande proxybaserade uppskattning ger en ungefärlig startpunkt (A89).
+
+| Proxy | Uppskattad kapacitet | Kommentar |
+| ----- | -------------------- | --------- |
+| NAISS/Berzelius (offentlig-sektor-allokering) | ~20–60 H100-eq | Primärt forskning; offentlig drift är en liten andel |
+| Molntjänster (Azure/AWS via myndighetsavtal) | ~20–80 H100-eq | Baserat på ESV:s IT-kostnadsdata: ~0,1–0,3% av IT-budget på AI-inference |
+| Kända piloter och driftinstallationer | ~10–60 H100-eq | AI Swedens Vårdkarta 2025: 197 initiativ, 13% fullt implementerade; de flesta använder cloud-API:er |
+| **Uppskattat nuläge** | **~50–200 H100-eq** | **Proxybaserat, hög osäkerhet** |
+
+Tillväxtkurvan från ~100 H100-eq (2025 mittpunkt) till ~9 000 (2029 bas) innebär en ökning med faktor ~90 på fyra år. Det är en aggressiv tillväxttakt — i paritet med de snabbaste nationella AI-satsningarna internationellt (jfr Finlands LUMI-uppbyggnad 2021–2023). Kurvan förutsätter att upphandling, nätanslutning och organisatorisk förmåga växer i samma takt som behovsmodellen.
 
 ---
 
@@ -35,8 +50,10 @@ Copilot-mönstret (30K tok/dag) gäller fortfarande för majoriteten av använda
 | Under 8h arbetsdag (28 800s)   | ~450 H100 sustained |                                              |
 | Peak-faktor (×1,5)             | ~675 H100           | Kontorstimmar har peaks                      |
 | Redundans (×1,3)               | ~880 H100           | Failover, underhåll                          |
-| Modellstorlek-overhead (×2,5)  | ~2 200 H100         | 2029-modeller: MoE 200B+, reasoning-overhead |
-| Tier 1 bas 2029                | ~2 200 H100-eq      |                                              |
+| Modellstorlek (×1,5)           | ~1 320 H100         | MoE 200B+ vs 70B-referens                   |
+| Chain-of-thought (×1,5)        | ~1 980 H100         | Resonerangsmodeller, blandad arbetsbelastning |
+| Batching-ineffektivitet (×1,15) | ~2 200 H100        | Heterogena kontextlängder                    |
+| Tier 1 bas 2029                | ~2 200 H100-eq      | Dekomposition: [02-antaganden-och-data.md](02-antaganden-och-data.md) |                                              |
 
 Spann: ~1 200–3 500 H100-eq (låg: lägre agentandel, effektivare modeller; hög: högre adoption, fler agentiska arbetsflöden, fler bakgrundsagenter)
 
@@ -195,6 +212,19 @@ Tier 4 tidsserie (burst-kapacitet):
 
 Tier 1 och Tier 4 står tillsammans för huvuddelen av uppsidan, men Tier 2 har vuxit betydligt efter att sjukvårdens specialiserade inference nu fångas fullständigt ([13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md)). Det är kombinationen av agentisk användning, sjukvårds-AI och suverän modellambition som förklarar varför huvudscenariot ligger väsentligt över det rent copilot-baserade läget.
 
+### Operativt behov vs. strategisk ambition
+
+| År   | Tier 1–3 operativt (bas) | Tier 4 strategiskt (bas) | Totalt (bas) |
+| ---- | ------------------------ | ------------------------ | ------------ |
+| 2026 | 420                      | 500                      | 920          |
+| 2027 | 1 000                    | 1 200                    | 2 200        |
+| 2028 | 2 150                    | 2 500                    | 4 650        |
+| 2029 | 4 300                    | 4 500                    | 8 800        |
+| 2030 | 6 800                    | 6 000                    | 12 800       |
+| 2031 | 10 200                   | 8 000                    | 18 200       |
+
+Tier 1–3 representerar operativt inference-, specialiserad AI- och finjusteringsbehov — den kapacitet som krävs för att offentlig sektor ska kunna använda AI i bred skala. Tier 4 representerar en strategisk ambition om nationell modellförmåga: att kunna träna och vidareutveckla svenska grundmodeller och domänanpassade modeller för känsliga data. Det är ett politiskt val, inte en beräknad efterfrågan i samma mening som Tier 1–3. Motivering och kostnad-nytta-analys för det valet: [08-strategi.md](08-strategi.md).
+
 ---
 
 ## Spår 2: Topp-ned (internationella jämförelser)
@@ -255,8 +285,11 @@ Justerat: Finlands LUMI betjänar hela EuroHPC + forskning, inte bara offentlig 
 | UK-skalning            | 3 000  | 5 000  | 12 000 | Fångar mer offensiv offentlig ambitionsnivå                               |
 | IT-budget-andel        | 1 500  | 2 500  | 4 000  | Ger ett konservativt budgetankare                                         |
 | Nordisk jämförelse     | 2 000  | 4 000  | 8 000  | Visar vad jämförbara länder redan bygger                                  |
-| Tokens per capita (11) | 3 000  | 6 000  | 10 000 | Fångar agentisk användning bättre än klassiska offentliga investeringsplaner |
-| Topp-ned medel         | ~2 200 | ~4 100 | ~7 800 |
+| **Topp-ned medel (budget/benchmark)** | **~2 000** | **~3 600** | **~7 250** | **Snitt av de fyra metoderna ovan** |
+| Tokens per capita (11) | 3 000  | 6 000  | 10 000 | Annan metodtyp: användningsbaserad, inte budget/benchmark-baserad |
+| Topp-ned medel (inkl. tokens/capita) | ~2 200 | ~4 100 | ~7 800 | Inkl. tokens/capita drar upp snittet med ~500 |
+
+Tokens per capita är metodologiskt en annan typ av uppskattning — den utgår från användningsmängd snarare än offentliga investeringsplaner eller budgetramar. Den drar upp topp-ned-medelvärdet med ~500 H100-eq. Presenteras separat för transparens.
 
 ---
 
@@ -341,9 +374,28 @@ Politisk slutsats: Även huvudscenariot är en rundningsdifferens i global konte
 
 Botten-upp och storbolagsspåren konvergerar kring ~8 000–9 000 H100-eq för basscenariot 2029. Topp-ned hamnar lägre (~4 100), vilket reflekterar att internationella jämförelser och offentliga investeringsplaner ofta är pre-agentiska och därmed konservativa.
 
-Syntesens basscenario sätts till **~9 000 H100-eq** 2029. Det ligger nära de två efterfrågebaserade spåren, samtidigt som topp-ned-spåret används som konservativt golv snarare än centrum. Uppjusteringen jämfört med ett rent copilot-scenario drivs av tre faktorer: agentisk AI (Tier 1), sjukvårdens specialiserade inference (Tier 2, [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md)) och suverän modellambition (Tier 4).
+Syntesens basscenario sätts till **~9 000 H100-eq** 2029, varav **~4 300 operativt** (Tier 1–3) och **~4 500 strategisk suverän träning** (Tier 4). Det operativa behovet ligger nära topp-ned-spårets övre spann; det totala behovet inkl. suverän träning drivs av botten-upp och storbolagsspåren. Topp-ned-spåret används som konservativt golv snarare än centrum.
+
+Distinktionen är viktig: Tier 1–3 representerar den kapacitet som behövs för att offentlig sektor ska kunna använda AI i bred drift. Tier 4 representerar ett politiskt val om nationell modellförmåga (se [08-strategi.md](08-strategi.md)). Båda är motiverade, men de bör bedömas separat.
 
 Kompletterande sanity check — tokens per capita: En alternativ topp-ned-modell baserad på ~250 000 tokens/capita/dag (hela Sveriges befolkning, moget AI-scenario 2030) ger ~35 000–50 000 H100-eq _nationellt_. Isolerat till offentlig sektor (~15–20% med hög AI-intensitet) motsvarar det ~5 000–10 000 H100-eq — i linje med huvudscenariot. Fullständig härledning: [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md).
+
+### Oberoendebedömning
+
+Trianguleringen bygger på tre spår med olika metodansats. Två av dem — botten-upp och storbolag — delar dock flera centrala antaganden:
+
+| Antagande | Botten-upp | Topp-ned | Storbolag | Delat? |
+| --------- | ---------- | -------- | --------- | ------ |
+| A13 (adresserbar population) | Ja | Nej | Ja | BU + Storbolag |
+| A51–A60 (agentisk mix, adoption) | Ja | Nej | Ja | BU + Storbolag |
+| A61–A65 (suverän träning) | Ja | Nej | Ja | BU + Storbolag |
+| A8–A12 (IT-budget) | Nej | Ja | Nej | Unikt TN |
+| Int. jämförelser / offentliga program | Nej | Ja | Nej | Unikt TN |
+| Global modellkostnad (frontier-data) | Nej | Nej | Ja | Unikt SB |
+
+Konvergens mellan botten-upp och storbolag (~8 000–9 000) är därför delvis ett resultat av gemensamma antaganden, inte av två fullständigt oberoende analysmetoder. Topp-ned-spåret — baserat på internationella jämförelser och budgetramar — är genuint oberoende från dessa antaganden och landar vid ~4 100.
+
+Korrekt tolkning: **Två efterfrågebaserade spår konvergerar vid ~8 000–9 000; ett budgetbaserat spår ger ett konservativt golv på ~4 000. Trianguleringen visar en rimlig storleksordning (tusentals, inte hundratals eller tiotusentals), men den bevisar inte 9 000 med tre oberoende bekräftelser.**
 
 ### Source of variance
 
@@ -351,9 +403,23 @@ Kompletterande sanity check — tokens per capita: En alternativ topp-ned-modell
 |-----|------------------|
 | Botten-upp > topp-ned | Botten-upp fångar agentiska arbetsflöden och suverän träning tydligare än offentliga investeringsplaner gör |
 | Storbolag > topp-ned | Storbolagsspåret utgår från faktisk global kostnadsnivå för modellkapacitet, inte från offentliga budgetramar |
-| Botten-upp ≈ storbolag | Båda spåren fångar efterfrågesidan snarare än enbart dagens offentliga planeringsnivå |
+| Botten-upp ≈ storbolag | Båda spåren delar centrala efterfrågeantaganden (A13, A51–A60, A61–A65), vilket delvis förklarar konvergensen |
 
-Det centrala tolkningsvalet är därför att använda topp-ned-spåret som **konservativt golv** och efterfrågespåren som **bättre indikatorer på faktisk kapacitetsnivå**.
+Det centrala tolkningsvalet är att använda topp-ned-spåret som **konservativt golv** och efterfrågespåren som **indikatorer på vilken kapacitetsnivå som krävs om den politiska ambitionen (A59, A61–A65) realiseras**.
+
+### Budgetgap: Metod C vs. huvudscenariot
+
+Topp-ned-spårets Metod C (AI som andel av IT-budget) ger ~1 750 H100-eq för 2029 (A8–A12, 50% compute-andel av AI-budget). Huvudscenariot är ~9 000, varav ~4 300 operativt (Tier 1–3). Även det operativa behovet överstiger det budgetbaserade spårets bas med faktor ~2,5.
+
+| Finansieringskälla | Möjlig tillförsel (MSEK/år) | Motsvarar (H100-eq) | Förutsättning |
+| ------------------ | --------------------------- | -------------------- | ------------- |
+| Befintlig IT-budget (A11: 8% AI) | ~1 200 compute | ~1 750 | Omprioritering inom befintlig ram |
+| Riktad statlig satsning | 500–1 500 | 700–2 200 | Politiskt beslut, ny anslagspost |
+| EU AI Factories / EuroHPC | 200–500 | 300–700 | Ansökningsbaserat, delfinansiering |
+| Offentlig-privat samverkan | 300–800 | 400–1 200 | Partnermodell (jfr Danmarks Gefion) |
+| **Summa möjlig** | **~2 200–4 000** | **~3 150–5 850** | |
+
+Gapet mellan budgetbaserat spår (~1 750) och huvudscenariot (~9 000) återspeglar att nuvarande AI-budgetandelar (A11) är otillräckliga för att finansiera huvudscenariot. Att nå 9 000 kräver ett aktivt politiskt beslut att allokera väsentligt mer än nuvarande IT-budgetlogik tillåter — särskilt för Tier 4 (suverän träning). Utan sådant beslut är det operativa behovet som budgeten kan bära snarare **~2 000–4 000 H100-eq**.
 
 ### Kombinerat estimat — offentlig sektor:
 

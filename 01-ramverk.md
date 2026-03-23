@@ -6,7 +6,7 @@ Uppskatta den svenska offentliga sektorns (exkl. försvar) behov av AI-beräknin
 
 ## Metodik: Tre trianguleringsspår
 
-Tre oberoende spår uppskattar samma behov. Där de konvergerar har vi hög konfidens i storleksordningen; där de divergerar redovisas osäkerheten explicit.
+Tre spår med olika metodansats uppskattar samma behov. Två är efterfrågebaserade (botten-upp och storbolag) och delar centrala antaganden om population, adoption och suverän träning; ett (topp-ned) är budget- och benchmarkbaserat och genuint oberoende. Där spåren konvergerar finns konfidens i storleksordningen; där de divergerar — och det gör de: topp-ned landar på ungefär hälften — redovisas osäkerheten och de delade antagandena explicit (se oberoendebedömning i [03-berakningsmodell.md](03-berakningsmodell.md)).
 
 1. Botten-upp: Användningsfall × adoption × compute per enhet
 2. Topp-ned: Internationella investeringar skalade till Sverige
@@ -130,6 +130,10 @@ Där:
 | Regioner (vård)              | 5-10%            | 2028-2029        | 50-70%     | Medicinsk AI-evidens driver            |
 | Kommuner (stora)             | 5-8%             | 2029             | 40-60%     | Resursstarka, egna IT-avdelningar      |
 | Kommuner (små)               | 1-3%             | 2030             | 20-40%     | Beroende av SKR/gemensamma plattformar |
+
+### Historisk referens: IT-adoption i svensk offentlig sektor
+
+Analysens S-kurva (5–10% adoption 2026 → 55–70% 2029) är aggressiv jämfört med historiska svenska IT-adoptionscykler. E-post i kommuner tog ~10 år, e-tjänster ~10 år, och Office 365/Teams ~7 år (pandemidriven). AI-verktygens direkta produktivitetsvinst för enskilda användare kan ge starkare pull-effekt, men offentlig sektors strukturella hinder (LOU, informationssäkerhet, budgettryck) kvarstår. Den nedre delen av adoptionsintervallet (A16: 35–55% 2029) är mer förenlig med historisk svensk precedens. Fullständig adoptionsbana: [02-antaganden-och-data.md](02-antaganden-och-data.md), sektion C.
 
 ### Adoptionshinder specifika för svensk offentlig sektor
 

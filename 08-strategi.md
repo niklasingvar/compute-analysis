@@ -48,7 +48,7 @@ Framväxten av öppna resonemangsmodeller (t.ex. DeepSeek-R1, Qwen, Llama-basera
 
 ## Tre nivåer av ambition: "tillräckligt" räcker inte
 
-Tre oberoende analysmetoder pekar sammantaget mot att svensk offentlig sektor inte klarar sig på symbolisk AI-kapacitet. I den kvantitativa modellen ligger **låg** kring ~3 000 H100-ekvivalenter 2029, **bas** kring ~9 000 och **hög** kring ~20 000. Kärnfrågan är därför inte _om_ investering behövs utan **vilken ambitionsnivå** Sverige väljer.
+Tre analysmetoder med olika metodansats pekar sammantaget mot att svensk offentlig sektor inte klarar sig på symbolisk AI-kapacitet. I den kvantitativa modellen ligger **låg** kring ~3 000 H100-ekvivalenter 2029, **bas** kring ~9 000 och **hög** kring ~20 000. Kärnfrågan är därför inte _om_ investering behövs utan **vilken ambitionsnivå** Sverige väljer.
 
 Att dimensionera enbart efter beräkningsvolym — _se till att kapaciteten räcker_ — är nödvändigt men otillräckligt.
 
@@ -71,6 +71,22 @@ I den kvantitativa modellen (03–06) motsvarar detta en tydlig koppling:
 - **Hög** (~20 000 H100-ekvivalenter 2029) ligger närmare ett tydligt ambitionsscenario där Sverige väljer starkare forskningsmiljö, högre agentisk användning och större strategisk handlingsfrihet.
 
 Exakta intervall och antaganden återfinns i 02–03 och 06.
+
+### Suverän träning — ett politiskt val med egen kostnad-nytta
+
+Skillnaden mellan ~4 300 H100-eq (operativt behov, Tier 1–3) och ~9 000 (inkl. suverän träning, Tier 4) är i första hand ett politiskt val om hur mycket modellförmåga Sverige vill äga själv.
+
+| Dimension | Med suverän träning (Tier 4) | Utan (enbart Tier 1–3) |
+| --------- | ---------------------------- | ---------------------- |
+| Compute-behov 2029 | ~9 000 H100-eq | ~4 300 H100-eq |
+| Årskostnad compute | ~2 000 MSEK | ~950 MSEK |
+| Tilläggskostnader | Kompetensuppbyggnad, drift, flerårsåtagande | Lägre, men licensavgifter till kommersiella aktörer |
+| Datasuveränitet | Full kontroll: känsliga data stannar i svensk infrastruktur | Beroende av kommersiella aktörers datahantering |
+| Leverantörsoberoende | Starkt: möjligt att byta, anpassa, vidareutveckla modeller | Svagt: prissättning och tillgänglighet styrs av 3–4 amerikanska bolag |
+| Strategisk autonomi | Möjlighet att utveckla modeller för svenska behov (juridik, hälsa, myndighetssvenska) | Begränsad: anpassning sker genom finjustering av andras modeller |
+| Forskningsmiljö | Skapar nationell forsknings- och utbildningsinfrastruktur | Forskning beroende av extern API-åtkomst |
+
+Suverän träning är inte en teknisk nödvändighet för operativ AI-användning. Det är ett strategiskt val som ger långsiktig handlingsfrihet men kräver väsentligt högre investering och flerårig kompetensuppbyggnad. Beslutet bör prövas mot Sveriges geopolitiska läge, beroende av ett fåtal AI-leverantörer och viljan att upprätthålla nationell förmåga i känsliga domäner.
 
 Därför är ren konsumtion av utländsk frontier-AI en övergångsstrategi – inte en slutpunkt för teknisk suveränitet eller långsiktig konkurrenskraft (L1, L3).
 

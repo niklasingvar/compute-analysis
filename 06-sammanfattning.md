@@ -2,9 +2,11 @@
 
 ## Sammanfattning för beslutsfattare
 
-Sveriges offentliga sektor behöver planera för **cirka 9 000 H100-ekvivalenter 2029** om målet är bred AI-användning, meningsfull nationell modellförmåga och rimlig strategisk handlingsfrihet. Ett lägre spår på **~3 000 H100-eq** är möjligt, men lämnar Sverige mer beroende av externa leverantörer och med svagare kapacitet för känsliga domäner. Ett högre spår på **~20 000 H100-eq** motsvarar en tydligt mer offensiv ambitionsnivå.
+Sveriges offentliga sektor behöver planera för **cirka 4 300 H100-ekvivalenter 2029** i operativ AI-kapacitet (inference, specialiserad AI och finjustering). Om Sverige dessutom väljer att bygga nationell modellförmåga — suverän träning av svenska grundmodeller och domänanpassade modeller — stiger behovet till **cirka 9 000 H100-ekvivalenter**. Det andra halvsparet (~4 500 H100-eq) är ett strategiskt val om nationell suveränitet, inte en direkt konsekvens av användartillväxt.
 
-Tre oberoende spår ligger bakom slutsatsen:
+Ett lägre spår på **~3 000 H100-eq** är möjligt, men lämnar Sverige mer beroende av externa leverantörer och med svagare kapacitet för känsliga domäner. Ett högre spår på **~20 000 H100-eq** motsvarar en tydligt mer offensiv ambitionsnivå.
+
+Tre spår med olika metodansats ligger bakom slutsatsen:
 
 | Spår | 2029-nivå | Vad spåret fångar |
 |------|-----------|-------------------|
@@ -12,7 +14,7 @@ Tre oberoende spår ligger bakom slutsatsen:
 | Topp-ned | ~4 100 H100-eq | Dagens offentliga investeringsplaner och internationell praxis |
 | Storbolagstriangulering | ~7 600 H100-eq | Vad motsvarande modell- och driftförmåga kostar i global marknad |
 
-Två efterfrågebaserade spår konvergerar alltså nära **9 000**, medan topp-ned-spåret fungerar som ett konservativt golv.
+Två efterfrågebaserade spår konvergerar nära **9 000** (inkl. suverän träning), medan topp-ned-spåret ger ett konservativt golv. Spåren delar vissa centrala antaganden — se oberoendebedömning i [03-berakningsmodell.md](03-berakningsmodell.md).
 
 ---
 
@@ -22,9 +24,9 @@ Två efterfrågebaserade spår konvergerar alltså nära **9 000**, medan topp-n
 
 Det är inte längre tillräckligt att räkna på enkel chatbotanvändning. Agentiska arbetsflöden, längre kontexter, fler verktygsanrop och bakgrundsagenter flyttar upp inference-behovet tydligt. Därför landar Tier 1 i huvudscenariot kring **~2 200 H100-eq 2029**, inte några hundra.
 
-### 2. Suverän modellförmåga är den största enskilda posten
+### 2. Suverän modellförmåga är ett politiskt val — den största enskilda posten
 
-Om Sverige vill kunna träna eller vidareutveckla modeller för känsliga data, svensk offentlig domän och nationell styrning blir Tier 4 avgörande. I huvudscenariot står suverän träning och RL-relaterat arbete för **~4 500 H100-eq** i 2029-årsbilden.
+Om Sverige väljer att kunna träna eller vidareutveckla modeller för känsliga data, svensk offentlig domän och nationell styrning blir Tier 4 avgörande. I huvudscenariot står suverän träning och RL-relaterat arbete för **~4 500 H100-eq** i 2029-årsbilden. Det är ett aktivt policybeslut med egen kostnad-nytta-analys ([08-strategi.md](08-strategi.md)), inte en direkt konsekvens av användartillväxt. Alternativet — att köpa inference kommersiellt — har lägre kapitalkostnad men högre beroenderisk.
 
 ### 3. Det som ser dyrt ut i svensk budgetlogik är hanterbart i strategisk kontext
 
@@ -82,6 +84,7 @@ Compute utan styrning ger låg effekt. Beslutet bör därför paketeras tillsamm
 | **Supply-side-begränsningar** | GPU:er, HBM eller datacenterkapacitet blir svåra att säkra | Behovet kvarstår men blir svårare att realisera |
 | **Svag styrning** | Kapacitet byggs utan gemensam prioritering | Låg nyttjandegrad och sämre legitimitet |
 | **För låg suverän ambition** | Sverige väljer bort modellförmåga för känsliga domäner | Lägre kostnad men större leverantörsberoende |
+| **Budgetgap** | Nuvarande IT-budgetlogik (A11: 8% AI-andel) bär ~1 750 H100-eq; huvudscenariot kräver ~9 000 | Kräver aktiv politisk prioritering och nya finansieringsströmmar utöver befintlig IT-budget |
 
 ---
 

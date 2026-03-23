@@ -274,6 +274,20 @@ Dessa fem vårdkedjor täcker ~8 miljoner av uppskattningsvis ~55–70 miljoner 
 | **Med agentisk overhead** (reasoning-modeller 2029, ×2,5) | ~450 | ~1 150 |
 | **Med redundans + testmiljöer (×1,3)** | ~600 | ~1 500 |
 
+### Multiplikationskedjans osäkerhet
+
+Extrapoleringen från 44 H100-eq (fem vårdkedjor) till ~600 (hela sjukvården) bygger på fyra multiplikationssteg, vart och ett med egen osäkerhet:
+
+| Steg | Från | Till | Faktor | Spann (låg–hög) | Svaghet |
+| ---- | ---- | ---- | ------ | ---------------- | ------- |
+| 1. Fem vårdkedjor (direkt beräknat) | — | 44 H100-eq | — | 13–111 | Robust: baserat på volymer och GPU-tid per episod |
+| 2. Extrapolering till hela sjukvården | 44 | 180 | ×4,1 (1/12% × 0,5) | 60–460 | **Svagaste länken.** De fem kedjorna är medvetet compute-tunga (cancer, patologi, kronisk övervakning). Korrektionsfaktorn 0,5 ("de fem är dubbelt så tunga som snitt") saknar empiriskt stöd — den är en kvalificerad gissning. |
+| 3. Agentisk overhead (reasoning-modeller 2029) | 180 | 450 | ×2,5 | 180–1 150 | Samma osäkerhet som Tier 1 overhead — beroende av hur snabbt chain-of-thought-modeller slår igenom i klinisk miljö |
+| 4. Redundans + testmiljöer | 450 | 600 | ×1,3 | 450–1 500 | Branschstandard; minst osäker |
+| **Kombinerat** | **44** | **600** | **×13,6** | **~200–1 500** | |
+
+Osäkerheten i steg 2–3 innebär att den kombinerade multiplikatorn kan variera mellan ~5 och ~35. Det är därför riktigare att tala om en **storleksordning på 200–900 H100-eq** för sjukvårdens Tier 2, med ~450–600 som central uppskattning, snarare än en precision som kedjan inte ger stöd för.
+
 ### Jämförelse med nuvarande Tier 2 i 03
 
 | Komponent | Nuvarande Tier 2 (03, bas 2029) | Sjukvårdens Tier 2-andel | Reviderat (detta dokument) |
