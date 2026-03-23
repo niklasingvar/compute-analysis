@@ -61,7 +61,7 @@ Detta dokument är ett **riskbaserat källregister**. Målet är inte att lista 
 
 ## 5. Juridik, suveränitet och policy
 
-För strategidokumentet [08-strategi.md](08-strategi.md) används det nyckelstyrda registret i [resources/links.md](resources/links.md). Följande poster är särskilt centrala:
+För strategidokumentet [08-suveranitet.md](08-suveranitet.md) används det nyckelstyrda registret i [resources/links.md](resources/links.md). Följande poster är särskilt centrala:
 
 | Tema | Källa | Evidensnivå | URL |
 |------|-------|-------------|-----|
@@ -85,5 +85,5 @@ För strategidokumentet [08-strategi.md](08-strategi.md) används det nyckelstyr
 ## 7. Praktisk läsanvisning
 
 - **För den kvantitativa modellen**: börja i [02-antaganden-och-data.md](02-antaganden-och-data.md), använd sedan detta dokument för att kontrollera källtyp och URL.
-- **För den strategiska argumentationen**: använd [resources/links.md](resources/links.md) tillsammans med [08-strategi.md](08-strategi.md).
+- **För den strategiska argumentationen**: använd [resources/links.md](resources/links.md) tillsammans med [08-suveranitet.md](08-suveranitet.md).
 - **För stresstestet**: marknads- och supply-side-källor här används tillsammans med [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md), men det dokumentet är inte huvudmodell.

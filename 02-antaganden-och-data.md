@@ -1,6 +1,6 @@
 # 02 – Antaganden och data
 
-Alla antaganden är numrerade (A1–A88) och klassificerade efter känslighet. Varje central siffra i [03-berakningsmodell.md](03-berakningsmodell.md), [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) och [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) ska vara spårbar till ett antagande här.
+Alla antaganden är numrerade (A1–A90) och klassificerade efter känslighet. Varje central siffra i [03-berakningsmodell.md](03-berakningsmodell.md), [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) och [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) ska vara spårbar till ett antagande här.
 
 Känslighetsklasser:
 
@@ -8,7 +8,7 @@ Känslighetsklasser:
 - M (medel): rimlig uppskattning, viss osäkerhet
 - H (hög): stor osäkerhet, stor påverkan på slutresultat
 
-Antaganden under Tier 4 – suverän träning (A33–A39) och flera poster med känslighet H speglar politiska ambitionsval — hur mycket nationell modellkapacitet, adoption och finansiering som förutsätts. Strategisk motivering: [08-strategi.md](08-strategi.md).
+Antaganden under Tier 4 – suverän träning (A33–A39) och flera poster med känslighet H speglar politiska ambitionsval — hur mycket nationell modellkapacitet, adoption och finansiering som förutsätts. Strategisk motivering: [08-suveranitet.md](08-suveranitet.md).
 
 ---
 
@@ -23,6 +23,7 @@ Antaganden under Tier 4 – suverän träning (A33–A39) och flera poster med k
 | A5  | Antal myndigheter med >100 anställda                             | ~150                   | Statskontoret                                   | L          |
 | A6  | Antal kommuner                                                   | 290                    | SKR                                             | L          |
 | A7  | Antal regioner                                                   | 21                     | SKR                                             | L          |
+| A89 | Uppskattat nuläge AI-compute offentlig sektor (2025)             | ~50–200 H100-eq        | Proxybaserat: NAISS-allokering, molnutgifter (ESV), kända piloter (AI Sweden Vårdkarta) | H          |
 
 ## B. IT-kostnader och budget
 
@@ -31,7 +32,7 @@ Antaganden under Tier 4 – suverän träning (A33–A39) och flera poster med k
 | A8  | Total IT-kostnad offentlig sektor | ~25-30 mdr SEK/år | ESV, SKR                   | M          |
 | A9  | Statliga myndigheters IT-kostnad  | ~12-15 mdr SEK/år | ESV                        | M          |
 | A10 | AI som andel av IT-budget (2026)  | ~1-3%             | Gartner, egen uppskattning | H          |
-| A11 | AI som andel av IT-budget (2029)  | ~5-12%            | Gartner prognos            | H          |
+| A11 | AI som andel av IT-budget (2029)  | ~5-12%            | Gartner prognos. **Not:** Huvudscenariot (~9 000 H100-eq) förutsätter i praktiken ~13–17% total AI-andel (inkl. personal, licenser, data), väsentligt högre än detta intervall. Se budgetgap-analys i [03-berakningsmodell.md](03-berakningsmodell.md). | H          |
 | A12 | AI som andel av IT-budget (2031)  | ~8-18%            | Extrapolering              | H          |
 
 ## C. Tier 1 – Kunskapsarbetare (copilots, LLM-inference)
@@ -41,8 +42,35 @@ Antaganden under Tier 4 – suverän träning (A33–A39) och flera poster med k
 | A13 | Adresserbar population för AI-copilots           | ~450 000 – 550 000                                               | A4, justerat för arbetsuppgifter                 | M          |
 | A14 | Adoptionsgrad 2026                               | 5-10%                                                            | Konservativ: LOU-upphandling, pilotprojekt       | M          |
 | A15 | Adoptionsgrad 2028                               | 20-35%                                                           | S-kurva, ramavtal på plats                       | M          |
-| A16 | Adoptionsgrad 2029                               | 35-55%                                                           | Inflektionspunkt                                 | H          |
+| A16 | Adoptionsgrad 2029                               | 40-60%                                                           | Inflektionspunkt; AI-verktygens direkta produktivitetsvinst ger starkare pull-effekt än tidigare teknikskiften, men offentlig sektors strukturella hinder kvarstår | H          |
 | A17 | Adoptionsgrad 2031                               | 55-80%                                                           | Mognad, men inte 100%                            | H          |
+
+### Adoptionsbana — från nuläge till 2029
+
+Antagandena A14–A17 och A59 definierar en S-kurva från ~5–10% (2026) till 55–70% (2029, A59 inkl. agentisk mix). Det är en aggressiv bana. Tillgängliga svenska datapunkter:
+
+- **AI Sweden Vårdkarta 2025:** 197 AI-initiativ i svensk sjukvård, varav 13% fullt implementerade i klinisk drift.
+- **Digibarometern 2025:** ~5–10% av kommuner har AI i ordinarie verksamhet (utanför pilotfas).
+- **OECD AI Policy Observatory 2025:** Sverige rankas i mellanskiktet bland OECD-länder för offentlig AI-adoption.
+
+Historiska svenska paralleller för IT-adoption i offentlig sektor:
+
+| Teknikskifte | Period | Tid till bred adoption | Kommentar |
+| ------------ | ------ | ---------------------- | --------- |
+| E-post i kommuner | ~1995–2005 | ~10 år | Gradvis, ingen central pådrivning |
+| E-tjänster (1177, Mina sidor) | ~2005–2015 | ~10 år | Krävde standardisering och infrastruktur |
+| Office 365 / Teams | ~2016–2023 | ~7 år | Snabbast — pandemidriven acceleration |
+| 1177 Vårdguiden digital | ~2013–2020 | ~7 år | Regionalt drivande, nationell utrullning |
+
+55–70% adoption av AI-verktyg (A59) på fyra år (2026–2029) är snabbare än samtliga historiska svenska IT-adoptionscykler i offentlig sektor, med undantag för den pandemidriven Teams-utrullningen. Banan förutsätter:
+
+1. Nationella ramavtal för AI-tjänster på plats senast 2027
+2. Politisk prioritering och tydligt ledningsmandat
+3. Kompetensprogram för tiotusentals anställda
+4. Lösning av LOU- och informationssäkerhetshinder (eller pragmatisk tillämpning)
+
+Om dessa förutsättningar inte uppfylls fullt ut är den nedre delen av intervallet (A16: 40–60%) mer historiskt förankrad. A59:s 55–70% representerar en optimistisk men möjlig bana givet att AI-adoption har starkare pull-effekt (direkt produktivitetsvinst för enskild användare) än tidigare teknikskiften.
+
 | A18 | Interaktioner per användare per dag              | 10-20                                                            | Microsoft Copilot-data, Anthropic usage patterns | M          |
 | A19 | Tokens per interaktion (in + ut)                 | ~1 500 – 3 000 tokens                                            | Typisk fråga+svar med kontext                    | M          |
 | A20 | Inference-throughput per H100                    | ~2 000 – 4 000 tokens/s (beroende på modellstorlek och batching) | Artificial Analysis, NVIDIA benchmarks           | M          |
@@ -78,7 +106,8 @@ Sjukvårdens AI-compute delas i Tier 1 (copilot/agent: transkription, dokumentat
 | A85 | Diabetes typ 2: patienter under aktiv vård            | ~450 000–550 000            | NDR; prevalens ~7,5% (2021, ökande)                         | L          |
 | A86 | Kronisk övervakning GPU-sek per patient/år            | ~70–330                     | CGM-dataanalys + proaktiv flaggning                         | H          |
 | A87 | AI-adoption sjukvård 2029 (specialiserad inference)   | ~40–70%                     | AI Sweden Vårdkartan 2025: 13% fullt implementerat (bas); accelererande | H |
-| A88 | Tier 2 sjukvård totalt (2029 bas, med peak + redundans) | ~450–600 H100-eq          | Härlett från A81–A87, extrapolerat från 5 vårdkedjor        | H          |
+| A88 | Tier 2 sjukvård totalt (2029 bas, med peak + redundans) | ~200–900 H100-eq (central: ~450) | Härlett från A81–A87, extrapolerat från 5 vårdkedjor. Steg 2 (extrapolering) är primär osäkerhetskälla — se A90 | H          |
+| A90 | Compute-intensitetskorrektion sjukvård (fem kedjor vs. snitt) | 0,3–0,7 (bas: 0,5)       | Kvalificerad uppskattning: de fem analyserade vårdkedjorna (cancer, patologi, kronisk övervakning) bedöms ~2× tyngre än genomsnittlig vårdkontakt. Saknar direkt empiriskt stöd — avgränsad genom övre/undre resonemang i [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) | H          |
 
 ## E. Tier 3 – Finjustering och anpassning
 
@@ -123,6 +152,21 @@ Sjukvårdens AI-compute delas i Tier 1 (copilot/agent: transkription, dokumentat
 | A49 | Kvantisering och optimering                                                                                                                                                                                                                                                                                                     | Ytterligare ~1,5-2x genom INT8/FP8-inference                                            | Forskning, NVIDIA TensorRT               | L          |
 | A50 | Netto-effekt: behov i H100-eq reduceras med ~30-50% per 2 år i _fysiska_ GPU:er, men modellerna blir större och mer kapabla → nettoefterfrågan ökar ändå. Öppna resonemangsmodeller (chain-of-thought) förstärker trenden: 5–50x fler tokens per fråga jämfört med standardinference, vilket motverkar effektiviseringsvinster. | Komplext samspel – modellerad som ~20% årlig ökning i efterfrågan trots effektivisering | Egen syntes                              | H          |
 
+### Differentierad nettoeffekt per användningsprofil (A50)
+
+Nettoeffekten av effektivisering vs. modell/kapabilitetstillväxt varierar kraftigt beroende på användningsfall:
+
+| Användningsprofil | Typisk modellstorlek | Påverkas av frontier-tillväxt? | Nettoeffekt av effektivisering |
+| ----------------- | -------------------- | ------------------------------ | ------------------------------ |
+| Kommun: ärendesammanfattning, enkel dokumentation | 70B tillräcklig | Nej — uppgiften kräver inte större modell | **Kostnadsbesparing ~30–50% per 2 år** |
+| Myndighet: komplex juridisk analys, utredning | 200B+ önskad | Delvis — bättre resonemang motiverar uppgradering | Balans: ~0–20% ökning |
+| Agentiska arbetsflöden (autonoma processer, kodgenerering) | 200B+ | Ja — fler tokens per uppgift, längre kontexter | Kraftig ökning |
+| Suverän träning av grundmodell | Frontier-skala | Ja — själva målpunkten ökar | Kraftig ökning |
+
+För de vanligaste offentliga användningsfallen — sammanfattning, översättning, enkel dokumentation, standardiserade svar — innebär effektivisering att en 70B-modell som är tillräcklig idag förblir tillräcklig och blir billigare över tid. Det är främst i agentiska arbetsflöden och suverän träning som "modeller blir större"-argumentet har full kraft.
+
+Analysens 20% årliga ökning i nettoefterfrågan (efter effektivisering) gäller den viktade blandningen av alla användningsfall. För kommuner och enklare myndighetsanvändning kan nettoeffekten vara negativ (efterfrågan per uppgift minskar). För frontier-användning och agentisk drift är den klart positiv.
+
 ---
 
 ## I. Tier 1 – Agentisk AI-mix
@@ -156,9 +200,53 @@ Segmenterad beräkning (2029 basscenario):
 
 39,0 mdr tokens/dag ÷ 3 000 tok/s = 13,0M GPU-s/dag.
 Under 8h arbetsdag: 13,0M ÷ 28 800 = ~450 sustained H100.
-Med overhead (peak ×1,5, redundans ×1,3, modell ×2,5): 450 × 4,9 ≈ ~2 200 H100-eq.
 
-Spann: ~1 200–3 500 H100-eq beroende på agentandel, tokens per agentanvändare och antal bakgrundsagenter.
+#### Overhead-dekomposition (sustained 450 → provisionerad ~2 200)
+
+| Faktor | Multiplikator | Motivering | Källa | Känsl. |
+| ------ | ------------- | ---------- | ----- | ------ |
+| Peak-variation (kontorstid) | ×1,5 | ~80% av dygnsbelastningen faller på ~30% av tiden (förmiddag + tidig eftermiddag) | Typiskt SaaS-belastningsmönster; Microsoft 365 usage telemetry | M |
+| Redundans / failover | ×1,3 | N+1 redundans, underhållsfönster, uppgraderingscykler | Branschstandard för production inference (AWS/Azure SLA-nivå) | L |
+| Modellstorlek 2029 | ×1,5 | MoE 200B+-arkitekturer kräver mer VRAM och compute per token än 70B-referens | NVIDIA benchmarks: Mixtral 8×22B ~1,4–1,6x dyrare per token än Llama 70B | M |
+| Chain-of-thought reasoning | ×1,5 | Resonerangsmodeller genererar 5–50x fler interna tokens per fråga; viktat till ~1,5x på blandad arbetsbelastning (majoriteten är fortfarande copilot) | Epoch AI, OpenAI o-series benchmarks, Anthropic extended thinking-data | H |
+| Batching-ineffektivitet | ×1,15 | Längre sekvenser och heterogena förfrågningar reducerar batching-effektivitet | vLLM och TensorRT-LLM benchmarks vid blandade kontextlängder | L |
+| **Kombinerat** | **×4,9** | 1,5 × 1,3 × 1,5 × 1,5 × 1,15 ≈ 4,9 | | |
+
+450 × 4,9 ≈ **~2 200 H100-eq**.
+
+#### Sensitivitet: alternativa overhead-nivåer
+
+| Scenario | Kombinerad faktor | Tier 1 resultat | Skillnad |
+| -------- | ----------------- | --------------- | -------- |
+| Bas (ovan) | ×4,9 | ~2 200 H100-eq | referens |
+| Lägre reasoning-overhead (×1,2 istf ×1,5) | ×3,4 | ~1 530 H100-eq | −670 |
+| Lägre modellstorlek + reasoning (×1,2 + ×1,2) | ×2,7 | ~1 215 H100-eq | −985 |
+| Konservativt (alla overheads nedreviderade) | ×2,5 | ~1 125 H100-eq | −1 075 |
+
+Den största enskilda osäkerheten är chain-of-thought-factorn (×1,5). Den antar att ~25% agentanvändare (A52) driver resonerangsmodeller med 5–50x fler tokens. Om agentandelen sjunker (se källkritik nedan) sjunker också denna faktor.
+
+Spann: ~1 200–3 500 H100-eq beroende på agentandel, tokens per agentanvändare, antal bakgrundsagenter och overhead-nivå.
+
+### Källkritik: Agentisk adoption (A52, A55)
+
+A52 (andel agentanvändare: 20–30%) och A55 (tokens/dag agent: 300K–500K) baseras på Anthropic Claude Code-data och Microsofts Work Trend Index. Båda källorna har kommersiellt intresse av att agentisk AI uppfattas som snabbväxande. Oberoende kontrollpunkter:
+
+- **McKinsey State of AI 2025:** ~20% av företag rapporterar _någon form_ av agentisk AI — men det avser organisationer, inte andel individuella användare.
+- **Historisk Office-adoption:** Avancerade funktioner (makron, Power Automate) används av <10% av licensierade användare även 5+ år efter lansering.
+- **Svensk myndighetsdata:** Ingen svensk myndighetsstudie mäter agentisk AI-användning specifikt. Digibarometern 2025 fångar enbart "AI i verksamheten", inte användningsmönster.
+
+Ingen oberoende källa bekräftar att 25% av offentliganställda kunskapsarbetare kommer att använda agentiska arbetsflöden med 300K–500K tokens/dag 2029. Antagandet är rimligt som en ambitionsnivå men vilar på leverantörsdata.
+
+#### Sensitivitet: agentandel (A52) → Tier 1
+
+| Agentandel (A52) | Aktiva agenter | Tier 1 bas 2029 | Förändring |
+| ----------------- | -------------- | --------------- | ---------- |
+| 25% (bas) | 82 500 | ~2 200 H100-eq | referens |
+| 15% | 49 500 | ~1 500 H100-eq | −700 |
+| 10% | 33 000 | ~1 200 H100-eq | −1 000 |
+| 5% | 16 500 | ~900 H100-eq | −1 300 |
+
+Om agentandelen hamnar på 10–15% (mer i linje med historisk adoption av avancerade IT-funktioner) sjunker Tier 1 med 700–1 000 H100-eq.
 
 ---
 
@@ -232,7 +320,7 @@ De antaganden med högst påverkan på slutresultatet:
 | **A55** | Tokens/dag för agentanvändare | 300K–500K | Driver nästan hela uppsidan i Tier 1 |
 | **A52** | Andel agentanvändare | 20–30% | Avgör hur mycket copilot som blir agentisk belastning |
 | **A60** | Bakgrundsagenter | 20–50 slots per större organisation | Adderar kontinuerlig belastning utanför kontorstid |
-| **A88** | Sjukvårdens Tier 2-compute | ~450–600 H100-eq | Största enskilda uppjusteringen av Tier 2 |
+| **A88** | Sjukvårdens Tier 2-compute | ~200–900 H100-eq (central: ~450) | Största enskilda uppjusteringen av Tier 2 |
 | **A87** | AI-adoption sjukvård 2029 | 40–70% | Avgör hur snabbt sjukvårdens specialiserade AI skalar |
 | **A61** | Modellstorlek för svensk grundmodell | 200B+ | Bestämmer om Tier 4 är nischad eller strategiskt ambitiös |
 | **A62** | Träningsh för 200B-modell | 3M–8M H100-h | Avgör hur tung huvudkörningen blir |

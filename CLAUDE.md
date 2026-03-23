@@ -9,7 +9,7 @@ Policyanalys — inga kodfiler, enbart markdown-dokument.
 ### Estimat
 
 - Alla uppskattningar anges som intervall (låg/bas/hög), aldrig enskilda punktvärden
-- Varje siffra ska vara spårbar till ett numrerat antagande (A1–A88), en angiven källa, eller en explicit härledning
+- Varje siffra ska vara spårbar till ett numrerat antagande (A1–A90), en angiven källa, eller en explicit härledning
 - "Fermi-estimering": transparenta approximationer framför ogenomskinlig precision
 
 ### Enheter
@@ -27,8 +27,8 @@ Policyanalys — inga kodfiler, enbart markdown-dokument.
 
 1. Evidensbaserad analys — varje slutsats leds i bevis. Dokumenten gör analysen, de berättar inte om den. Inga ord som "reviderad", "uppdaterad", "jämfört med tidigare" — texten _är_ analysen.
 2. Säkra att läsaren ser metodiken — metoden (triangulering, scenarioanalys) ska vara synlig och trovärdig, men som stöd bakom svaret, inte som rubrik.
-3. Triangulering bevisar siffran — varje central siffra ska stödjas av minst två oberoende spår (botten-upp, topp-ned, storbolagsjämförelse).
-4. Källor eller tydliga antaganden — varje påstående ska ha en källhänvisning (→ [resources/links.md](resources/links.md), [05-kallor-och-resurser.md](05-kallor-och-resurser.md)) eller ett spårbart antagande (A1–A88).
+3. Triangulering stödjer siffran — varje central siffra ska belysas från minst två spår med olika metodansats. Där spåren delar antaganden redovisas detta explicit.
+4. Källor eller tydliga antaganden — varje påstående ska ha en källhänvisning (→ [resources/links.md](resources/links.md), [05-kallor-och-resurser.md](05-kallor-och-resurser.md)) eller ett spårbart antagande (A1–A90).
 5. Dubbelkolla källans URL — verifiera att länken fungerar innan den läggs till.
 6. Ingen meta-text — skriv inte "vi har reviderat", "i den nya analysen", "jämfört med förra versionen". Dokumenten ska läsas som fristående analys, inte ändringslogg.
 
@@ -44,7 +44,7 @@ Tre lager:
 
 1. Sammanfattning (06-sammanfattning.md): beslutsfattare (minister, statssekreterare)
 2. Teknisk bilaga (07-teknisk-bilaga.md): IT-strateger och tekniska rådgivare
-3. Strategi (08-strategi.md): strategisk ram (konkurrenskraft, beroende, varför bas vs hög är politiskt)
+3. Suveränitet (08-suveranitet.md): strategisk ram (konkurrenskraft, beroende, varför bas vs hög är politiskt)
 
 ### Scenarioarkitektur
 
@@ -57,13 +57,13 @@ Tre lager:
 
 ```
 01-ramverk.md                     # Analytiskt ramverk & metodik
-02-antaganden-och-data.md         # Numrerat antaganderegister (A1–A88), single source of truth
+02-antaganden-och-data.md         # Numrerat antaganderegister (A1–A90), single source of truth
 03-berakningsmodell.md            # Beräkningsmodell — offentlig sektor (tre trianguleringsspår)
 04-internationella-jamforelser.md # Internationella jämförelser
 05-kallor-och-resurser.md         # Källregister (alla länkar, rapporter, datakällor)
 06-sammanfattning.md              # Sammanfattning (slutleverabel)
 07-teknisk-bilaga.md              # Teknisk bilaga
-08-strategi.md                    # Konkurrenskraft, beroende, ambition (strategisk ram)
+08-suveranitet.md                 # Konkurrenskraft, beroende, ambition (strategisk ram)
 09-tanke-exempel.md               # Bygga vs. köpa — konkret tankeexperiment
 10-kan-vi-vanta.md                # "Kan vi vänta?" — stresstest av avvakta-strategin
 11-kompletterande-perspektiv.md   # Praktiker-stresstest (elnät, tokens/capita, NVIDIA-kö)

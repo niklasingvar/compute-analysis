@@ -28,20 +28,20 @@ Tre trianguleringsspår används:
 - Börja i [06-sammanfattning.md](06-sammanfattning.md) för den beslutsklara versionen
 - Gå sedan till [03-berakningsmodell.md](03-berakningsmodell.md) för den fulla härledningen
 - Använd [02-antaganden-och-data.md](02-antaganden-och-data.md) som numerisk sanningskälla
-- Läs [08-strategi.md](08-strategi.md) för den strategiska tolkningen av varför nivåvalet spelar roll
+- Läs [08-suveranitet.md](08-suveranitet.md) för den strategiska tolkningen av varför nivåvalet spelar roll
 
 ## Dokumentöversikt
 
 | Dokument | Roll |
 |----------|------|
 | [01-ramverk.md](01-ramverk.md) | Ramverk, trianguleringslogik och scenarioarkitektur |
-| [02-antaganden-och-data.md](02-antaganden-och-data.md) | Antaganderegister (A1–A88), single source of truth |
+| [02-antaganden-och-data.md](02-antaganden-och-data.md) | Antaganderegister (A1–A90), single source of truth |
 | [03-berakningsmodell.md](03-berakningsmodell.md) | Full kvantitativ modell |
 | [04-internationella-jamforelser.md](04-internationella-jamforelser.md) | Topp-ned-validering via andra länder |
 | [05-kallor-och-resurser.md](05-kallor-och-resurser.md) | Riskbaserat källregister |
 | [06-sammanfattning.md](06-sammanfattning.md) | Beslutsversion |
 | [07-teknisk-bilaga.md](07-teknisk-bilaga.md) | Teknisk bilaga och ordlista |
-| [08-strategi.md](08-strategi.md) | Konkurrenskraft, beroende och ambition |
+| [08-suveranitet.md](08-suveranitet.md) | Konkurrenskraft, beroende och ambition |
 | [09-tanke-exempel.md](09-tanke-exempel.md) | Bygga vs. köpa |
 | [10-kan-vi-vanta.md](10-kan-vi-vanta.md) | Stresstest av väntestrategi |
 | [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md) | Praktiska kompletterande perspektiv |

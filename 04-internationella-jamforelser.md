@@ -18,14 +18,17 @@ Det internationella spåret används därför som:
 
 ## Jämförande tabell
 
-| Land / program | Officiell referens | Vad som är känt | Skalat till Sverige | Tolkning för svensk offentlig sektor |
-|----------------|--------------------|-----------------|---------------------|--------------------------------------|
-| **Storbritannien** | AI Opportunities Action Plan + Isambard-AI | Regeringen talar om minst 20x sovereign compute till 2030; Isambard-AI är en konkret offentlig resurs | ~3 000–6 000 H100-eq | Visar att central statlig compute-kapacitet kan byggas snabbt när politisk prioritet finns |
-| **Finland** | LUMI / EuroHPC | Finland har tidig tillgång till mycket större forskningscompute än Sverige | ~2 000–4 000 H100-eq för offentlig sektor | Ger ett nordiskt ankare men fångar främst forskning, inte hela offentlig sektor |
-| **Danmark** | Gefion / DCAI | Gefion ger Danmark en konkret nationell AI-infrastruktur med suveränitetsargument | ~2 500–4 000 H100-eq | Stark jämförelsepunkt för nordisk ambitionsnivå och offentlig-privat modell |
-| **Frankrike** | France 2030 / Jean Zay / statlig AI-linje | Hög statlig styrning, tydligt suveränitetsmotiv | ~2 000–4 000 H100-eq | Viktig som jämförelse för länder som kopplar AI till strategisk autonomi |
-| **Tyskland** | Federala och delstatliga AI-satsningar | Stor total volym men mer fragmenterad modell | ~1 500–3 000 H100-eq | Visar att större ekonomi inte automatiskt ger snabb offentlig adoption |
-| **EU AI Factories** | EuroHPC AI Factories | EU bygger gemensam AI-infrastruktur med AI-optimiserade resurser | ~1 500–5 000 H100-eq | Viktig lägstanivå för vad ett europeiskt offentligt ambitionstak kan se ut |
+Statusdefinitioner: **Operationell** = i drift med verifierad kapacitet. **Finansierad** = budget anvisad, under uppbyggnad. **Annonserad** = offentligt uttalad ambition utan bekräftad leverans.
+
+| Land / program | Status | Officiell referens | Vad som är känt | Skalat till Sverige | Tolkning för svensk offentlig sektor |
+|----------------|--------|--------------------|-----------------|---------------------|--------------------------------------|
+| **Storbritannien: Isambard-AI** | Operationell | Isambard-AI, Bristol | ~5 000+ GPU:er i drift; konkret offentlig resurs | ~1 000–2 000 H100-eq (offentlig del) | Faktiskt levererad kapacitet |
+| **Storbritannien: AI Action Plan** | Annonserad | AI Opportunities Action Plan | Regeringen talar om minst 20x sovereign compute till 2030 | ~3 000–6 000 H100-eq | Politisk ambition, ännu inte levererad |
+| **Finland: LUMI** | Operationell | LUMI / EuroHPC | ~5 000 H100-eq GPU-partition; primärt forskning | ~2 000–4 000 H100-eq | I drift men betjänar EuroHPC + forskning, inte offentlig sektor direkt |
+| **Danmark: Gefion** | Operationell | Gefion / DCAI | ~1 528 H100; offentlig-privat partnerskap | ~2 500–4 000 H100-eq | Konkret och verifierbar nordisk referens |
+| **Frankrike** | Delvis operationell | France 2030 / Jean Zay | Jean Zay i drift; France 2030 bredare satsning under uppbyggnad | ~2 000–4 000 H100-eq | Blandad status: visst levererat, visst annonserat |
+| **Tyskland** | Fragmenterad | Federala + delstatliga satsningar | Stor total volym men svårt att konsolidera | ~1 500–3 000 H100-eq | Styrning och fragmentering begränsar effekten |
+| **EU AI Factories** | Finansierad | EuroHPC AI Factories | EUR 2–3 mdr planerat; under uppbyggnad 2024–2026 | ~1 500–5 000 H100-eq | Under byggnation, inte i drift |
 
 ---
 

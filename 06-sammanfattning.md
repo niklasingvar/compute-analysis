@@ -2,9 +2,11 @@
 
 ## Sammanfattning för beslutsfattare
 
-Sveriges offentliga sektor behöver planera för **cirka 9 000 H100-ekvivalenter 2029** om målet är bred AI-användning, meningsfull nationell modellförmåga och rimlig strategisk handlingsfrihet. Ett lägre spår på **~3 000 H100-eq** är möjligt, men lämnar Sverige mer beroende av externa leverantörer och med svagare kapacitet för känsliga domäner. Ett högre spår på **~20 000 H100-eq** motsvarar en tydligt mer offensiv ambitionsnivå.
+Sveriges offentliga sektor behöver planera för **cirka 4 300 H100-ekvivalenter 2029** i operativ AI-kapacitet (inference, specialiserad AI och finjustering). Om Sverige dessutom väljer att bygga nationell modellförmåga — suverän träning av svenska grundmodeller och domänanpassade modeller — stiger behovet till **cirka 9 000 H100-ekvivalenter**. Det andra halvsparet (~4 500 H100-eq) är ett strategiskt val om nationell suveränitet, inte en direkt konsekvens av användartillväxt.
 
-Tre oberoende spår ligger bakom slutsatsen:
+Ett lägre spår på **~3 000 H100-eq** är möjligt, men lämnar Sverige mer beroende av externa leverantörer och med svagare kapacitet för känsliga domäner. Ett högre spår på **~20 000 H100-eq** motsvarar en tydligt mer offensiv ambitionsnivå.
+
+Tre spår med olika metodansats ligger bakom slutsatsen:
 
 | Spår | 2029-nivå | Vad spåret fångar |
 |------|-----------|-------------------|
@@ -12,21 +14,25 @@ Tre oberoende spår ligger bakom slutsatsen:
 | Topp-ned | ~4 100 H100-eq | Dagens offentliga investeringsplaner och internationell praxis |
 | Storbolagstriangulering | ~7 600 H100-eq | Vad motsvarande modell- och driftförmåga kostar i global marknad |
 
-Två efterfrågebaserade spår konvergerar alltså nära **9 000**, medan topp-ned-spåret fungerar som ett konservativt golv.
+Två efterfrågebaserade spår konvergerar nära **9 000** (inkl. suverän träning), medan topp-ned-spåret ger ett konservativt golv. Spåren delar vissa centrala antaganden — se oberoendebedömning i [03-berakningsmodell.md](03-berakningsmodell.md).
 
 ---
 
-## Tre huvudslutsatser
+## Fyra huvudslutsatser
 
 ### 1. Offentlig sektor behöver mer än ett copilot-scenario
 
 Det är inte längre tillräckligt att räkna på enkel chatbotanvändning. Agentiska arbetsflöden, längre kontexter, fler verktygsanrop och bakgrundsagenter flyttar upp inference-behovet tydligt. Därför landar Tier 1 i huvudscenariot kring **~2 200 H100-eq 2029**, inte några hundra.
 
-### 2. Suverän modellförmåga är den största enskilda posten
+### 2. Suverän modellförmåga är ett politiskt val — den största enskilda posten
 
-Om Sverige vill kunna träna eller vidareutveckla modeller för känsliga data, svensk offentlig domän och nationell styrning blir Tier 4 avgörande. I huvudscenariot står suverän träning och RL-relaterat arbete för **~4 500 H100-eq** i 2029-årsbilden.
+Om Sverige väljer att kunna träna eller vidareutveckla modeller för känsliga data, svensk offentlig domän och nationell styrning blir Tier 4 avgörande. I huvudscenariot står suverän träning och RL-relaterat arbete för **~4 500 H100-eq** i 2029-årsbilden. Det är ett aktivt policybeslut med egen kostnad-nytta-analys ([08-suveranitet.md](08-suveranitet.md)), inte en direkt konsekvens av användartillväxt. Alternativet — att köpa inference kommersiellt — har lägre kapitalkostnad men högre beroenderisk.
 
-### 3. Det som ser dyrt ut i svensk budgetlogik är hanterbart i strategisk kontext
+### 3. Nuvarande budgetlogik räcker inte
+
+Analysens eget topp-ned-spår (Metod C) visar att befintlig IT-budgetlogik (A11: 5–12% AI-andel) bär **~1 750–2 400 H100-eq**. Även det rent operativa behovet (Tier 1–3, ~4 300 H100-eq) överstiger detta med faktor ~2. Huvudscenariot (~9 000) förutsätter att AI-compute inte finansieras enbart genom omprioritering inom befintlig IT-budget, utan kräver riktade statliga satsningar, EU-medel och offentlig-privat samverkan. Utan sådana beslut är den realistiskt uppnåbara kapaciteten **~2 000–4 000 H100-eq** — långt under huvudscenariot.
+
+### 4. Kostnaden är hanterbar i strategisk kontext — men kräver nyfinansiering
 
 Huvudscenariot motsvarar ungefär **~2 000 MSEK per år i compute** och **~6,3 MW** i facility power 2029. Det är betydande men inte extraordinärt i internationell jämförelse. Den stora risken är inte att kapaciteten är omöjlig att finansiera, utan att Sverige agerar för sent i en marknad med långa ledtider.
 
@@ -77,6 +83,7 @@ Compute utan styrning ger låg effekt. Beslutet bör därför paketeras tillsamm
 
 | Risk | Vad som kan hända | Konsekvens |
 |------|-------------------|------------|
+| **Utebliven nyfinansiering** | Inga riktade satsningar utöver befintlig IT-budget | Kapaciteten stannar vid ~2 000–4 000 H100-eq — en femtedel till hälften av huvudscenariot |
 | **För låg adoption** | Offentlig sektor använder AI långsammare än väntat | Huvudscenariot kan bli för högt på kort sikt |
 | **För snabb agentisk övergång** | Fler användare går från copilot till agentiskt arbete | Huvudscenariot kan bli för lågt redan före 2029 |
 | **Supply-side-begränsningar** | GPU:er, HBM eller datacenterkapacitet blir svåra att säkra | Behovet kvarstår men blir svårare att realisera |
@@ -101,6 +108,6 @@ Antaganden: [02-antaganden-och-data.md](02-antaganden-och-data.md)
 Beräkningsmodell: [03-berakningsmodell.md](03-berakningsmodell.md)  
 Internationella jämförelser: [04-internationella-jamforelser.md](04-internationella-jamforelser.md)  
 Källregister: [05-kallor-och-resurser.md](05-kallor-och-resurser.md)  
-Strategisk ram: [08-strategi.md](08-strategi.md)  
+Strategisk ram: [08-suveranitet.md](08-suveranitet.md)  
 Bygga vs. köpa: [09-tanke-exempel.md](09-tanke-exempel.md)  
 Väntestrategi: [10-kan-vi-vanta.md](10-kan-vi-vanta.md)

@@ -6,13 +6,13 @@ Uppskatta den svenska offentliga sektorns (exkl. försvar) behov av AI-beräknin
 
 ## Metodik: Tre trianguleringsspår
 
-Tre oberoende spår uppskattar samma behov. Där de konvergerar har vi hög konfidens i storleksordningen; där de divergerar redovisas osäkerheten explicit.
+Tre spår med olika metodansats uppskattar samma behov. Två är efterfrågebaserade (botten-upp och storbolag) och delar centrala antaganden om population, adoption och suverän träning; ett (topp-ned) är budget- och benchmarkbaserat och genuint oberoende. Där spåren konvergerar finns konfidens i storleksordningen; där de divergerar — och det gör de: topp-ned landar på ungefär hälften — redovisas osäkerheten och de delade antagandena explicit (se oberoendebedömning i [03-berakningsmodell.md](03-berakningsmodell.md)).
 
 1. Botten-upp: Användningsfall × adoption × compute per enhet
 2. Topp-ned: Internationella investeringar skalade till Sverige
 3. Storbolagstriangulering: Vad kostar det att träna/köra de modeller offentlig sektor behöver, jämfört med vad storbolagen spenderar?
 
-Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsmodell.md). Sammanfattning: [06-sammanfattning.md](06-sammanfattning.md). Strategisk ram (varför ambitionsnivå spelar roll): [08-strategi.md](08-strategi.md).
+Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsmodell.md). Sammanfattning: [06-sammanfattning.md](06-sammanfattning.md). Strategisk ram (varför ambitionsnivå spelar roll): [08-suveranitet.md](08-suveranitet.md).
 
 ---
 
@@ -21,7 +21,7 @@ Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsm
 | Dokument   | Roll                                                              |
 | ---------- | ----------------------------------------------------------------- |
 | 01 (detta) | Ramverk, triangulering, drivare                                   |
-| 02         | Antaganderegister (A1–A88), spårbarhet och single source of truth |
+| 02         | Antaganderegister (A1–A90), spårbarhet och single source of truth |
 | 03         | Full härledning, låg/bas/hög-scenarier                            |
 | 04         | Internationella jämförelser (topp-ned-validering)                 |
 | 05         | Källregister                                                      |
@@ -130,6 +130,10 @@ Där:
 | Regioner (vård)              | 5-10%            | 2028-2029        | 50-70%     | Medicinsk AI-evidens driver            |
 | Kommuner (stora)             | 5-8%             | 2029             | 40-60%     | Resursstarka, egna IT-avdelningar      |
 | Kommuner (små)               | 1-3%             | 2030             | 20-40%     | Beroende av SKR/gemensamma plattformar |
+
+### Historisk referens: IT-adoption i svensk offentlig sektor
+
+Analysens S-kurva (5–10% adoption 2026 → 55–70% 2029) är snabbare än de flesta historiska svenska IT-adoptionscykler. E-post i kommuner tog ~10 år, e-tjänster ~10 år, och Office 365/Teams ~7 år (pandemidriven). AI-verktygens direkta produktivitetsvinst för enskilda användare ger dock starkare pull-effekt än tidigare teknikskiften, vilket motiverar en högre bana än ren historisk extrapolering. Offentlig sektors strukturella hinder (LOU, informationssäkerhet, budgettryck) kvarstår men bedöms inte fullt ut blockera adoption givet politisk prioritering. Adoptionsintervallet (A16: 40–60% 2029) balanserar dessa krafter. Fullständig adoptionsbana: [02-antaganden-och-data.md](02-antaganden-och-data.md), sektion C.
 
 ### Adoptionshinder specifika för svensk offentlig sektor
 
