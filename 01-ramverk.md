@@ -12,7 +12,7 @@ Tre spår med olika metodansats uppskattar samma behov. Två är efterfrågebase
 2. Topp-ned: Internationella investeringar skalade till Sverige
 3. Storbolagstriangulering: Vad kostar det att träna/köra de modeller offentlig sektor behöver, jämfört med vad storbolagen spenderar?
 
-Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsmodell.md). Sammanfattning: [06-sammanfattning.md](06-sammanfattning.md). Strategisk ram (varför ambitionsnivå spelar roll): [08-strategi.md](08-strategi.md).
+Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsmodell.md). Sammanfattning: [06-sammanfattning.md](06-sammanfattning.md). Strategisk ram (varför ambitionsnivå spelar roll): [08-suveranitet.md](08-suveranitet.md).
 
 ---
 
@@ -21,7 +21,7 @@ Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsm
 | Dokument   | Roll                                                              |
 | ---------- | ----------------------------------------------------------------- |
 | 01 (detta) | Ramverk, triangulering, drivare                                   |
-| 02         | Antaganderegister (A1–A88), spårbarhet och single source of truth |
+| 02         | Antaganderegister (A1–A90), spårbarhet och single source of truth |
 | 03         | Full härledning, låg/bas/hög-scenarier                            |
 | 04         | Internationella jämförelser (topp-ned-validering)                 |
 | 05         | Källregister                                                      |
@@ -133,7 +133,7 @@ Där:
 
 ### Historisk referens: IT-adoption i svensk offentlig sektor
 
-Analysens S-kurva (5–10% adoption 2026 → 55–70% 2029) är aggressiv jämfört med historiska svenska IT-adoptionscykler. E-post i kommuner tog ~10 år, e-tjänster ~10 år, och Office 365/Teams ~7 år (pandemidriven). AI-verktygens direkta produktivitetsvinst för enskilda användare kan ge starkare pull-effekt, men offentlig sektors strukturella hinder (LOU, informationssäkerhet, budgettryck) kvarstår. Den nedre delen av adoptionsintervallet (A16: 35–55% 2029) är mer förenlig med historisk svensk precedens. Fullständig adoptionsbana: [02-antaganden-och-data.md](02-antaganden-och-data.md), sektion C.
+Analysens S-kurva (5–10% adoption 2026 → 55–70% 2029) är snabbare än de flesta historiska svenska IT-adoptionscykler. E-post i kommuner tog ~10 år, e-tjänster ~10 år, och Office 365/Teams ~7 år (pandemidriven). AI-verktygens direkta produktivitetsvinst för enskilda användare ger dock starkare pull-effekt än tidigare teknikskiften, vilket motiverar en högre bana än ren historisk extrapolering. Offentlig sektors strukturella hinder (LOU, informationssäkerhet, budgettryck) kvarstår men bedöms inte fullt ut blockera adoption givet politisk prioritering. Adoptionsintervallet (A16: 40–60% 2029) balanserar dessa krafter. Fullständig adoptionsbana: [02-antaganden-och-data.md](02-antaganden-och-data.md), sektion C.
 
 ### Adoptionshinder specifika för svensk offentlig sektor
 

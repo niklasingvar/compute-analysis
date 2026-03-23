@@ -18,7 +18,7 @@ Två efterfrågebaserade spår konvergerar nära **9 000** (inkl. suverän trän
 
 ---
 
-## Tre huvudslutsatser
+## Fyra huvudslutsatser
 
 ### 1. Offentlig sektor behöver mer än ett copilot-scenario
 
@@ -26,9 +26,13 @@ Det är inte längre tillräckligt att räkna på enkel chatbotanvändning. Agen
 
 ### 2. Suverän modellförmåga är ett politiskt val — den största enskilda posten
 
-Om Sverige väljer att kunna träna eller vidareutveckla modeller för känsliga data, svensk offentlig domän och nationell styrning blir Tier 4 avgörande. I huvudscenariot står suverän träning och RL-relaterat arbete för **~4 500 H100-eq** i 2029-årsbilden. Det är ett aktivt policybeslut med egen kostnad-nytta-analys ([08-strategi.md](08-strategi.md)), inte en direkt konsekvens av användartillväxt. Alternativet — att köpa inference kommersiellt — har lägre kapitalkostnad men högre beroenderisk.
+Om Sverige väljer att kunna träna eller vidareutveckla modeller för känsliga data, svensk offentlig domän och nationell styrning blir Tier 4 avgörande. I huvudscenariot står suverän träning och RL-relaterat arbete för **~4 500 H100-eq** i 2029-årsbilden. Det är ett aktivt policybeslut med egen kostnad-nytta-analys ([08-suveranitet.md](08-suveranitet.md)), inte en direkt konsekvens av användartillväxt. Alternativet — att köpa inference kommersiellt — har lägre kapitalkostnad men högre beroenderisk.
 
-### 3. Det som ser dyrt ut i svensk budgetlogik är hanterbart i strategisk kontext
+### 3. Nuvarande budgetlogik räcker inte
+
+Analysens eget topp-ned-spår (Metod C) visar att befintlig IT-budgetlogik (A11: 5–12% AI-andel) bär **~1 750–2 400 H100-eq**. Även det rent operativa behovet (Tier 1–3, ~4 300 H100-eq) överstiger detta med faktor ~2. Huvudscenariot (~9 000) förutsätter att AI-compute inte finansieras enbart genom omprioritering inom befintlig IT-budget, utan kräver riktade statliga satsningar, EU-medel och offentlig-privat samverkan. Utan sådana beslut är den realistiskt uppnåbara kapaciteten **~2 000–4 000 H100-eq** — långt under huvudscenariot.
+
+### 4. Kostnaden är hanterbar i strategisk kontext — men kräver nyfinansiering
 
 Huvudscenariot motsvarar ungefär **~2 000 MSEK per år i compute** och **~6,3 MW** i facility power 2029. Det är betydande men inte extraordinärt i internationell jämförelse. Den stora risken är inte att kapaciteten är omöjlig att finansiera, utan att Sverige agerar för sent i en marknad med långa ledtider.
 
@@ -79,12 +83,12 @@ Compute utan styrning ger låg effekt. Beslutet bör därför paketeras tillsamm
 
 | Risk | Vad som kan hända | Konsekvens |
 |------|-------------------|------------|
+| **Utebliven nyfinansiering** | Inga riktade satsningar utöver befintlig IT-budget | Kapaciteten stannar vid ~2 000–4 000 H100-eq — en femtedel till hälften av huvudscenariot |
 | **För låg adoption** | Offentlig sektor använder AI långsammare än väntat | Huvudscenariot kan bli för högt på kort sikt |
 | **För snabb agentisk övergång** | Fler användare går från copilot till agentiskt arbete | Huvudscenariot kan bli för lågt redan före 2029 |
 | **Supply-side-begränsningar** | GPU:er, HBM eller datacenterkapacitet blir svåra att säkra | Behovet kvarstår men blir svårare att realisera |
 | **Svag styrning** | Kapacitet byggs utan gemensam prioritering | Låg nyttjandegrad och sämre legitimitet |
 | **För låg suverän ambition** | Sverige väljer bort modellförmåga för känsliga domäner | Lägre kostnad men större leverantörsberoende |
-| **Budgetgap** | Nuvarande IT-budgetlogik (A11: 8% AI-andel) bär ~1 750 H100-eq; huvudscenariot kräver ~9 000 | Kräver aktiv politisk prioritering och nya finansieringsströmmar utöver befintlig IT-budget |
 
 ---
 
@@ -104,6 +108,6 @@ Antaganden: [02-antaganden-och-data.md](02-antaganden-och-data.md)
 Beräkningsmodell: [03-berakningsmodell.md](03-berakningsmodell.md)  
 Internationella jämförelser: [04-internationella-jamforelser.md](04-internationella-jamforelser.md)  
 Källregister: [05-kallor-och-resurser.md](05-kallor-och-resurser.md)  
-Strategisk ram: [08-strategi.md](08-strategi.md)  
+Strategisk ram: [08-suveranitet.md](08-suveranitet.md)  
 Bygga vs. köpa: [09-tanke-exempel.md](09-tanke-exempel.md)  
 Väntestrategi: [10-kan-vi-vanta.md](10-kan-vi-vanta.md)

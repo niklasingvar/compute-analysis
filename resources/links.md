@@ -1,6 +1,6 @@
 # Källor med nycklar (L1–L11)
 
-Dokumentet [08-strategi.md](../08-strategi.md) hänvisar till posterna nedan som L1, L2, osv.
+Dokumentet [08-suveranitet.md](../08-suveranitet.md) hänvisar till posterna nedan som L1, L2, osv.
 
 ---
 

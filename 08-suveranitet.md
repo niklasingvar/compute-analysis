@@ -1,4 +1,4 @@
-# 08 – Strategi: konkurrenskraft, beroende och ambition
+# 08 – Suveränitet: konkurrenskraft, beroende och ambition
 
 Källhänvisningar i texten använder nycklarna L1–L11; fullständiga länkar och metadata finns i [resources/links.md](resources/links.md).
 
@@ -71,6 +71,18 @@ I den kvantitativa modellen (03–06) motsvarar detta en tydlig koppling:
 - **Hög** (~20 000 H100-ekvivalenter 2029) ligger närmare ett tydligt ambitionsscenario där Sverige väljer starkare forskningsmiljö, högre agentisk användning och större strategisk handlingsfrihet.
 
 Exakta intervall och antaganden återfinns i 02–03 och 06.
+
+### Finansieringsprofil per ambitionsnivå
+
+De tre nivåerna har olika finansieringsprofiler:
+
+| Nivå | Compute-kostnad (MSEK/år 2029) | ~Andel av IT-budget | Finansieringskälla |
+|------|-------------------------------|--------------------|--------------------|
+| Låg (~3 000 H100-eq) | ~700 | ~2,3% | Ryms inom aggressiv omprioritering av befintlig IT-budget |
+| Bas (~9 000 H100-eq) | ~2 000 | ~6,7% (enbart compute) | Kräver riktad satsning utöver IT-budget |
+| Hög (~20 000 H100-eq) | ~4 900 | ~16% | Kräver nationellt investeringsprogram |
+
+Basscenariots compute-kostnad ensam motsvarar ~6,7% av total IT-budget. Inkluderat personal, licenser och data når total AI-andel ~13–17% — väsentligt högre än dagens ~1–3% och högre än Gartners 2029-prognos (A11: 5–12%). Det är genomförbart men fordrar ett aktivt politiskt beslut, inte en gradvis utveckling inom nuvarande budgetlogik. Kostnaden för suverän träning (~1 050 MSEK/år utöver operativa ~950 MSEK) är den post som säkrast kräver nyfinansiering — den ryms inte i någon rimlig omprioritering av befintlig IT-budget.
 
 ### Suverän träning — ett politiskt val med egen kostnad-nytta
 

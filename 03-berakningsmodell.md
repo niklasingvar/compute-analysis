@@ -84,15 +84,15 @@ Tier 2 har två huvudkomponenter: **(a) sjukvårdens specialiserade inference** 
 
 Fem vårdkedjor (skelettfrakturer, lungröntgen, diabetes typ 2, psykisk ohälsa, cancerdiagnostik) analyseras i detalj i [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md). De täcker ~12–15% av nationella vårdkontakter men inkluderar de mest compute-intensiva specialiteterna.
 
-| Komponent                        | Bas (H100-eq) | Antagande              |
-| -------------------------------- | ------------- | ---------------------- |
-| 5 vårdkedjor (direkt Tier 2)     | ~44           | A81–A87                |
-| Extrapolering till hela sjukvården (×8, justerat ×0,5) | ~180 | Konservativt: de 5 är tyngre än snitt |
-| Agentisk reasoning-overhead (×2,5) | ~450         | 2029-modeller: MoE, chain-of-thought |
-| Redundans + testmiljöer (×1,3)   | ~600          |                        |
-| **Sjukvård Tier 2 bas 2029**     | **~450–600**  | A88                    |
+| Komponent                        | Bas (H100-eq) | Spann | Antagande              |
+| -------------------------------- | ------------- | ----- | ---------------------- |
+| 5 vårdkedjor (direkt beräknat)   | ~44           | 13–111 | A81–A87 — robust: volymer × GPU-tid |
+| Extrapolering hela sjukvården    | ~180          | 120–250 | A90 (korrektionsfaktor 0,3–0,7, bas 0,5) — **primär osäkerhetskälla** |
+| Agentisk reasoning-overhead      | ~450          | 180–880 | ×1,5–3,5 (bas ×2,5), 2029-modeller |
+| Redundans + testmiljöer          | ~580          | 220–1 230 | ×1,2–1,4 (bas ×1,3) |
+| **Sjukvård Tier 2 bas 2029**     | **~450**      | **200–900** | A88                    |
 
-Spann: ~200 (låg: lägre adoption, enklare modeller) till ~1 500 (hög: bred adoption, alla vårdkedjor, reasoning-tung).
+Multiplikationskedjans största svaghet är steg 2 (extrapolering från 5 vårdkedjor till hela sjukvården), där korrektionsfaktorn A90 saknar direkt empiriskt stöd — se avgränsad argumentation i [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md). Storleksordningen (hundratals, inte tiotals eller tusentals) är dock robust: samtliga rimliga parameterval ger resultat i spannet ~200–900.
 
 #### b) Komplexa resonemangsuppgifter (2029 bas)
 
@@ -117,10 +117,10 @@ Spann: ~200 (låg: lägre adoption, enklare modeller) till ~1 500 (hög: bred ad
 
 | Subkomponent                      | Bas (H100-eq) |
 | --------------------------------- | ------------- |
-| Sjukvård (specialiserad inference) | ~500          |
+| Sjukvård (specialiserad inference) | ~450 (spann: 200–900) |
 | Komplexa resonemangsuppgifter      | ~20           |
 | Geospatial + bedrägeri + övrigt    | ~280          |
-| **Tier 2 totalt**                  | **~800**      |
+| **Tier 2 totalt**                  | **~750** (spann: ~500–1 200) |
 
 Tier 2 tidsserie:
 
@@ -223,7 +223,7 @@ Tier 1 och Tier 4 står tillsammans för huvuddelen av uppsidan, men Tier 2 har 
 | 2030 | 6 800                    | 6 000                    | 12 800       |
 | 2031 | 10 200                   | 8 000                    | 18 200       |
 
-Tier 1–3 representerar operativt inference-, specialiserad AI- och finjusteringsbehov — den kapacitet som krävs för att offentlig sektor ska kunna använda AI i bred skala. Tier 4 representerar en strategisk ambition om nationell modellförmåga: att kunna träna och vidareutveckla svenska grundmodeller och domänanpassade modeller för känsliga data. Det är ett politiskt val, inte en beräknad efterfrågan i samma mening som Tier 1–3. Motivering och kostnad-nytta-analys för det valet: [08-strategi.md](08-strategi.md).
+Tier 1–3 representerar operativt inference-, specialiserad AI- och finjusteringsbehov — den kapacitet som krävs för att offentlig sektor ska kunna använda AI i bred skala. Tier 4 representerar en strategisk ambition om nationell modellförmåga: att kunna träna och vidareutveckla svenska grundmodeller och domänanpassade modeller för känsliga data. Det är ett politiskt val, inte en beräknad efterfrågan i samma mening som Tier 1–3. Motivering och kostnad-nytta-analys för det valet: [08-suveranitet.md](08-suveranitet.md).
 
 ---
 
@@ -250,7 +250,9 @@ UK planerar ~£1-2,5 mdr i offentlig AI-infrastruktur. Sverige ≈ 15% av UK:s a
 | £1 mdr (låg)   | ~1 500 MSEK               | ~2 000-3 000 |
 | £2,5 mdr (hög) | ~3 750 MSEK               | ~5 000-8 000 |
 
-### Metod C: AI som andel av IT-budget
+### Metod C: AI som andel av IT-budget (genomförbarhetsbegränsning)
+
+Metod C besvarar frågan *"vad kan nuvarande budgetlogik finansiera?"*, inte *"vad behöver Sverige?"*. Den är därför en genomförbarhetsbegränsning, inte ett behovsestimat. Att använda Metod C som golv för behovet vore ett kategorifel — det är liktydigt med att säga att man bara behöver så mycket sjukvård som befintlig budget räcker till.
 
 | År   | IT-budget (mdr SEK) | AI-andel | AI-budget (MSEK) | H100-eq (vid 200 KSEK/GPU/år) |
 | ---- | ------------------- | -------- | ---------------- | ----------------------------- |
@@ -279,17 +281,18 @@ Justerat: Finlands LUMI betjänar hela EuroHPC + forskning, inte bara offentlig 
 
 ### Topp-ned sammanfattning (2029):
 
-| Metod                  | Låg    | Bas    | Hög    | Kommentar                                                                 |
-| ---------------------- | ------ | ------ | ------ | ------------------------------------------------------------------------- |
-| EU AI Factories        | 1 500  | 3 000  | 5 000  | Fångar europeisk offentlig investeringsnivå                               |
-| UK-skalning            | 3 000  | 5 000  | 12 000 | Fångar mer offensiv offentlig ambitionsnivå                               |
-| IT-budget-andel        | 1 500  | 2 500  | 4 000  | Ger ett konservativt budgetankare                                         |
-| Nordisk jämförelse     | 2 000  | 4 000  | 8 000  | Visar vad jämförbara länder redan bygger                                  |
-| **Topp-ned medel (budget/benchmark)** | **~2 000** | **~3 600** | **~7 250** | **Snitt av de fyra metoderna ovan** |
-| Tokens per capita (11) | 3 000  | 6 000  | 10 000 | Annan metodtyp: användningsbaserad, inte budget/benchmark-baserad |
-| Topp-ned medel (inkl. tokens/capita) | ~2 200 | ~4 100 | ~7 800 | Inkl. tokens/capita drar upp snittet med ~500 |
+| Metod                  | Låg    | Bas    | Hög    | Typ | Kommentar                                                                 |
+| ---------------------- | ------ | ------ | ------ | --- | ------------------------------------------------------------------------- |
+| EU AI Factories        | 1 500  | 3 000  | 5 000  | Behov | Fångar europeisk offentlig investeringsnivå                               |
+| UK-skalning            | 3 000  | 5 000  | 12 000 | Behov | Fångar mer offensiv offentlig ambitionsnivå                               |
+| IT-budget-andel (Metod C) | 1 500  | 2 500  | 4 000  | **Budget** | Visar vad nuvarande budgetlogik bär — inte vad som behövs |
+| Nordisk jämförelse     | 2 000  | 4 000  | 8 000  | Behov | Visar vad jämförbara länder redan bygger                                  |
+| **Medel behovsspår (A+B+D)** | **~2 200** | **~4 000** | **~8 300** | | **Exkl. Metod C (budgetbegränsning)** |
+| **Medel alla fyra metoder** | **~2 000** | **~3 600** | **~7 250** | | **Inkl. Metod C — drar ned snittet** |
+| Tokens per capita (11) | 3 000  | 6 000  | 10 000 | Behov | Annan metodtyp: användningsbaserad, inte budget/benchmark-baserad |
+| Topp-ned medel (inkl. tokens/capita) | ~2 200 | ~4 100 | ~7 800 | | Inkl. tokens/capita drar upp snittet med ~500 |
 
-Tokens per capita är metodologiskt en annan typ av uppskattning — den utgår från användningsmängd snarare än offentliga investeringsplaner eller budgetramar. Den drar upp topp-ned-medelvärdet med ~500 H100-eq. Presenteras separat för transparens.
+Metod C skiljer sig från de tre övriga genom att den mäter finansieringsutbudets tak, inte behovet. Att inkludera den i medelvärdet drar ned snittet — behovsspåren ensamma (A+B+D) ger ~4 000 H100-eq (bas 2029). Tokens per capita presenteras separat då den utgår från användningsmängd snarare än offentliga investeringsplaner.
 
 ---
 
@@ -376,7 +379,7 @@ Botten-upp och storbolagsspåren konvergerar kring ~8 000–9 000 H100-eq för b
 
 Syntesens basscenario sätts till **~9 000 H100-eq** 2029, varav **~4 300 operativt** (Tier 1–3) och **~4 500 strategisk suverän träning** (Tier 4). Det operativa behovet ligger nära topp-ned-spårets övre spann; det totala behovet inkl. suverän träning drivs av botten-upp och storbolagsspåren. Topp-ned-spåret används som konservativt golv snarare än centrum.
 
-Distinktionen är viktig: Tier 1–3 representerar den kapacitet som behövs för att offentlig sektor ska kunna använda AI i bred drift. Tier 4 representerar ett politiskt val om nationell modellförmåga (se [08-strategi.md](08-strategi.md)). Båda är motiverade, men de bör bedömas separat.
+Distinktionen är viktig: Tier 1–3 representerar den kapacitet som behövs för att offentlig sektor ska kunna använda AI i bred drift. Tier 4 representerar ett politiskt val om nationell modellförmåga (se [08-suveranitet.md](08-suveranitet.md)). Båda är motiverade, men de bör bedömas separat.
 
 Kompletterande sanity check — tokens per capita: En alternativ topp-ned-modell baserad på ~250 000 tokens/capita/dag (hela Sveriges befolkning, moget AI-scenario 2030) ger ~35 000–50 000 H100-eq _nationellt_. Isolerat till offentlig sektor (~15–20% med hög AI-intensitet) motsvarar det ~5 000–10 000 H100-eq — i linje med huvudscenariot. Fullständig härledning: [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md).
 
@@ -419,7 +422,15 @@ Topp-ned-spårets Metod C (AI som andel av IT-budget) ger ~1 750 H100-eq för 20
 | Offentlig-privat samverkan | 300–800 | 400–1 200 | Partnermodell (jfr Danmarks Gefion) |
 | **Summa möjlig** | **~2 200–4 000** | **~3 150–5 850** | |
 
-Gapet mellan budgetbaserat spår (~1 750) och huvudscenariot (~9 000) återspeglar att nuvarande AI-budgetandelar (A11) är otillräckliga för att finansiera huvudscenariot. Att nå 9 000 kräver ett aktivt politiskt beslut att allokera väsentligt mer än nuvarande IT-budgetlogik tillåter — särskilt för Tier 4 (suverän träning). Utan sådant beslut är det operativa behovet som budgeten kan bära snarare **~2 000–4 000 H100-eq**.
+Gapet mellan budgetbaserat spår (~1 750) och huvudscenariot (~9 000) återspeglar att nuvarande AI-budgetandelar (A11) är otillräckliga för att finansiera huvudscenariot. Huvudscenariot förutsätter att AI-andelen av IT-budgeten når ~13–17% (inkl. personal, licenser, data) — väsentligt högre än A11:s intervall på 5–12% och historiskt utan precedens i svensk offentlig sektor.
+
+| Finansieringsnivå | AI-andel av IT-budget | H100-eq (2029) | Räcker till |
+|-------------------|-----------------------|----------------|-------------|
+| Nuvarande logik (A11: 8%) | ~8% | ~1 750 | Otillräckligt för även Tier 1–3 operativt behov |
+| Moderat expansion (12% + riktad satsning 500 MSEK) | ~12% + nymedel | ~3 000–3 500 | Täcker basala operativa behov (Tier 1–3), ingen suverän träning |
+| Fullt huvudscenario (~2 000 MSEK) | ~13–17% totalt | ~9 000 | Kräver aktiv politisk prioritering och nya finansieringsströmmar |
+
+Att nå 9 000 kräver ett aktivt politiskt beslut att allokera väsentligt mer än nuvarande IT-budgetlogik tillåter — särskilt för Tier 4 (suverän träning). Utan sådant beslut är det operativa behovet som budgeten kan bära snarare **~2 000–4 000 H100-eq**.
 
 ### Kombinerat estimat — offentlig sektor:
 
@@ -507,4 +518,4 @@ _~6,3 MW (2029) motsvarar ett medelstort datacenter — jämförbart med Faceboo
 
 **Bas** (~9 000 H100-eq 2029): Bred offentlig AI-användning med agentisk komponent och fullständigt fångad sjukvårds-AI, meningsfull suverän modellförmåga och tillräcklig kapacitet för att kombinera drift med kompetensuppbyggnad.
 
-**Hög** (~20 000 H100-eq 2029): Strategisk handlingsfrihet — hög agentandel, stark forsknings- och utbildningsmiljö, större träningsprogram och mer robust kapacitet för känsliga domäner. Strategisk motivering: [08-strategi.md](08-strategi.md).
+**Hög** (~20 000 H100-eq 2029): Strategisk handlingsfrihet — hög agentandel, stark forsknings- och utbildningsmiljö, större träningsprogram och mer robust kapacitet för känsliga domäner. Strategisk motivering: [08-suveranitet.md](08-suveranitet.md).

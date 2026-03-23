@@ -263,36 +263,58 @@ Dessa kräver specialiserade vision-modeller, medicinska reasoning-modeller och 
 | Cancerdiagnostik | 250 000 | 1 | 6 | 20 |
 | **Summa fem kedjor (Tier 2-unik)** | | **13** | **44** | **111** |
 
-### Extrapolering till hela sjukvården
+### Nationellt estimat: sjukvårdens Tier 2-compute
 
-Dessa fem vårdkedjor täcker ~8 miljoner av uppskattningsvis ~55–70 miljoner vårdkontakter per år (~12–15%). Cancer/patologi och kronisk övervakning är tyngre än genomsnittet; enklare besök (förkylning, kontroller) genererar minimal Tier 2-compute.
+Sjukvårdens totala Tier 2-behov 2029 bedöms ligga i storleksordningen **200–900 H100-eq, med ~450 som central tendensuppskattning** (A88). Storleksordningen — hundratals, inte tiotals eller tusentals — är robust: samtliga rimliga parameterval ger resultat inom detta spann. Punktestimatet "600" som förekommer i äldre versioner bör inte läsas som precision utan som övre delen av den centrala tendensen.
 
-| Metod | Bas (H100-eq) | Hög (H100-eq) |
-|-------|---------------|---------------|
-| **Direkt skalning** (5 kedjor → alla, 12% täckning) | 44 / 12% ≈ ~370 | 111 / 12% ≈ ~930 |
-| **Justerat** (de 5 är tyngre än snitt, ×0,5) | ~180 | ~460 |
-| **Med agentisk overhead** (reasoning-modeller 2029, ×2,5) | ~450 | ~1 150 |
-| **Med redundans + testmiljöer (×1,3)** | ~600 | ~1 500 |
+Estimatet vilar på två distinkta lager med olika evidensstyrka:
 
-### Multiplikationskedjans osäkerhet
+#### A. Validerat golv: fem vårdkedjor (44 H100-eq)
 
-Extrapoleringen från 44 H100-eq (fem vårdkedjor) till ~600 (hela sjukvården) bygger på fyra multiplikationssteg, vart och ett med egen osäkerhet:
+De fem analyserade vårdkedjorna ger ett direkt beräknat resultat på **13–111 H100-eq** (låg/bas/hög), med 44 som basestimat. Detta är det mest robusta lagret — varje kedja bygger på verifierbara volymer, GPU-tid per episod och kliniska arbetsflöden. Dessa fem kedjor täcker ~8 miljoner av uppskattningsvis ~55–70 miljoner vårdkontakter per år (~12–15%), men inkluderar medvetet de mest compute-intensiva specialiteterna (cancerdiagnostik, patologi, kronisk övervakning).
 
-| Steg | Från | Till | Faktor | Spann (låg–hög) | Svaghet |
-| ---- | ---- | ---- | ------ | ---------------- | ------- |
-| 1. Fem vårdkedjor (direkt beräknat) | — | 44 H100-eq | — | 13–111 | Robust: baserat på volymer och GPU-tid per episod |
-| 2. Extrapolering till hela sjukvården | 44 | 180 | ×4,1 (1/12% × 0,5) | 60–460 | **Svagaste länken.** De fem kedjorna är medvetet compute-tunga (cancer, patologi, kronisk övervakning). Korrektionsfaktorn 0,5 ("de fem är dubbelt så tunga som snitt") saknar empiriskt stöd — den är en kvalificerad gissning. |
-| 3. Agentisk overhead (reasoning-modeller 2029) | 180 | 450 | ×2,5 | 180–1 150 | Samma osäkerhet som Tier 1 overhead — beroende av hur snabbt chain-of-thought-modeller slår igenom i klinisk miljö |
-| 4. Redundans + testmiljöer | 450 | 600 | ×1,3 | 450–1 500 | Branschstandard; minst osäker |
-| **Kombinerat** | **44** | **600** | **×13,6** | **~200–1 500** | |
+#### B. Extrapolering till hela sjukvården (metodik och osäkerhetsbudget)
 
-Osäkerheten i steg 2–3 innebär att den kombinerade multiplikatorn kan variera mellan ~5 och ~35. Det är därför riktigare att tala om en **storleksordning på 200–900 H100-eq** för sjukvårdens Tier 2, med ~450–600 som central uppskattning, snarare än en precision som kedjan inte ger stöd för.
+Extrapoleringen från 44 H100-eq till det nationella estimatet sker genom tre multiplikationssteg. Varje steg presenteras som ett intervall:
+
+**Steg 1 — Skalning till hela sjukvården (A90: korrektionsfaktor 0,3–0,7, bas 0,5):**
+
+De fem vårdkedjorna täcker ~12% av vårdkontakterna. Rak skalning (44 / 0,12) ger ~370 H100-eq — men detta är ett tak, inte en prognos, eftersom de fem kedjorna är tyngre än genomsnittet:
+
+- *Övre gräns:* Om all övrig sjukvård vore lika compute-intensiv som de fem kedjorna → ~370. Klart för högt — enklare besök (förkylning, kontroller, administrativa kontakter) genererar minimal Tier 2-compute.
+- *Undre gräns:* Om övrig sjukvård genererar nära noll Tier 2-compute → kvar vid ~44. Klart för lågt — det utesluter ortopedisk kirurgi, oftalmologi, kardiologisk bilddiagnostik m.fl.
+- *Central bedömning:* De fem kedjorna bedöms vara ~2× tyngre än genomsnittet (korrektionsfaktor 0,5), avgränsat till intervallet 0,3–0,7. Det ger **120–250 H100-eq, bas ~180**.
+
+| Korrektionsfaktor (A90) | Tolkning | H100-eq |
+|--------------------------|----------|---------|
+| 0,3 | De fem kedjorna ~3× tyngre än snitt | ~120 |
+| 0,5 (bas) | De fem kedjorna ~2× tyngre | ~180 |
+| 0,7 | De fem kedjorna ~1,4× tyngre | ~250 |
+
+**Steg 2 — Agentisk overhead (reasoning-modeller 2029, ×1,5–3,5, bas ×2,5):**
+
+Beroende av hur snabbt chain-of-thought-modeller och kliniska reasoning-agenter slår igenom. Samma osäkerhet som Tier 1 agentisk overhead. Ger **180–880 H100-eq, bas ~450**.
+
+**Steg 3 — Redundans + testmiljöer (×1,2–1,4, bas ×1,3):**
+
+Branschstandard för driftsäkerhet i klinisk miljö. Minst osäker. Ger **220–1 230 H100-eq, bas ~580**.
+
+#### Sammanfattning: osäkerhetsbudget
+
+| Steg | Faktor (spann) | Bas (H100-eq) | Spann (H100-eq) | Svaghet |
+| ---- | --------------- | ------------- | ---------------- | ------- |
+| 0. Fem vårdkedjor (direkt beräknat) | — | 44 | 13–111 | Robust: volymer och GPU-tid per episod |
+| 1. Extrapolering hela sjukvården | ×4,1 × A90 (0,3–0,7) | ~180 | 120–250 | **Primär osäkerhetskälla.** Korrektionsfaktorn A90 saknar direkt empiriskt stöd. |
+| 2. Agentisk overhead | ×1,5–3,5 (bas: 2,5) | ~450 | 180–880 | Beroende av klinisk adoption av reasoning-modeller |
+| 3. Redundans + testmiljöer | ×1,2–1,4 (bas: 1,3) | ~580 | 220–1 230 | Branschstandard; minst osäker |
+
+Den kombinerade multiplikatorn (steg 1–3) kan variera mellan ~5 och ~28. Det defensibla intervallet för sjukvårdens Tier 2 är **~200–900 H100-eq**, med ~450 som central tendensuppskattning.
 
 ### Jämförelse med nuvarande Tier 2 i 03
 
-| Komponent | Nuvarande Tier 2 (03, bas 2029) | Sjukvårdens Tier 2-andel | Reviderat (detta dokument) |
+| Komponent | Nuvarande Tier 2 (03, bas 2029) | Sjukvårdens Tier 2-andel | Nationellt estimat (detta dokument) |
 |-----------|--------------------------------|--------------------------|---------------------------|
-| Sjukvårds-AI (Tier 2-unik) | ~20–50 (implicit i "medicinsk bildanalys ~6 sustained") | Kraftigt underskattat | **~450–600 H100-eq** |
+| Sjukvårds-AI (Tier 2-unik) | ~20–50 (implicit i "medicinsk bildanalys ~6 sustained") | Kraftigt underskattat | **~200–900 H100-eq (central: ~450)** |
 
 Nuvarande Tier 2-estimat för sjukvården fångar i praktiken enbart radiologisk bildanalys i batch-mode (03: "~6 sustained + burst"). Det missar:
 
@@ -311,11 +333,11 @@ Sjukvårdens AI-compute fördelas enligt:
 | Tier | Vad som fångas | Redan i huvudmodellen? | Storleksordning 2029 (bas) |
 |------|---------------|----------------------|---------------------------|
 | **Tier 1** | Transkription, dokumentation, patientbrev, remisser, kodning | **Ja** — sjukvårdspersonal ingår i A13:s population | Del av ~2 200 H100-eq |
-| **Tier 2** | Bilddiagnostik, patologi, beslutsstöd, kronisk övervakning, genomik | **Delvis** — nuvarande ~6 sustained fångar bara radiologi | **~450–600 H100-eq bör adderas** |
+| **Tier 2** | Bilddiagnostik, patologi, beslutsstöd, kronisk övervakning, genomik | **Delvis** — nuvarande ~6 sustained fångar bara radiologi | **~200–900 H100-eq (central: ~450)** |
 | **Tier 3** | Finjustering av medicinska modeller | **Ja** — ingår i A28–A32 | Del av ~600 H100-eq |
 | **Tier 4** | Träning av känslig-data-modeller (hälsa) | **Ja** — ingår i A39 | Del av ~4 500 H100-eq |
 
-**Rekommendation**: Tier 2 i huvudmodellen bör uppjusteras med ~450–600 H100-eq (bas 2029) för att fånga sjukvårdens specialiserade inference. Tier 1, 3 och 4 fångar redan sjukvårdens övriga compute-dimensioner.
+**Rekommendation**: Tier 2 i huvudmodellen bör uppjusteras med ~200–900 H100-eq (central tendensuppskattning: ~450, bas 2029) för att fånga sjukvårdens specialiserade inference. Tier 1, 3 och 4 fångar redan sjukvårdens övriga compute-dimensioner.
 
 ---
 
