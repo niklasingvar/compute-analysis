@@ -10,6 +10,7 @@ import {
   getAnnualCost,
   getEnergyMW,
   formatNumber,
+  computeHealthcareJobs,
   defaultAssumptions,
   defaultSectors,
   presets,
@@ -99,10 +100,12 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
   );
 
   const year = years[yearIndex];
-  const result = computeAll(assumptions, sectors, year);
+  const result = computeAll(assumptions, sectors, year, advanced);
+  const jobsYear = year > 2029 ? 2029 : year;
+  const jobs = computeHealthcareJobs(assumptions, jobsYear);
   const timeline = useMemo(
-    () => computeTimeline(assumptions, sectors),
-    [assumptions, sectors]
+    () => computeTimeline(assumptions, sectors, advanced),
+    [assumptions, sectors, advanced]
   );
   const cost = getAnnualCost(result.total);
   const energy = getEnergyMW(result.total, year);
@@ -158,58 +161,9 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6 w-full">
+    <div className="flex flex-col lg:flex-row w-full">
       {/* === LEFT PANEL: Controls === */}
       <div className="w-full lg:w-[400px] lg:shrink-0 space-y-5 lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-6rem)] lg:overflow-y-auto lg:pr-2">
-        {/* Sovereignty toggle */}
-        <div
-          className={`rounded-xl border-2 p-4 transition-all duration-500 ${
-            assumptions.sovereignty
-              ? "border-accent-gold/30 bg-bg-surface"
-              : "border-accent-danger sovereignty-warning bg-accent-danger/5"
-          }`}
-        >
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <div className="font-semibold text-text-primary text-sm">
-                {t(locale, "sovereigntyLabel")}
-              </div>
-              <div className="text-xs text-text-secondary">
-                {t(locale, "sovereigntySubtitle")}
-              </div>
-            </div>
-            <button
-              role="switch"
-              aria-checked={assumptions.sovereignty}
-              onClick={() => updateAssumption("sovereignty", !assumptions.sovereignty)}
-              className={`relative w-14 h-8 rounded-full transition-all duration-300 shrink-0 ${
-                assumptions.sovereignty ? "bg-accent-gold" : "bg-border-light"
-              }`}
-            >
-              <span
-                className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow transition-all duration-300 ${
-                  assumptions.sovereignty ? "left-7" : "left-1"
-                }`}
-              />
-            </button>
-          </div>
-          {!assumptions.sovereignty && (
-            <div className="mt-3 p-3 rounded-lg bg-accent-danger/10 border border-accent-danger/30 section-fade">
-              <p className="text-xs text-text-primary leading-relaxed">
-                {t(locale, "sovereigntyOffWarning")}
-              </p>
-              <a
-                href={`${REPO_URL}/blob/main/08-suveranitet.md`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 mt-2 text-xs text-accent-danger hover:underline font-medium"
-              >
-                {t(locale, "sovereigntyOffCta")} →
-              </a>
-            </div>
-          )}
-        </div>
-
         {/* Sector toggles */}
         <div className="rounded-xl border border-border bg-bg-surface p-4 space-y-2">
           <div className="text-xs font-mono uppercase tracking-widest text-text-muted mb-2">
@@ -222,6 +176,10 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
               return (
                 <div key={key} className="relative">
                   <button
+                    type="button"
+                    id={`sector-${key}`}
+                    aria-label={sectorLabels[key].name}
+                    aria-pressed={sectors[key]}
                     onClick={() => toggleSector(key)}
                     onMouseEnter={() => hasDisclaimer && setSectorPopover(key)}
                     onMouseLeave={() => setSectorPopover(null)}
@@ -285,6 +243,10 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
           {(["low", "base", "high"] as const).map((key) => (
             <div key={key} className="relative">
               <button
+                type="button"
+                id={`preset-${key}`}
+                aria-label={`${t(locale, "presetLabel")}: ${t(locale, key === "low" ? "presetLow" : key === "base" ? "presetBase" : "presetHigh")}`}
+                aria-pressed={activePreset === key}
                 onClick={() => applyPreset(key)}
                 onMouseEnter={() => setPresetPopover(key)}
                 onMouseLeave={() => setPresetPopover(null)}
@@ -313,6 +275,10 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
         {/* Assumption sliders */}
         <div className="rounded-xl border border-border bg-bg-surface overflow-hidden">
           <button
+            type="button"
+            id="toggle-assumptions"
+            aria-label={t(locale, "assumptionsLabel")}
+            aria-expanded={slidersOpen}
             onClick={() => setSlidersOpen(!slidersOpen)}
             className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-bg-elevated/50 transition-colors"
           >
@@ -320,6 +286,7 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
               {t(locale, slidersOpen ? "assumptionsLabel" : "assumptionsCollapsed")}
             </span>
             <svg
+              aria-hidden="true"
               className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${slidersOpen ? "rotate-180" : ""}`}
               fill="none" stroke="currentColor" viewBox="0 0 24 24"
             >
@@ -349,6 +316,8 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
                     </div>
                     <input
                       id={slider.id}
+                      name={slider.id}
+                      aria-label={t(locale, slider.label as Parameters<typeof t>[1])}
                       type="range"
                       min={slider.range.min}
                       max={slider.range.max}
@@ -390,9 +359,65 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
           )}
         </div>
 
+        {/* Sovereignty toggle */}
+        <div
+          className={`rounded-xl border-2 p-4 transition-all duration-500 ${
+            assumptions.sovereignty
+              ? "border-accent-gold/30 bg-bg-surface"
+              : "border-accent-danger sovereignty-warning bg-accent-danger/5"
+          }`}
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="font-semibold text-text-primary text-sm">
+                {t(locale, "sovereigntyLabel")}
+              </div>
+              <div className="text-xs text-text-secondary">
+                {t(locale, "sovereigntySubtitle")}
+              </div>
+            </div>
+            <button
+              type="button"
+              id="sovereignty-toggle"
+              role="switch"
+              aria-checked={assumptions.sovereignty}
+              aria-label={t(locale, "sovereigntyLabel")}
+              onClick={() => updateAssumption("sovereignty", !assumptions.sovereignty)}
+              className={`relative w-14 h-8 rounded-full transition-all duration-300 shrink-0 ${
+                assumptions.sovereignty ? "bg-accent-gold" : "bg-border-light"
+              }`}
+            >
+              <span
+                className={`absolute top-1 w-6 h-6 rounded-full bg-white shadow transition-all duration-300 ${
+                  assumptions.sovereignty ? "left-7" : "left-1"
+                }`}
+              />
+            </button>
+          </div>
+          {!assumptions.sovereignty && (
+            <div className="mt-3 p-3 rounded-lg bg-accent-danger/10 border border-accent-danger/30 section-fade">
+              <p className="text-xs text-text-primary leading-relaxed">
+                {t(locale, "sovereigntyOffWarning")}
+              </p>
+              <a
+                href={`${REPO_URL}/blob/main/08-suveranitet.md`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 mt-2 text-xs text-accent-danger hover:underline font-medium"
+              >
+                {t(locale, "sovereigntyOffCta")} →
+              </a>
+            </div>
+          )}
+        </div>
+
         {/* Advanced / Nerd mode */}
         <div className="rounded-xl border border-border bg-bg-surface overflow-hidden">
           <button
+            type="button"
+            id="toggle-advanced"
+            aria-label={t(locale, "advancedMode")}
+            aria-expanded={advancedOpen}
             onClick={() => setAdvancedOpen(!advancedOpen)}
             className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-bg-elevated/50 transition-colors"
           >
@@ -400,7 +425,7 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
               {t(locale, advancedOpen ? "advancedModeCollapse" : "advancedMode")}
               {simRunning && <span className="ml-2 inline-block w-2 h-2 rounded-full bg-accent-gold animate-pulse" />}
             </span>
-            <svg className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${advancedOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${advancedOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
             </svg>
           </button>
@@ -421,7 +446,11 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
           </span>
           {years.map((y, i) => (
             <button
+              type="button"
               key={y}
+              id={`year-${y}`}
+              aria-label={`${t(locale, "yearLabel")} ${y}`}
+              aria-pressed={y === year}
               onClick={() => setYearIndex(i)}
               className={`px-3 py-1.5 rounded-lg text-sm font-mono font-semibold transition-all ${
                 y === year
@@ -466,6 +495,12 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
                   <div className="text-lg font-bold tabular-nums text-text-primary">~{displayEnergy}</div>
                   <div className="text-[10px] font-mono uppercase text-text-muted">MW</div>
                 </div>
+                <div>
+                  <div className="text-lg font-bold tabular-nums text-text-primary">~{formatNumber(jobs.total)}</div>
+                  <div className="text-[10px] font-mono uppercase text-text-muted">
+                    {t(locale, "jobsKpiLabel")} {jobsYear}
+                  </div>
+                </div>
               </div>
             </div>
           );
@@ -477,14 +512,14 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
             <div className="text-xs font-mono uppercase tracking-widest text-text-muted">
               {t(locale, "chartTitle")}
             </div>
-            <div className="flex gap-1">
-              <button onClick={() => setChartMode("stacked")} className={`px-2 py-1 rounded text-[10px] font-semibold transition-all ${chartMode === "stacked" ? "bg-accent-blue text-white" : "bg-bg-elevated text-text-secondary hover:bg-border-light"}`}>
+            <fieldset className="flex gap-1 border-none p-0 m-0" aria-label={t(locale, "chartTitle")}>
+              <button type="button" id="chart-mode-stacked" aria-pressed={chartMode === "stacked"} onClick={() => setChartMode("stacked")} className={`px-2 py-1 rounded text-[10px] font-semibold transition-all ${chartMode === "stacked" ? "bg-accent-blue text-white" : "bg-bg-elevated text-text-secondary hover:bg-border-light"}`}>
                 {t(locale, "chartModeSectors")}
               </button>
-              <button onClick={() => setChartMode("fan")} className={`px-2 py-1 rounded text-[10px] font-semibold transition-all ${chartMode === "fan" ? "bg-accent-blue text-white" : "bg-bg-elevated text-text-secondary hover:bg-border-light"}`}>
+              <button type="button" id="chart-mode-fan" aria-pressed={chartMode === "fan"} onClick={() => setChartMode("fan")} className={`px-2 py-1 rounded text-[10px] font-semibold transition-all ${chartMode === "fan" ? "bg-accent-blue text-white" : "bg-bg-elevated text-text-secondary hover:bg-border-light"}`}>
                 {t(locale, "chartModeUncertainty")}
               </button>
-            </div>
+            </fieldset>
           </div>
           {chartMode === "stacked" ? (
             <ComputeChart data={timeline} sectors={sectors} selectedYear={year} locale={locale} />

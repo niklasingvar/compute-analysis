@@ -12,6 +12,8 @@ export default function LanguageSwitcher({ locale }: { locale: Locale }) {
 
   return (
     <Link
+      id="language-switcher"
+      aria-label={t(locale, "langSwitch")}
       href={newPath}
       className="text-sm font-medium px-3 py-1.5 rounded-md border border-border-light text-text-secondary hover:bg-bg-surface hover:text-text-primary transition-colors"
       hrefLang={otherLocale}

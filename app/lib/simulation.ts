@@ -93,19 +93,34 @@ function clamp(v: number, lo: number, hi: number): number {
   return Math.max(lo, Math.min(hi, v));
 }
 
+// --- Sampler abstraction for deterministic/stochastic duality ---
+
+interface Sampler {
+  normal(mean: number, sd: number): number;
+  logNormal(median: number, spread: number): number;
+}
+
+const stochasticSampler: Sampler = {
+  normal: sampleNormal,
+  logNormal: sampleLogNormal,
+};
+
+const deterministicSampler: Sampler = {
+  normal: (mean: number) => mean,
+  logNormal: (median: number) => median,
+};
+
 // --- Logistic S-curve for adoption ramp ---
 
 function adoptionAtYear(
   target: number,
   year: Year
 ): number {
-  // S-curve: inflection ~mid-2028, steepness 1.5
   const t = year - 2026; // 0..5
   const midpoint = 2.5; // mid-2028
   const k = 1.5;
   const curve = 1 / (1 + Math.exp(-k * (t - midpoint)));
-  // Scale: at year 2026 ≈ 5%, ramping to target by 2029, cap at target*1.15
-  const val = target * curve / (1 / (1 + Math.exp(-k * (3 - midpoint)))); // normalize so year=2029 ≈ target
+  const val = target * curve / (1 / (1 + Math.exp(-k * (3 - midpoint))));
   return Math.min(val, Math.min(target * 1.15, 0.95));
 }
 
@@ -123,7 +138,7 @@ const kwPerH100: Record<Year, number> = {
   2026: 1.0, 2027: 0.9, 2028: 0.8, 2029: 0.7, 2030: 0.6, 2031: 0.5,
 };
 
-// --- Single MC iteration ---
+// --- Core computation (shared kernel for MC and deterministic paths) ---
 
 export interface SingleResult {
   total: number;
@@ -134,61 +149,62 @@ export interface SingleResult {
   energyMW: number;
 }
 
-export function sampleOnce(
+function computeCore(
   a: Assumptions,
   adv: AdvancedParams,
   sectors: SectorToggles,
-  year: Year
+  year: Year,
+  sam: Sampler
 ): SingleResult {
   const unc = adv.uncertaintyScale;
-  const growthFactor = Math.pow(1 + clamp(sampleNormal(adv.demandGrowth, 0.06 * unc), 0, 0.6), year - 2026);
+  const growthFactor = Math.pow(1 + clamp(sam.normal(adv.demandGrowth, 0.06 * unc), 0, 0.6), year - 2026);
 
   // --- Tier 1: Inference ---
-  const adoptionTarget = clamp(sampleNormal(a.adoptionRate, 0.08 * unc), 0.05, 0.95);
+  const adoptionTarget = clamp(sam.normal(a.adoptionRate, 0.08 * unc), 0.05, 0.95);
   const adoptionNow = adoptionAtYear(adoptionTarget, year);
-  const addressable = clamp(sampleNormal(500_000, 30_000 * unc), 300_000, 700_000);
-  const agentShare = clamp(sampleNormal(a.agentShare, 0.06 * unc), 0.02, 0.7);
+  const addressable = clamp(sam.normal(500_000, 30_000 * unc), 300_000, 700_000);
+  const agentShare = clamp(sam.normal(a.agentShare, 0.06 * unc), 0.02, 0.7);
 
   const activeUsers = addressable * adoptionNow;
   const copilotUsers = activeUsers * (1 - agentShare);
   const agentUsers = activeUsers * agentShare;
 
   const copilotTokensDay = copilotUsers * 30_000;
-  const agentTokensDay = agentUsers * sampleLogNormal(400_000, 0.3 * unc);
+  const agentTokensDay = agentUsers * sam.logNormal(400_000, 0.3 * unc);
 
   // Background agents ramp: 0 in 2026, full by 2029
   const bgRamp = clamp((year - 2026) / 3, 0, 1);
-  const bgAgents = clamp(sampleNormal(adv.bgAgentsNational, 800 * unc), 0, 20_000) * bgRamp;
+  const bgAgents = clamp(sam.normal(adv.bgAgentsNational, 800 * unc), 0, 20_000) * bgRamp;
   const bgTokensDay = bgAgents * 1_000_000;
 
   const totalTokensDay = copilotTokensDay + agentTokensDay + bgTokensDay;
   const sustainedH100 = totalTokensDay / 3000 / 28800; // tokens/s / seconds in 8h day
-  const overhead = sampleLogNormal(adv.overheadMultiplier, 0.2 * unc);
+  const overhead = sam.logNormal(adv.overheadMultiplier, 0.2 * unc);
   const tier1 = Math.max(0, sustainedH100 * overhead * growthFactor);
 
   // --- Tier 2: Healthcare ---
-  const healthAdoption = clamp(sampleNormal(a.healthcareAdoption, 0.12 * unc), 0.05, 0.95);
+  const healthAdoption = clamp(sam.normal(a.healthcareAdoption, 0.12 * unc), 0.05, 0.95);
   const healthBase = 44 * (1 / 0.6) * adoptionAtYear(healthAdoption, year);
-  const a90Correction = clamp(sampleNormal(0.5, 0.12 * unc), 0.1, 1.0);
-  const reasoningOverhead = sampleLogNormal(2.5, 0.25 * unc);
+  const a90Correction = clamp(sam.normal(0.5, 0.12 * unc), 0.1, 1.0);
+  const reasoningOverhead = sam.logNormal(2.5, 0.25 * unc);
   const tier2Health = healthBase * a90Correction * reasoningOverhead * 1.3 * growthFactor;
 
   // --- Tier 2: Domain (non-healthcare) ---
-  const domainAI = sampleLogNormal(280, 0.4 * unc);
+  const domainAI = sam.logNormal(280, 0.4 * unc);
   const domainScale = adoptionAtYear(1.0, year);
   const tier2Domain = domainAI * domainScale * growthFactor;
 
   // --- Tier 3: Fine-tuning ---
-  const ftOrgs = clamp(sampleNormal(a.fineTuningOrgs, 20 * unc), 5, 500);
-  const ftGpuH = sampleLogNormal(200, 0.35 * unc);
+  const ftOrgs = clamp(sam.normal(a.fineTuningOrgs, 20 * unc), 5, 500);
+  const ftGpuH = sam.logNormal(200, 0.35 * unc);
   const tier3 = Math.max(0, (ftOrgs * (6 * ftGpuH + 30) / 8760) * 15 * growthFactor);
 
   // --- Tier 4: Sovereign training ---
   const ambition = a.sovereignty ? adv.modelAmbition : "none";
   const th = trainingHours[ambition];
-  const trainBase = th.base > 0 ? sampleLogNormal(th.base, 0.25 * unc) : 0;
-  const rl = th.rl > 0 ? sampleNormal(th.rl * adv.rlBudget, th.rl * 0.2 * unc) : 0;
-  const domain = th.domain > 0 ? sampleLogNormal(th.domain, 0.3 * unc) : 0;
+  const trainBase = th.base > 0 ? sam.logNormal(th.base, 0.25 * unc) : 0;
+  const rl = th.rl > 0 ? sam.normal(th.rl * adv.rlBudget, th.rl * 0.2 * unc) : 0;
+  const domain = th.domain > 0 ? sam.logNormal(th.domain, 0.3 * unc) : 0;
   const totalTrainH = Math.max(0, trainBase + rl + domain);
   const trainRamp = clamp((year - 2025) / 4, 0.1, 1.0);
   const tier4 = (totalTrainH / (0.5 * 8760)) * trainRamp;
@@ -208,6 +224,26 @@ export function sampleOnce(
   const energyMW = (total * kwPerH100[year] * 1.25) / 1000;
 
   return { total, publicCore, healthcare, defense, privateSector, energyMW };
+}
+
+// Stochastic: used by Monte Carlo worker
+export function sampleOnce(
+  a: Assumptions,
+  adv: AdvancedParams,
+  sectors: SectorToggles,
+  year: Year
+): SingleResult {
+  return computeCore(a, adv, sectors, year, stochasticSampler);
+}
+
+// Deterministic: used by stacked chart and summary stats
+export function computeDeterministic(
+  a: Assumptions,
+  adv: AdvancedParams,
+  sectors: SectorToggles,
+  year: Year
+): SingleResult {
+  return computeCore(a, adv, sectors, year, deterministicSampler);
 }
 
 // --- Percentile extraction ---

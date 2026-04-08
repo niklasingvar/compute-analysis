@@ -35,7 +35,7 @@ Tre trianguleringsspår används:
 | Dokument | Roll |
 |----------|------|
 | [01-ramverk.md](01-ramverk.md) | Ramverk, trianguleringslogik och scenarioarkitektur |
-| [02-antaganden-och-data.md](02-antaganden-och-data.md) | Antaganderegister (A1–A90), single source of truth |
+| [02-antaganden-och-data.md](02-antaganden-och-data.md) | Antaganderegister (A1–A93), single source of truth |
 | [03-berakningsmodell.md](03-berakningsmodell.md) | Full kvantitativ modell |
 | [04-internationella-jamforelser.md](04-internationella-jamforelser.md) | Topp-ned-validering via andra länder |
 | [05-kallor-och-resurser.md](05-kallor-och-resurser.md) | Riskbaserat källregister |
@@ -47,6 +47,7 @@ Tre trianguleringsspår används:
 | [11-kompletterande-perspektiv.md](11-kompletterande-perspektiv.md) | Praktiska kompletterande perspektiv |
 | [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) | Stresstest: varför även huvudscenariot kan vara för lågt |
 | [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) | Sjukvårdens AI-compute: botten-upp per vårdkedja (stödjer Tier 2) |
+| [14-jobb.md](14-jobb.md) | JOBB: sysselsättningseffekt av AI-investeringar |
 
 ## Viktig tolkningsregel
 

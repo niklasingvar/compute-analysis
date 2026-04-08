@@ -75,48 +75,10 @@ export const leverRanges = {
   fineTuningOrgs: { min: 10, max: 300, step: 10 },
 } as const;
 
-// --- Year scaling ---
-const yearScale: Record<Year, number> = {
-  2026: 0.1,
-  2027: 0.25,
-  2028: 0.5,
-  2029: 1.0,
-  2030: 1.45,
-  2031: 2.0,
-};
+// --- Sector computation (delegates to shared kernel in simulation.ts) ---
 
-// --- Formula constants ---
-// Tier 1: copilot=0.0022, agent=0.022 H100-eq per user
-// 500K × 0.62 × (0.25×0.022 + 0.75×0.0022) = ~2,217 ✓
-const ADDRESSABLE_USERS = 500_000;
-const COPILOT_COMPUTE = 0.0022;
-const AGENT_COMPUTE = 0.022;
-
-// Tier 2: ~1,500 H100-eq base, 60% healthcare-driven
-const TIER2_TOTAL_BASE = 1500;
-const TIER2_HEALTHCARE_SHARE = 0.6;
-const TIER2_NON_HEALTHCARE = TIER2_TOTAL_BASE * (1 - TIER2_HEALTHCARE_SHARE); // 600
-const TIER2_HEALTHCARE_ANCHOR = 0.55;
-
-// Tier 3: fine-tuning, ~600 base at 80 orgs
-const TIER3_PER_ORG = 7.5;
-
-// Tier 4: sovereign training
-const TIER4_SOVEREIGN = 4500;
-
-// Healthcare copilot/agent users (~180K healthcare workers, ~60% of healthcare workforce)
-const HEALTHCARE_COPILOT_USERS = 180_000;
-
-// Defense estimate: ~10-20% of public sector AI compute (international proxy)
-const DEFENSE_MULTIPLIER_LOW = 0.08;
-const DEFENSE_MULTIPLIER_HIGH = 0.15;
-const DEFENSE_MULTIPLIER_BASE = 0.12;
-
-// Private sector: tokens-per-capita → 35K-50K total Sweden minus public sector
-// Use midpoint ~38K for base, scale from public sector
-const PRIVATE_SECTOR_MULTIPLIER = 3.5; // private ≈ 3.5× public sector compute
-
-// --- Sector computation ---
+import { computeDeterministic, defaultAdvanced, type AdvancedParams } from "./simulation";
+export type { AdvancedParams };
 
 export interface SectorResult {
   publicCore: number;
@@ -124,91 +86,40 @@ export interface SectorResult {
   defense: number;
   privateSector: number;
   total: number;
-  // Sub-tier breakdown for public core
-  tier1: number;
-  tier2NonHealthcare: number;
-  tier3: number;
-  tier4: number;
-  // Healthcare sub-tiers
-  healthcareTier1: number;
-  healthcareTier2: number;
+}
+
+export interface JobsResult {
+  direct: number;
+  indirect: number;
+  total: number;
+  aiSolutions: number;
+  staffingPerSolution: number;
+  indirectMultiplier: number;
 }
 
 export function computeAll(
   a: Assumptions,
   sectors: SectorToggles,
-  year: Year
+  year: Year,
+  adv: AdvancedParams = defaultAdvanced
 ): SectorResult {
-  const s = yearScale[year];
-
-  // === PUBLIC CORE (excl. healthcare workers) ===
-  const coreUsers = (ADDRESSABLE_USERS - HEALTHCARE_COPILOT_USERS) * a.adoptionRate;
-  const coreAgents = coreUsers * a.agentShare;
-  const coreCopilots = coreUsers * (1 - a.agentShare);
-  const tier1 = Math.round(
-    (coreCopilots * COPILOT_COMPUTE + coreAgents * AGENT_COMPUTE) * s
-  );
-  const tier2NonHealthcare = Math.round(TIER2_NON_HEALTHCARE * s);
-  const tier3 = Math.round(a.fineTuningOrgs * TIER3_PER_ORG * s);
-  const tier4 = a.sovereignty ? Math.round(TIER4_SOVEREIGN * s) : 0;
-  const publicCore = sectors.publicCore
-    ? tier1 + tier2NonHealthcare + tier3 + tier4
-    : 0;
-
-  // === HEALTHCARE ===
-  const hcUsers = HEALTHCARE_COPILOT_USERS * a.adoptionRate;
-  const hcAgents = hcUsers * a.agentShare;
-  const hcCopilots = hcUsers * (1 - a.agentShare);
-  const healthcareTier1 = Math.round(
-    (hcCopilots * COPILOT_COMPUTE + hcAgents * AGENT_COMPUTE) * s
-  );
-  const healthcareTier2 = Math.round(
-    TIER2_TOTAL_BASE *
-      TIER2_HEALTHCARE_SHARE *
-      (a.healthcareAdoption / TIER2_HEALTHCARE_ANCHOR) *
-      s
-  );
-  const healthcare = sectors.healthcare
-    ? healthcareTier1 + healthcareTier2
-    : 0;
-
-  // === DEFENSE (rough estimate) ===
-  const publicOperational = tier1 + tier2NonHealthcare + tier3 + healthcareTier1 + healthcareTier2;
-  const defense = sectors.defense
-    ? Math.round(publicOperational * DEFENSE_MULTIPLIER_BASE * s)
-    : 0;
-
-  // === PRIVATE SECTOR (rough estimate) ===
-  const publicTotal = (sectors.publicCore ? publicCore : tier1 + tier2NonHealthcare + tier3 + tier4) +
-    (sectors.healthcare ? healthcare : healthcareTier1 + healthcareTier2);
-  const privateSector = sectors.privateSector
-    ? Math.round(publicTotal * PRIVATE_SECTOR_MULTIPLIER)
-    : 0;
-
-  const total = publicCore + healthcare + defense + privateSector;
-
+  const r = computeDeterministic(a, adv, sectors, year);
   return {
-    publicCore,
-    healthcare,
-    defense,
-    privateSector,
-    total,
-    tier1,
-    tier2NonHealthcare,
-    tier3,
-    tier4,
-    healthcareTier1,
-    healthcareTier2,
+    publicCore: r.publicCore,
+    healthcare: r.healthcare,
+    defense: r.defense,
+    privateSector: r.privateSector,
+    total: r.total,
   };
 }
 
-// Compute all years at once for chart data
 export function computeTimeline(
   a: Assumptions,
-  sectors: SectorToggles
+  sectors: SectorToggles,
+  adv: AdvancedParams = defaultAdvanced
 ): { year: Year; publicCore: number; healthcare: number; defense: number; privateSector: number; total: number; energyMW: number }[] {
   return years.map((year) => {
-    const r = computeAll(a, sectors, year);
+    const r = computeDeterministic(a, adv, sectors, year);
     return {
       year,
       publicCore: r.publicCore,
@@ -219,6 +130,67 @@ export function computeTimeline(
       energyMW: getEnergyMW(r.total, year),
     };
   });
+}
+
+function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
+function clamp(v: number, lo: number, hi: number): number {
+  return Math.max(lo, Math.min(hi, v));
+}
+
+function normalize(v: number, lo: number, hi: number): number {
+  return clamp((v - lo) / (hi - lo), 0, 1);
+}
+
+function adoptionRamp(target: number, year: Year): number {
+  const t = year - 2026;
+  const midpoint = 2.5;
+  const k = 1.5;
+  const curve = 1 / (1 + Math.exp(-k * (t - midpoint)));
+  const val = target * curve / (1 / (1 + Math.exp(-k * (3 - midpoint))));
+  return Math.min(val, Math.min(target * 1.15, 0.95));
+}
+
+function scenarioInterp(low: number, base: number, high: number, n: number): number {
+  if (n <= 0.5) return lerp(low, base, n / 0.5);
+  return lerp(base, high, (n - 0.5) / 0.5);
+}
+
+export function computeHealthcareJobs(a: Assumptions, year: Year): JobsResult {
+  // A91-A93 from 14-jobb.md, tied to healthcare adoption over time.
+  const volumeN = normalize(
+    a.healthcareAdoption,
+    presets.low.healthcareAdoption,
+    presets.high.healthcareAdoption
+  );
+  const complexityN = normalize(
+    a.fineTuningOrgs,
+    presets.low.fineTuningOrgs,
+    presets.high.fineTuningOrgs
+  );
+  const ecosystemN = (volumeN + complexityN) / 2;
+
+  const aiSolutions2029 = scenarioInterp(80, 120, 160, volumeN); // A91
+  const staffingPerSolution = scenarioInterp(3, 5, 8, complexityN); // A92
+  const indirectMultiplier = scenarioInterp(0.5, 0.7, 1.0, ecosystemN); // A93
+
+  const displayYear = year > 2029 ? 2029 : year;
+  const adoptionShare =
+    adoptionRamp(a.healthcareAdoption, displayYear) /
+    adoptionRamp(a.healthcareAdoption, 2029);
+  const aiSolutions = aiSolutions2029 * adoptionShare;
+
+  const direct = Math.round(aiSolutions * staffingPerSolution);
+  const indirect = Math.round(direct * indirectMultiplier);
+  const total = direct + indirect;
+
+  return { direct, indirect, total, aiSolutions, staffingPerSolution, indirectMultiplier };
+}
+
+export function computeHealthcareJobs2029(a: Assumptions): JobsResult {
+  return computeHealthcareJobs(a, 2029);
 }
 
 // --- Energy model ---
@@ -258,7 +230,8 @@ export const euComparisons = [
 // --- Formatting ---
 
 export function formatNumber(n: number): string {
-  return n.toLocaleString("sv-SE");
+  const safe = Number.isFinite(n) ? Math.round(n) : 0;
+  return String(safe).replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
 export const REPO_URL = "https://github.com/niklasingvar/compute-analysis";

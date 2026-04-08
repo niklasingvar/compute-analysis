@@ -21,6 +21,10 @@ const translations = {
     heroSubtitle: "i europeisk kontext",
     heroLead:
       "Dra i reglagen och se hur antagandena påverkar Sveriges totala AI-compute-behov — från offentlig sektor till hela ekonomin.",
+    blogLead1:
+      "AI-frågan i offentlig sektor handlar inte längre om enskilda piloter. Den handlar om att bygga en robust förmåga där kapacitet, kompetens och styrning utvecklas samtidigt.",
+    blogLead2:
+      "Målet är att göra avvägningarna tydliga: vad som driver compute-behovet, vilka risker som följer av sena beslut, och vilka praktiska prioriteringar som ger störst effekt fram till 2029.",
 
     // Sector toggles
     sectorsLabel: "Sektorer",
@@ -117,6 +121,8 @@ const translations = {
     modelAmbition_70b: "70B",
     modelAmbition_200b: "200B+",
     modelAmbition_400b: "400B+",
+    rlBudgetLabel: "RL-tuningsbudget",
+    rlBudgetExplainer: "Andel av bas-RL-budget (RLHF + domänmodeller). 100% = basscenario. 0% = ingen RL-tuning. 200% = dubbel insats.",
     bgAgentsLabel: "Bakgrundsagenter nationellt",
     bgAgentsExplainer: "Autonoma AI-agenter som kör 24/7 utan mänsklig interaktion — batchprocessning, övervakning, analys.",
     overheadLabel: "Overhead-multiplikator",
@@ -198,7 +204,8 @@ const translations = {
     // Jobs
     jobsTitle: "Jobb som skapas",
     jobsSubtitle: "AI-investeringar skapar nya roller — inte bara compute-kostnader",
-    jobsTotal: "bruttojobb i sjukvårdens AI-implementation till 2029",
+    jobsKpiLabel: "Bruttojobb",
+    jobsTotal: "bruttojobb i sjukvårdens AI-implementation till 2029 i basscenariot",
     jobsDirect: "Direkta roller",
     jobsDirectList: "Klinisk informatik, MLOps, AI-säkerhet & compliance, verksamhetsnära produktägare, förändringsledning",
     jobsIndirect: "Indirekta roller",
@@ -264,6 +271,10 @@ const translations = {
     heroSubtitle: "in European context",
     heroLead:
       "Pull the levers and see how assumptions affect Sweden's total AI compute need — from public sector to the full economy.",
+    blogLead1:
+      "The public-sector AI question is no longer about isolated pilots. It is about building durable capability where compute, talent, and governance scale together.",
+    blogLead2:
+      "The goal is to make trade-offs explicit: what drives compute demand, which risks follow from delayed decisions, and which practical priorities matter most by 2029.",
 
     sectorsLabel: "Sectors",
     sectorPublicCore: "Public sector",
@@ -353,6 +364,8 @@ const translations = {
     modelAmbition_70b: "70B",
     modelAmbition_200b: "200B+",
     modelAmbition_400b: "400B+",
+    rlBudgetLabel: "RL tuning budget",
+    rlBudgetExplainer: "Fraction of base RL budget (RLHF + domain models). 100% = base scenario. 0% = no RL tuning. 200% = double effort.",
     bgAgentsLabel: "Background agents nationally",
     bgAgentsExplainer: "Autonomous AI agents running 24/7 without human interaction — batch processing, monitoring, analysis.",
     overheadLabel: "Overhead multiplier",
@@ -426,7 +439,8 @@ const translations = {
 
     jobsTitle: "Jobs created",
     jobsSubtitle: "AI investments create new roles — not just compute costs",
-    jobsTotal: "gross jobs in healthcare AI implementation by 2029",
+    jobsKpiLabel: "Gross jobs",
+    jobsTotal: "gross jobs in healthcare AI implementation by 2029 in the base case",
     jobsDirect: "Direct roles",
     jobsDirectList: "Clinical informatics, MLOps, AI safety & compliance, product owners, change management",
     jobsIndirect: "Indirect roles",

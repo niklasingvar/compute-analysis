@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { isValidLocale, t } from "@/lib/i18n";
 import type { TranslationKey } from "@/lib/i18n";
-import { REPO_URL, footnoteUrl, euComparisons, formatNumber } from "@/lib/data";
+import { REPO_URL, footnoteUrl, euComparisons, formatNumber, defaultAssumptions, computeHealthcareJobs2029 } from "@/lib/data";
 import ComputeWidget from "@/components/ComputeWidget";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
@@ -12,6 +12,7 @@ export default async function Page({
 }) {
   const { locale } = await params;
   if (!isValidLocale(locale)) notFound();
+  const jobs2029 = computeHealthcareJobs2029(defaultAssumptions);
 
   return (
     <>
@@ -37,9 +38,8 @@ export default async function Page({
               <span className="text-text-primary">{t(locale, "heroTitle1")}</span><br />
               <span className="text-accent-gold">{t(locale, "heroTitle2")}</span>
             </h1>
-            <p className="text-sm text-accent-blue font-mono uppercase tracking-wider mb-2">{t(locale, "heroSubtitle")}</p>
             <p className="text-base text-text-secondary max-w-xl mx-auto mb-5">{t(locale, "heroLead")}</p>
-            <div className="flex gap-3 justify-center mb-2">
+            <div className="flex justify-center mb-2">
               <a href={`${REPO_URL}/pulls`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-5 py-2 rounded-full bg-accent-gold text-bg-base font-semibold text-sm hover:bg-accent-gold-dim transition-colors">
                 {t(locale, "ctaPrimary")} <Ext />
               </a>
@@ -54,11 +54,29 @@ export default async function Page({
         <section className="px-4 pb-12">
           <div className="max-w-7xl mx-auto">
             <ComputeWidget locale={locale} />
-            <p className="text-center text-xs text-text-muted mt-4">{t(locale, "ctaExplainer")}</p>
+            <p className="text-center text-xs text-text-muted mt-4">
+              {t(locale, "ctaExplainer")}{" "}
+              <a
+                href={`${REPO_URL}/pulls`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent-blue hover:underline font-semibold"
+              >
+                {t(locale, "ctaPrimary")}
+              </a>
+            </p>
           </div>
         </section>
 
         {/* === BELOW THE FOLD === */}
+
+        {/* Blog intro */}
+        <section className="py-10 px-4 bg-bg-surface">
+          <div className="max-w-3xl mx-auto space-y-4">
+            <p className="text-sm text-text-secondary leading-relaxed">{t(locale, "blogLead1")}</p>
+            <p className="text-sm text-text-secondary leading-relaxed">{t(locale, "blogLead2")}</p>
+          </div>
+        </section>
 
         {/* EU Benchmark */}
         <section className="py-12 px-4 bg-bg-surface">
@@ -120,7 +138,7 @@ export default async function Page({
             <h2 className="text-2xl font-bold tracking-tight text-text-primary mb-2">{t(locale, "jobsTitle")}</h2>
             <p className="text-sm text-text-secondary mb-6">{t(locale, "jobsSubtitle")}</p>
             <div className="flex items-baseline gap-3 mb-6">
-              <span className="text-4xl font-black tabular-nums text-accent-gold">~1 000</span>
+              <span className="text-4xl font-black tabular-nums text-accent-gold">~{formatNumber(jobs2029.total)}</span>
               <span className="text-sm text-text-secondary">{t(locale, "jobsTotal")}</span>
             </div>
             <div className="grid sm:grid-cols-2 gap-4 mb-4">

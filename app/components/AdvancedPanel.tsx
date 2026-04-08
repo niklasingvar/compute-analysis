@@ -27,29 +27,39 @@ export default function AdvancedPanel({ locale, params, onChange }: Props) {
       {/* Model ambition */}
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label className="text-xs font-medium text-text-primary">
+          <label htmlFor="advanced-model-ambition" className="text-xs font-medium text-text-primary">
             {t(locale, "modelAmbitionLabel")}
           </label>
           <span className="text-xs font-mono font-bold text-accent-blue">
             {params.modelAmbition.toUpperCase()}
           </span>
         </div>
-        <div className="flex gap-1">
+        <select
+          id="advanced-model-ambition"
+          name="modelAmbition"
+          aria-label={t(locale, "modelAmbitionLabel")}
+          value={params.modelAmbition}
+          onChange={(e) => onChange("modelAmbition", e.target.value as AdvancedParams["modelAmbition"])}
+          className="w-full rounded-lg border border-border bg-bg-elevated text-text-primary text-xs font-semibold px-3 py-2 transition-colors focus:border-accent-blue focus:outline-none"
+        >
           {(["none", "70b", "200b", "400b"] as const).map((opt) => (
-            <button
-              key={opt}
-              onClick={() => onChange("modelAmbition", opt)}
-              className={`flex-1 py-1.5 rounded text-xs font-semibold transition-all ${
-                params.modelAmbition === opt
-                  ? "bg-accent-blue text-white"
-                  : "bg-bg-elevated text-text-secondary hover:bg-border-light"
-              }`}
-            >
+            <option key={opt} value={opt}>
               {t(locale, `modelAmbition_${opt}` as Parameters<typeof t>[1])}
-            </button>
+            </option>
           ))}
-        </div>
+        </select>
       </div>
+
+      {/* RL tuning budget */}
+      <Slider
+        id="rlBudget"
+        label={t(locale, "rlBudgetLabel")}
+        value={params.rlBudget}
+        min={0} max={2.0} step={0.05}
+        format={(v) => `${Math.round(v * 100)}%`}
+        onChange={(v) => onChange("rlBudget", v)}
+        explainer={t(locale, "rlBudgetExplainer")}
+      />
 
       {/* Background agents */}
       <Slider
@@ -125,7 +135,7 @@ function Slider({
         <label htmlFor={id} className="text-xs font-medium text-text-primary">{label}</label>
         <span className="text-xs font-mono font-bold text-accent-blue tabular-nums">{format(value)}</span>
       </div>
-      <input id={id} type="range" min={min} max={max} step={step} value={value}
+      <input id={id} name={id} aria-label={label} type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(Number(e.target.value))}
       />
       <p className="text-[10px] text-text-muted mt-1 leading-relaxed">{explainer}</p>

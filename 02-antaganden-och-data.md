@@ -1,6 +1,6 @@
 # 02 – Antaganden och data
 
-Alla antaganden är numrerade (A1–A90) och klassificerade efter känslighet. Varje central siffra i [03-berakningsmodell.md](03-berakningsmodell.md), [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) och [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) ska vara spårbar till ett antagande här.
+Alla antaganden är numrerade (A1–A93) och klassificerade efter känslighet. Varje central siffra i [03-berakningsmodell.md](03-berakningsmodell.md), [12-upprevidering-utmaning.md](12-upprevidering-utmaning.md) och [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) ska vara spårbar till ett antagande här.
 
 Känslighetsklasser:
 
@@ -108,6 +108,16 @@ Sjukvårdens AI-compute delas i Tier 1 (copilot/agent: transkription, dokumentat
 | A87 | AI-adoption sjukvård 2029 (specialiserad inference)   | ~40–70%                     | AI Sweden Vårdkartan 2025: 13% fullt implementerat (bas); accelererande | H |
 | A88 | Tier 2 sjukvård totalt (2029 bas, med peak + redundans) | ~200–900 H100-eq (central: ~450) | Härlett från A81–A87, extrapolerat från 5 vårdkedjor. Steg 2 (extrapolering) är primär osäkerhetskälla — se A90 | H          |
 | A90 | Compute-intensitetskorrektion sjukvård (fem kedjor vs. snitt) | 0,3–0,7 (bas: 0,5)       | Kvalificerad uppskattning: de fem analyserade vårdkedjorna (cancer, patologi, kronisk övervakning) bedöms ~2× tyngre än genomsnittlig vårdkontakt. Saknar direkt empiriskt stöd — avgränsad genom övre/undre resonemang i [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) | H          |
+
+## D3. Sjukvårdens sysselsättningseffekt av AI-investeringar
+
+Följande antaganden används endast för komplementanalysen i [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) om jobbskapande effekter. De avser bruttojobb (nya eller tydligt omdefinierade roller), inte nettot efter eventuell automatisering av administrativa uppgifter.
+
+| #   | Antagande                                             | Värde                        | Källa                                                                 | Känslighet |
+| --- | ----------------------------------------------------- | ---------------------------- | --------------------------------------------------------------------- | ---------- |
+| A91 | Antal AI-lösningar i klinisk drift 2029              | ~80–160 (bas: 120)           | AI Sweden Vårdkartan 2025: 197 initiativ, varav 13% i drift; härlett med A87 | H          |
+| A92 | Direkt bemanning per AI-lösning i klinisk drift      | ~3–8 årsarbetskrafter        | OECD 2025 "Digital and AI skills in health occupations"; NHS-archetyper för AI-roller | H          |
+| A93 | Indirekt jobbmultiplier (leverantörer/integration)   | 0,5–1,0x direkta jobb        | WEF Future of Jobs 2025 (teknikdriven jobbskapande riktning) + OECD/EU deployment-studier | H          |
 
 ## E. Tier 3 – Finjustering och anpassning
 
@@ -307,10 +317,11 @@ De antaganden med högst påverkan på slutresultatet:
 1. A57–A60 (agentisk AI-mix, adoption, bakgrundsagenter) – driver Tier 1-volymen
 2. A61–A65 (suverän träning: 200B+, RL) – driver Tier 4, den största enskilda posten
 3. A81–A88 (sjukvårdens specialiserade inference) – visar att Tier 2 är kraftigt underskattat utan vårdkedjeanalys
-4. A50 (netto-effektivitet vs växande modeller) – påverkar hela tidsserien
-5. A66–A72 (supply-constraints) – begränsar vad som kan anskaffas oavsett budget; driver urgensargument
-6. A10-A12 (AI-andel av IT-budget) – budgetrestriktion som kan göra topp-ned-spåret för konservativt
-7. A73–A80 (repoövergripande kalibrering) – styr hur stresstest, källor och praktiska restriktioner ska tolkas
+4. A91–A93 (jobbskapande i sjukvårdens AI-ekosystem) – visar sannolik sysselsättningseffekt av implementering
+5. A50 (netto-effektivitet vs växande modeller) – påverkar hela tidsserien
+6. A66–A72 (supply-constraints) – begränsar vad som kan anskaffas oavsett budget; driver urgensargument
+7. A10-A12 (AI-andel av IT-budget) – budgetrestriktion som kan göra topp-ned-spåret för konservativt
+8. A73–A80 (repoövergripande kalibrering) – styr hur stresstest, källor och praktiska restriktioner ska tolkas
 
 ## Topp 12 antaganden – påverkan på 2029
 

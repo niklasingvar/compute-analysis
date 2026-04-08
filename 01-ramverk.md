@@ -21,7 +21,7 @@ Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsm
 | Dokument   | Roll                                                              |
 | ---------- | ----------------------------------------------------------------- |
 | 01 (detta) | Ramverk, triangulering, drivare                                   |
-| 02         | Antaganderegister (A1–A90), spårbarhet och single source of truth |
+| 02         | Antaganderegister (A1–A93), spårbarhet och single source of truth |
 | 03         | Full härledning, låg/bas/hög-scenarier                            |
 | 04         | Internationella jämförelser (topp-ned-validering)                 |
 | 05         | Källregister                                                      |
@@ -33,6 +33,7 @@ Detaljerade beräkningar och konvergens: [03-berakningsmodell.md](03-berakningsm
 | 11         | Kompletterande perspektiv — praktikerstresstest                   |
 | 12         | Upprevidering-utmaning — stresstest av ett högre utfall           |
 | 13         | Sjukvårdens AI-compute — botten-upp per vårdkedja (stödjer Tier 2) |
+| 14         | Jobb — sysselsättningseffekt av AI-investeringar                  |
 
 ---
 

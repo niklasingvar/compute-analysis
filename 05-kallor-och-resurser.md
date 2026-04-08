@@ -32,6 +32,10 @@ Detta dokument är ett **riskbaserat källregister**. Målet är inte att lista 
 | SKR / Kolada | Primär | https://www.kolada.se/ | Volymankare för regioner, kommuner och verksamhetsdata i Tier 2 |
 | AI-kommissionens Färdplan för Sverige (SOU 2025:12) | Primär | https://www.regeringen.se/rattsliga-dokument/statens-offentliga-utredningar/2025/02/sou-202512/ | Svensk policyankare för behov av beräkningskraft, samordning och nationell riktning |
 | GPT-SW3 – AI Sweden | Primär | https://www.ai.se/en/project/gpt-sw3 | Empirisk svensk referens för nationell modellförmåga och suverän träning |
+| AI Sweden Vårdkarta 2025 | Primär | https://www.ai.se/en | Bas för A87 och A91: antal AI-initiativ i vården och andel i klinisk drift |
+| OECD – Digital and AI skills in health occupations (2025) | Semiprimar | https://www.oecd.org/en/publications/digital-and-ai-skills-in-health-occupations_5fbd42ab-en.html | Stöd för A92: efterfrågan på nya digitala/AI-roller i vården |
+| EU-kommissionen – Study on the deployment of AI in healthcare (2025) | Semiprimar | https://op.europa.eu/en/publication-detail/-/publication/9ddf7bf8-62bf-11f0-bf4e-01aa75ed71a1/language-en | Stöd för A92–A93: arbetskraftsberedskap, implementeringshinder och skalning |
+| NHS – Specialist AI skills within the NHS | Semiprimar | https://digital-transformation.hee.nhs.uk/support-for-organisations/research-and-publications/dart-ed/horizon-scanning/developing-healthcare-workers-confidence-in-ai/chapter-4-workforce-transformation/specialist-ai-skills-within-the-nhs | Operativ rolltaxonomi för klinisk AI-drift (A92) |
 
 ---
 
@@ -56,6 +60,7 @@ Detta dokument är ett **riskbaserat källregister**. Målet är inte att lista 
 | Dwarkesh Patel × Dylan Patel | Sekundär | https://www.dwarkesh.com/p/dylan-patel | Tillgänglig, offentlig sammanfattning av SemiAnalysis teser om logik, minne och kraft som flaskhalsar |
 | Epoch AI – training compute growth | Semiprimar | https://epoch.ai/blog/training-compute-of-frontier-ai-models-grows-by-4-5x-per-year | Stöd för A47–A50 om compute-tillväxt och Jevons-liknande efterfrågedynamik |
 | Artificial Analysis | Semiprimar | https://artificialanalysis.ai/ | Stöd för A20 och throughput-ankare i inference-delen |
+| World Economic Forum – Future of Jobs Report 2025 | Semiprimar | https://www.weforum.org/publications/the-future-of-jobs-report-2025/ | Stöd för A93: teknikdriven jobbdynamik och riktning för indirekta sysselsättningseffekter |
 
 ---
 
