@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useRef, useEffect } from "react";
 import type { Locale } from "@/lib/i18n";
 import { t } from "@/lib/i18n";
 import {
@@ -15,14 +15,18 @@ import {
   presets,
   leverRanges,
   sectorDataQuality,
-  euComparisons,
+  footnoteUrl,
   type Assumptions,
   type SectorToggles,
   type SectorKey,
   type Preset,
+  type FootnoteKey,
   REPO_URL,
 } from "@/lib/data";
+import { defaultAdvanced, type AdvancedParams, type PercentileTimeline, type ExceedanceResult, type SimWorkerInput, type SimWorkerOutput } from "@/lib/simulation";
 import ComputeChart from "./ComputeChart";
+import FanChart from "./FanChart";
+import AdvancedPanel from "./AdvancedPanel";
 
 // Sector colors
 const SECTOR_COLORS: Record<SectorKey, string> = {
@@ -41,6 +45,58 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
   const [activePreset, setActivePreset] = useState<Preset | null>("base");
   const [presetPopover, setPresetPopover] = useState<Preset | null>(null);
   const [sectorPopover, setSectorPopover] = useState<SectorKey | null>(null);
+  const [advancedOpen, setAdvancedOpen] = useState(false);
+  const [advanced, setAdvanced] = useState<AdvancedParams>({ ...defaultAdvanced });
+  const [chartMode, setChartMode] = useState<"stacked" | "fan">("stacked");
+  const [mcResult, setMcResult] = useState<PercentileTimeline | null>(null);
+  const [exceedance, setExceedance] = useState<ExceedanceResult | null>(null);
+  const [simRunning, setSimRunning] = useState(false);
+  const workerRef = useRef<Worker | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Web Worker lifecycle
+  useEffect(() => {
+    return () => {
+      workerRef.current?.terminate();
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+    };
+  }, []);
+
+  // Run simulation on input change
+  useEffect(() => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      // Terminate previous worker
+      workerRef.current?.terminate();
+      try {
+        const worker = new Worker(
+          new URL("../lib/monteCarlo.worker.ts", import.meta.url)
+        );
+        workerRef.current = worker;
+        setSimRunning(true);
+        worker.onmessage = (e: MessageEvent<SimWorkerOutput>) => {
+          if (e.data.type === "result") {
+            setMcResult(e.data.percentiles);
+            setExceedance(e.data.exceedance);
+            setSimRunning(false);
+          }
+        };
+        worker.onerror = () => setSimRunning(false);
+        const input: SimWorkerInput = { assumptions, advanced, sectors };
+        worker.postMessage(input);
+      } catch {
+        // Worker not supported (SSR) — use deterministic only
+        setSimRunning(false);
+      }
+    }, 300);
+  }, [assumptions, advanced, sectors]);
+
+  const updateAdvanced = useCallback(
+    <K extends keyof AdvancedParams>(key: K, value: AdvancedParams[K]) => {
+      setAdvanced((prev) => ({ ...prev, [key]: value }));
+    },
+    []
+  );
 
   const year = years[yearIndex];
   const result = computeAll(assumptions, sectors, year);
@@ -273,10 +329,10 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
           {slidersOpen && (
             <div className="px-4 pb-4 space-y-4 section-fade">
               {([
-                { id: "adoptionRate", label: "sliderAdoptionLabel", explainer: "sliderAdoptionExplainer", format: (v: number) => `${Math.round(v * 100)}%`, range: leverRanges.adoptionRate },
-                { id: "agentShare", label: "sliderAgentLabel", explainer: "sliderAgentExplainer", format: (v: number) => `${Math.round(v * 100)}%`, range: leverRanges.agentShare },
-                { id: "healthcareAdoption", label: "sliderHealthcareLabel", explainer: "sliderHealthcareExplainer", format: (v: number) => `${Math.round(v * 100)}%`, range: leverRanges.healthcareAdoption },
-                { id: "fineTuningOrgs", label: "sliderFineTuningLabel", explainer: "sliderFineTuningExplainer", format: (v: number) => `${Math.round(v)}`, range: leverRanges.fineTuningOrgs },
+                { id: "adoptionRate", label: "sliderAdoptionLabel", explainer: "sliderAdoptionExplainer", format: (v: number) => `${Math.round(v * 100)}%`, range: leverRanges.adoptionRate, footnote: "adoptionRate" as FootnoteKey },
+                { id: "agentShare", label: "sliderAgentLabel", explainer: "sliderAgentExplainer", format: (v: number) => `${Math.round(v * 100)}%`, range: leverRanges.agentShare, footnote: "agentShare" as FootnoteKey },
+                { id: "healthcareAdoption", label: "sliderHealthcareLabel", explainer: "sliderHealthcareExplainer", format: (v: number) => `${Math.round(v * 100)}%`, range: leverRanges.healthcareAdoption, footnote: "healthcareAdoption" as FootnoteKey },
+                { id: "fineTuningOrgs", label: "sliderFineTuningLabel", explainer: "sliderFineTuningExplainer", format: (v: number) => `${Math.round(v)}`, range: leverRanges.fineTuningOrgs, footnote: "fineTuningOrgs" as FootnoteKey },
               ] as const).map((slider) => {
                 const value = assumptions[slider.id as keyof Assumptions] as number;
                 const isActive = activeSlider === slider.id;
@@ -317,11 +373,40 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
                             {context}
                           </p>
                         )}
+                        <a
+                          href={footnoteUrl(slider.footnote)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 mt-1 text-[10px] text-accent-blue hover:underline font-mono"
+                        >
+                          → {slider.footnote === "adoptionRate" ? "assumptions/adoption-rate.md" : slider.footnote === "agentShare" ? "assumptions/agent-share.md" : slider.footnote === "healthcareAdoption" ? "assumptions/healthcare-ai.md" : "assumptions/fine-tuning.md"}
+                        </a>
                       </div>
                     )}
                   </div>
                 );
               })}
+            </div>
+          )}
+        </div>
+
+        {/* Advanced / Nerd mode */}
+        <div className="rounded-xl border border-border bg-bg-surface overflow-hidden">
+          <button
+            onClick={() => setAdvancedOpen(!advancedOpen)}
+            className="w-full flex items-center justify-between px-4 py-3 text-left hover:bg-bg-elevated/50 transition-colors"
+          >
+            <span className="text-sm font-semibold text-accent-blue">
+              {t(locale, advancedOpen ? "advancedModeCollapse" : "advancedMode")}
+              {simRunning && <span className="ml-2 inline-block w-2 h-2 rounded-full bg-accent-gold animate-pulse" />}
+            </span>
+            <svg className={`w-4 h-4 text-text-secondary transition-transform duration-300 ${advancedOpen ? "rotate-180" : ""}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {advancedOpen && (
+            <div className="px-4 pb-4">
+              <AdvancedPanel locale={locale} params={advanced} onChange={updateAdvanced} />
             </div>
           )}
         </div>
@@ -349,52 +434,67 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
           ))}
         </div>
 
-        {/* Big number + stats */}
-        <div className="flex flex-wrap items-end gap-6">
-          <div>
-            <div className="text-xs font-mono uppercase tracking-widest text-text-muted">
-              {t(locale, "computeNeed")} {year}
-            </div>
-            <div
-              className={`text-5xl md:text-6xl font-black tabular-nums tracking-tighter number-transition ${
-                assumptions.sovereignty ? "text-accent-gold" : "text-text-secondary"
-              }`}
-            >
-              {formatNumber(result.total)}
-            </div>
-            <div className="text-xs text-text-muted">{t(locale, "unit")}</div>
-          </div>
-          <div className="flex gap-6 pb-2">
-            <div>
-              <div className="text-lg font-bold tabular-nums text-text-primary">
-                ~{formatNumber(cost)}
+        {/* Big number + MC range + stats */}
+        {(() => {
+          const mc2029 = mcResult?.find((p) => p.year === year);
+          const displayTotal = mc2029 ? mc2029.p50 : result.total;
+          const displayCost = getAnnualCost(displayTotal);
+          const displayEnergy = getEnergyMW(displayTotal, year);
+          return (
+            <div className="flex flex-wrap items-end gap-6">
+              <div>
+                <div className="text-xs font-mono uppercase tracking-widest text-text-muted">
+                  {t(locale, "computeNeed")} {year}
+                  {simRunning && <span className="ml-2 inline-block w-1.5 h-1.5 rounded-full bg-accent-gold animate-pulse" />}
+                </div>
+                <div className={`text-5xl md:text-6xl font-black tabular-nums tracking-tighter number-transition ${assumptions.sovereignty ? "text-accent-gold" : "text-text-secondary"}`}>
+                  {formatNumber(displayTotal)}
+                </div>
+                {mc2029 && (
+                  <div className="text-xs font-mono text-text-muted tabular-nums">
+                    [{formatNumber(mc2029.p10)} – {formatNumber(mc2029.p90)}] <span className="text-text-muted/60">{t(locale, "rangeLabel")}</span>
+                  </div>
+                )}
+                {!mc2029 && <div className="text-xs text-text-muted">{t(locale, "unit")}</div>}
               </div>
-              <div className="text-[10px] font-mono uppercase text-text-muted">
-                MSEK/{locale === "sv" ? "år" : "yr"}
+              <div className="flex gap-6 pb-2">
+                <div>
+                  <div className="text-lg font-bold tabular-nums text-text-primary">~{formatNumber(displayCost)}</div>
+                  <div className="text-[10px] font-mono uppercase text-text-muted">MSEK/{locale === "sv" ? "år" : "yr"}</div>
+                </div>
+                <div>
+                  <div className="text-lg font-bold tabular-nums text-text-primary">~{displayEnergy}</div>
+                  <div className="text-[10px] font-mono uppercase text-text-muted">MW</div>
+                </div>
               </div>
             </div>
-            <div>
-              <div className="text-lg font-bold tabular-nums text-text-primary">
-                ~{energy}
-              </div>
-              <div className="text-[10px] font-mono uppercase text-text-muted">
-                MW
-              </div>
-            </div>
-          </div>
-        </div>
+          );
+        })()}
 
-        {/* Stacked area chart */}
+        {/* Chart with mode toggle */}
         <div className="rounded-xl border border-border bg-bg-surface p-4">
-          <div className="text-xs font-mono uppercase tracking-widest text-text-muted mb-3">
-            {t(locale, "chartTitle")}
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-xs font-mono uppercase tracking-widest text-text-muted">
+              {t(locale, "chartTitle")}
+            </div>
+            <div className="flex gap-1">
+              <button onClick={() => setChartMode("stacked")} className={`px-2 py-1 rounded text-[10px] font-semibold transition-all ${chartMode === "stacked" ? "bg-accent-blue text-white" : "bg-bg-elevated text-text-secondary hover:bg-border-light"}`}>
+                {t(locale, "chartModeSectors")}
+              </button>
+              <button onClick={() => setChartMode("fan")} className={`px-2 py-1 rounded text-[10px] font-semibold transition-all ${chartMode === "fan" ? "bg-accent-blue text-white" : "bg-bg-elevated text-text-secondary hover:bg-border-light"}`}>
+                {t(locale, "chartModeUncertainty")}
+              </button>
+            </div>
           </div>
-          <ComputeChart
-            data={timeline}
-            sectors={sectors}
-            selectedYear={year}
-            locale={locale}
-          />
+          {chartMode === "stacked" ? (
+            <ComputeChart data={timeline} sectors={sectors} selectedYear={year} locale={locale} />
+          ) : mcResult ? (
+            <FanChart data={mcResult} selectedYear={year} />
+          ) : (
+            <div className="h-64 flex items-center justify-center text-text-muted text-sm">
+              <span className="animate-pulse">{locale === "sv" ? "Kör simulering..." : "Running simulation..."}</span>
+            </div>
+          )}
           {/* Sector legend */}
           <div className="flex flex-wrap gap-x-4 gap-y-1 mt-3">
             {(["publicCore", "healthcare", "defense", "privateSector"] as const).map(
@@ -444,73 +544,30 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
           </p>
         </div>
 
-        {/* EU comparison bar */}
-        <div className="rounded-xl border border-border bg-bg-surface p-4">
-          <div className="text-xs font-mono uppercase tracking-widest text-text-muted mb-1">
-            {t(locale, "euTitle")}
-          </div>
-          <p className="text-xs text-text-secondary mb-4">
-            {t(locale, "euSubtitle")}
-          </p>
-          <div className="space-y-2">
-            {/* Sweden current */}
-            <EUBar
-              label={t(locale, "euSweden")}
-              value={result.publicCore + result.healthcare}
-              maxValue={50000}
-              color="#006AA7"
-            />
-            {/* Sweden all sectors */}
-            {result.total > result.publicCore + result.healthcare && (
-              <EUBar
-                label={t(locale, "euSwedenFull")}
-                value={result.total}
-                maxValue={50000}
-                color="#FECC02"
+        {/* Budget risk card */}
+        {exceedance && exceedance.year2029Probability > 0 && (
+          <div className="rounded-xl border border-accent-danger/30 bg-accent-danger/5 p-4 section-fade">
+            <div className="text-xs font-mono uppercase tracking-widest text-text-muted mb-1">
+              {t(locale, "budgetRiskTitle")}
+            </div>
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-black tabular-nums text-accent-danger">
+                {Math.round(exceedance.year2029Probability * 100)}%
+              </span>
+              <span className="text-xs text-text-secondary">
+                {t(locale, "budgetRiskText")} {formatNumber(exceedance.threshold)} H100-eq
+              </span>
+            </div>
+            {/* Visual bar */}
+            <div className="mt-2 h-2 rounded-full bg-bg-elevated overflow-hidden">
+              <div
+                className="h-full rounded-full bg-accent-danger transition-all duration-500"
+                style={{ width: `${exceedance.year2029Probability * 100}%` }}
               />
-            )}
-            {/* EU comparisons */}
-            {euComparisons.map((c) => (
-              <EUBar
-                key={c.key}
-                label={`${c.label} (${c.country})`}
-                value={c.h100eq}
-                maxValue={50000}
-                color="#64748B"
-              />
-            ))}
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-  );
-}
+        )}
 
-function EUBar({
-  label,
-  value,
-  maxValue,
-  color,
-}: {
-  label: string;
-  value: number;
-  maxValue: number;
-  color: string;
-}) {
-  const pct = Math.min((value / maxValue) * 100, 100);
-  return (
-    <div className="flex items-center gap-3">
-      <div className="w-40 text-[11px] text-text-secondary truncate shrink-0">
-        {label}
-      </div>
-      <div className="flex-1 bg-bg-elevated rounded-full h-4 overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-500"
-          style={{ width: `${Math.max(pct, 1)}%`, backgroundColor: color }}
-        />
-      </div>
-      <div className="w-16 text-right text-[11px] font-mono font-semibold text-text-primary tabular-nums">
-        {formatNumber(value)}
       </div>
     </div>
   );

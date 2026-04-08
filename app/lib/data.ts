@@ -262,3 +262,38 @@ export function formatNumber(n: number): string {
 }
 
 export const REPO_URL = "https://github.com/niklasingvar/compute-analysis";
+
+// --- Footnote references ---
+// Links from UI elements to their source markdown files
+
+export const footnotes = {
+  // Assumptions → individual files
+  adoptionRate: "assumptions/adoption-rate.md",
+  agentShare: "assumptions/agent-share.md",
+  healthcareAdoption: "assumptions/healthcare-ai.md",
+  fineTuningOrgs: "assumptions/fine-tuning.md",
+  sovereignty: "assumptions/sovereign-training.md",
+
+  // Sectors → source docs
+  publicCore: "03-berakningsmodell.md",
+  healthcare: "13-sjukvard-compute-per-vardkedja.md",
+  defense: "04-internationella-jamforelser.md",
+  privateSector: "11-kompletterande-perspektiv.md",
+
+  // Narrative claims
+  tier1Calc: "03-berakningsmodell.md",
+  tier4Policy: "08-suveranitet.md",
+  budgetGap: "03-berakningsmodell.md",
+  whyNow: "10-kan-vi-vanta.md",
+  euContext: "04-internationella-jamforelser.md",
+  triangulation: "01-ramverk.md",
+  assumptions: "02-antaganden-och-data.md",
+  sources: "05-kallor-och-resurser.md",
+  tokensPerCapita: "11-kompletterande-perspektiv.md",
+} as const;
+
+export type FootnoteKey = keyof typeof footnotes;
+
+export function footnoteUrl(key: FootnoteKey): string {
+  return `${REPO_URL}/blob/main/${footnotes[key]}`;
+}
