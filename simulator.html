@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-compute Monte Carlo-simulator — Svensk offentlig sektor 2026–2031</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --border: #2a2d3a;
+    --text: #e2e4ea;
+    --text-dim: #8b8fa3;
+    --accent: #6c8cff;
+    --accent2: #ff6c8c;
+    --accent3: #6cffa0;
+    --tier1: #6c8cff;
+    --tier2: #ff6c8c;
+    --tier3: #ffc86c;
+    --tier4: #6cffa0;
+    --p90: rgba(108,140,255,0.08);
+    --p75: rgba(108,140,255,0.15);
+    --p50line: rgba(108,140,255,0.9);
+    --p25: rgba(108,140,255,0.15);
+    --p10: rgba(108,140,255,0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  h1 { font-size: 1.3rem; font-weight: 600; margin-bottom: 0.3rem; }
+  h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.8rem; color: var(--accent); }
+  h3 { font-size: 0.85rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+  .subtitle { color: var(--text-dim); font-size: 0.8rem; margin-bottom: 1.5rem; }
+  .layout {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+  }
+  .controls { max-height: 90vh; overflow-y: auto; }
+  .control-group { margin-bottom: 1.2rem; }
+  .control-group:last-child { margin-bottom: 0; }
+  label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.78rem;
+    margin-bottom: 0.3rem;
+    color: var(--text-dim);
+  }
+  label .val { color: var(--text); font-weight: 600; font-size: 0.82rem; }
+  input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    outline: none;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: none;
+    cursor: pointer;
+  }
+  select {
+    width: 100%;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.4rem;
+    font-family: inherit;
+    font-size: 0.78rem;
+  }
+  .btn {
+    width: 100%;
+    padding: 0.7rem;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.8rem;
+    transition: opacity 0.15s;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 1.2rem;
+  }
+  .card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.8rem;
+    text-align: center;
+  }
+  .card .card-val { font-size: 1.4rem; font-weight: 700; }
+  .card .card-label { font-size: 0.7rem; color: var(--text-dim); margin-top: 0.2rem; }
+  .card .card-range { font-size: 0.65rem; color: var(--text-dim); }
+  .chart-container { position: relative; width: 100%; height: 380px; margin-bottom: 1.2rem; }
+  .chart-container canvas { width: 100% !important; height: 100% !important; }
+  .tier-table { width: 100%; border-collapse: collapse; font-size: 0.75rem; }
+  .tier-table th, .tier-table td { padding: 0.4rem 0.6rem; text-align: right; border-bottom: 1px solid var(--border); }
+  .tier-table th { color: var(--text-dim); font-weight: 500; text-align: left; }
+  .tier-table th:first-child { text-align: left; }
+  .tier-table td:first-child { text-align: left; font-weight: 500; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 0.4rem; vertical-align: middle; }
+  .separator { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+  .assumption-tag { font-size: 0.65rem; color: var(--text-dim); opacity: 0.7; }
+  .status { font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem; text-align: center; }
+  .budget-note { font-size: 0.72rem; color: var(--accent2); margin-top: 0.5rem; padding: 0.6rem; background: rgba(255,108,140,0.06); border-radius: 4px; border: 1px solid rgba(255,108,140,0.15); }
+  .info-toggle { font-size: 0.7rem; color: var(--accent); cursor: pointer; text-decoration: underline; margin-left: 0.3rem; }
+  .info-box { font-size: 0.7rem; color: var(--text-dim); background: var(--bg); border: 1px solid var(--border); border-radius: 4px; padding: 0.5rem 0.7rem; margin-top: 0.3rem; display: none; }
+  .info-box.open { display: block; }
+</style>
+</head>
+<body>
+
+<h1>Monte Carlo-simulator: Sveriges AI-compute-behov</h1>
+<p class="subtitle">Offentlig sektor (exkl. forsvar) 2026–2031 &middot; Baserat pa antaganderegistret A1–A90 &middot; <span id="iterCount">1 000</span> iterationer</p>
+
+<div class="layout">
+  <!-- LEFT: Controls -->
+  <div class="panel controls">
+    <h2>Antaganden</h2>
+
+    <h3>Tier 1 — Inference (copilots + agentisk AI)</h3>
+    <div class="control-group">
+      <label>Adoptionsgrad 2029 (A59) <span class="val" id="v_adoption">60%</span></label>
+      <input type="range" id="adoption" min="30" max="90" value="60" step="1">
+      <span class="assumption-tag">Spann: 40–80%. Historisk referens: Teams-utrullning ~7 ar</span>
+    </div>
+    <div class="control-group">
+      <label>Andel agentanvandare (A52) <span class="val" id="v_agentShare">25%</span></label>
+      <input type="range" id="agentShare" min="5" max="50" value="25" step="1">
+      <span class="assumption-tag">Bas: 20–30%. Historisk: avancerade IT-funktioner &lt;10%</span>
+    </div>
+    <div class="control-group">
+      <label>Tokens/dag per agentanvandare (A55) <span class="val" id="v_agentTokens">400K</span></label>
+      <input type="range" id="agentTokens" min="100" max="800" value="400" step="10">
+      <span class="assumption-tag">Bas: 300K–500K. Claude Code-sessioner: 100K–500K+</span>
+    </div>
+    <div class="control-group">
+      <label>Bakgrundsagenter nationellt (A60) <span class="val" id="v_bgAgents">3 000</span></label>
+      <input type="range" id="bgAgents" min="500" max="10000" value="3000" step="100">
+      <span class="assumption-tag">20–50 slots per storre organisation</span>
+    </div>
+
+    <hr class="separator">
+    <h3>Tier 2 — Specialiserad inference</h3>
+    <div class="control-group">
+      <label>Sjukvardens AI-adoption 2029 (A87) <span class="val" id="v_healthAdoption">55%</span></label>
+      <input type="range" id="healthAdoption" min="15" max="85" value="55" step="1">
+      <span class="assumption-tag">AI Sweden Vardkartan 2025: 13% fullt implementerat</span>
+    </div>
+    <div class="control-group">
+      <label>Ovrig doman-AI 2029 (A26–A27) <span class="val" id="v_domainAI">280</span> H100-eq</label>
+      <input type="range" id="domainAI" min="50" max="800" value="280" step="10">
+      <span class="assumption-tag">Geospatial, bedrageri, klimat, ovrigt</span>
+    </div>
+
+    <hr class="separator">
+    <h3>Tier 3 — Finjustering</h3>
+    <div class="control-group">
+      <label>Organisationer som finjusterar (A28) <span class="val" id="v_ftOrgs">80</span></label>
+      <input type="range" id="ftOrgs" min="10" max="300" value="80" step="5">
+    </div>
+    <div class="control-group">
+      <label>GPU-h per jobb (A29) <span class="val" id="v_ftGpuH">200</span></label>
+      <input type="range" id="ftGpuH" min="50" max="1000" value="200" step="10">
+    </div>
+
+    <hr class="separator">
+    <h3>Tier 4 — Suveran traning</h3>
+    <div class="control-group">
+      <label>Modellambition (A61) <span class="val" id="v_modelAmb">200B+</span></label>
+      <select id="modelAmb">
+        <option value="none">Ingen suveran traning</option>
+        <option value="70b">70B-modell (konservativt)</option>
+        <option value="200b" selected>200B+-modell (basscenario)</option>
+        <option value="400b">400B+ multimodal (offensivt)</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <label>RL-tuning-budget (A63–A64) <span class="val" id="v_rlBudget">100%</span></label>
+      <input type="range" id="rlBudget" min="0" max="200" value="100" step="5">
+      <span class="assumption-tag">100% = basscenario (500K + 300K H100-h). 0% = ingen RL</span>
+    </div>
+
+    <hr class="separator">
+    <h3>Systemparametrar</h3>
+    <div class="control-group">
+      <label>Overhead-kombination <span class="val" id="v_overhead">4.9x</span></label>
+      <input type="range" id="overhead" min="20" max="80" value="49" step="1">
+      <span class="assumption-tag">Peak x redundans x modell x CoT x batching</span>
+    </div>
+    <div class="control-group">
+      <label>Arlig nettoefterfrageokning (A50) <span class="val" id="v_demandGrowth">20%</span></label>
+      <input type="range" id="demandGrowth" min="0" max="50" value="20" step="1">
+      <span class="assumption-tag">Modell vs. effektivisering: netto</span>
+    </div>
+    <div class="control-group">
+      <label>Monte Carlo-iterationer <span class="val" id="v_iterations">1 000</span></label>
+      <input type="range" id="iterations" min="200" max="5000" value="1000" step="100">
+    </div>
+    <div class="control-group">
+      <label>Osakehet/spridning <span class="val" id="v_uncertainty">100%</span></label>
+      <input type="range" id="uncertainty" min="20" max="200" value="100" step="5">
+      <span class="assumption-tag">Skalningsfaktor for alla distributions-bredder</span>
+    </div>
+
+    <button class="btn" id="runBtn" onclick="runSimulation()">Kor simulering</button>
+    <div class="status" id="status">Redo. Justera parametrar och kor.</div>
+  </div>
+
+  <!-- RIGHT: Results -->
+  <div>
+    <div class="panel">
+      <h2>Resultat — 2029 (medianscenario)</h2>
+      <div class="cards">
+        <div class="card">
+          <div class="card-val" id="r_gpu" style="color:var(--accent)">—</div>
+          <div class="card-label">H100-ekvivalenter</div>
+          <div class="card-range" id="r_gpu_range"></div>
+        </div>
+        <div class="card">
+          <div class="card-val" id="r_cost" style="color:var(--accent2)">—</div>
+          <div class="card-label">MSEK/ar (compute)</div>
+          <div class="card-range" id="r_cost_range"></div>
+        </div>
+        <div class="card">
+          <div class="card-val" id="r_power" style="color:var(--accent3)">—</div>
+          <div class="card-label">MW (effekt)</div>
+          <div class="card-range" id="r_power_range"></div>
+        </div>
+        <div class="card">
+          <div class="card-val" id="r_prob" style="color:var(--tier3)">—</div>
+          <div class="card-label">P(> budgettak)</div>
+          <div class="card-range" id="r_prob_range">Metod C: ~1 750 H100-eq</div>
+        </div>
+      </div>
+
+      <h3>Total AI-compute — konfidensband</h3>
+      <div class="chart-container"><canvas id="fanChart"></canvas></div>
+
+      <h3>Nedbrytning per tier (median 2029)</h3>
+      <div class="chart-container" style="height:280px;"><canvas id="tierChart"></canvas></div>
+
+      <h3>Arsestimat per tier (median)</h3>
+      <table class="tier-table" id="tierTable">
+        <thead>
+          <tr><th>Ar</th><th><span class="dot" style="background:var(--tier1)"></span>Tier 1</th><th><span class="dot" style="background:var(--tier2)"></span>Tier 2</th><th><span class="dot" style="background:var(--tier3)"></span>Tier 3</th><th><span class="dot" style="background:var(--tier4)"></span>Tier 4</th><th>Totalt</th></tr>
+        </thead>
+        <tbody id="tierTableBody"></tbody>
+      </table>
+
+      <div class="budget-note" id="budgetNote"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === MONTE CARLO ENGINE (runs in Web Worker) ===
+const workerCode = `
+"use strict";
+
+// Box-Muller transform
+function randn() {
+  let u = 0, v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
+}
+
+function clamp(x, lo, hi) { return Math.max(lo, Math.min(hi, x)); }
+
+function sampleNormal(mean, sd) { return mean + randn() * sd; }
+function sampleLogNormal(median, spread) {
+  const sigma = Math.log(1 + spread);
+  return median * Math.exp(randn() * sigma);
+}
+
+// S-curve adoption interpolation
+function adoptionAtYear(year, target2029, start2026) {
+  // Simple logistic: from start2026 in 2026 to target in 2029, continuing to ~1.1x target by 2031
+  const t = year - 2026;
+  const K = Math.min(target2029 * 1.25, 0.95); // max cap
+  const r = 1.2; // growth rate
+  const t0 = 1.8; // inflection ~mid 2028
+  const raw = K / (1 + Math.exp(-r * (t - t0)));
+  // Ensure 2026 start is roughly start2026
+  const base = K / (1 + Math.exp(-r * (0 - t0)));
+  const scale = (raw - base) / (K - base);
+  return start2026 + scale * (K - start2026);
+}
+
+function simulate(params) {
+  const years = [2026, 2027, 2028, 2029, 2030, 2031];
+  const N = params.iterations;
+  const unc = params.uncertainty / 100; // scale factor for distribution width
+
+  // Collect per-iteration, per-year results
+  const allTotal = years.map(() => []);
+  const allTier1 = years.map(() => []);
+  const allTier2 = years.map(() => []);
+  const allTier3 = years.map(() => []);
+  const allTier4 = years.map(() => []);
+
+  for (let i = 0; i < N; i++) {
+    // Sample parameters with uncertainty
+    const adoption2029 = clamp(sampleNormal(params.adoption / 100, 0.08 * unc), 0.1, 0.95);
+    const agentShare = clamp(sampleNormal(params.agentShare / 100, 0.07 * unc), 0.02, 0.7);
+    const agentTokens = clamp(sampleLogNormal(params.agentTokens * 1000, 0.3 * unc), 50000, 1500000);
+    const bgAgents = clamp(sampleNormal(params.bgAgents, 800 * unc), 200, 20000);
+    const healthAdoption = clamp(sampleNormal(params.healthAdoption / 100, 0.12 * unc), 0.05, 0.95);
+    const domainAI = clamp(sampleLogNormal(params.domainAI, 0.4 * unc), 20, 2000);
+    const ftOrgs = clamp(sampleNormal(params.ftOrgs, 20 * unc), 5, 500);
+    const ftGpuH = clamp(sampleLogNormal(params.ftGpuH, 0.35 * unc), 30, 2000);
+    const overhead = clamp(sampleLogNormal(params.overhead / 10, 0.2 * unc), 1.5, 10);
+    const demandGrowth = clamp(sampleNormal(params.demandGrowth / 100, 0.06 * unc), -0.1, 0.7);
+    const rlScale = clamp(sampleNormal(params.rlBudget / 100, 0.2 * unc), 0, 3);
+
+    // Tier 4 training hours based on model ambition
+    let trainBaseH, rlBaseH, domainModelsH;
+    const amb = params.modelAmb;
+    if (amb === 'none') {
+      trainBaseH = 0; rlBaseH = 0; domainModelsH = 0;
+    } else if (amb === '70b') {
+      trainBaseH = clamp(sampleLogNormal(1000000, 0.3 * unc), 300000, 3000000);
+      rlBaseH = 200000;
+      domainModelsH = 400000;
+    } else if (amb === '200b') {
+      trainBaseH = clamp(sampleLogNormal(5000000, 0.25 * unc), 2000000, 12000000);
+      rlBaseH = 500000;
+      domainModelsH = 900000 + 300000; // 3x domain + continuous RL
+    } else { // 400b
+      trainBaseH = clamp(sampleLogNormal(12000000, 0.25 * unc), 5000000, 30000000);
+      rlBaseH = 1500000;
+      domainModelsH = 2000000;
+    }
+    const totalRlH = (rlBaseH + domainModelsH) * rlScale;
+    const totalTrainH = trainBaseH + totalRlH;
+
+    // Population
+    const adressable = clamp(sampleNormal(500000, 30000 * unc), 350000, 650000);
+
+    for (let yi = 0; yi < years.length; yi++) {
+      const year = years[yi];
+      const yearOffset = year - 2026;
+      const growthFactor = Math.pow(1 + demandGrowth, yearOffset);
+
+      // === TIER 1: Inference ===
+      const adoptionThisYear = adoptionAtYear(year, adoption2029, 0.07);
+      const activeUsers = adressable * adoptionThisYear;
+      const copilotShare = clamp(1 - agentShare - 0.15, 0.2, 0.8); // passive ~15%
+      const passiveShare = clamp(1 - copilotShare - agentShare, 0.05, 0.3);
+
+      const copilotTokens = 30000;
+      const passiveTokens = 5000;
+      const bgTokensPerSlot = 100000;
+      // Scale agent share up over time (lower in 2026)
+      const agentShareYear = agentShare * Math.min(1, 0.2 + 0.8 * yearOffset / 3);
+
+      const totalTokensDay =
+        activeUsers * copilotShare * copilotTokens +
+        activeUsers * agentShareYear * agentTokens +
+        activeUsers * passiveShare * passiveTokens +
+        bgAgents * bgTokensPerSlot * (yearOffset / 3); // bg agents scale up
+
+      const throughput = 3000; // tokens/s per H100
+      const gpuSecsDay = totalTokensDay / throughput;
+      const sustained = gpuSecsDay / 28800; // 8h workday
+      let tier1 = sustained * overhead * growthFactor;
+      // Early years are lower
+      tier1 = Math.max(tier1, 10);
+
+      // === TIER 2: Specialized inference ===
+      // Healthcare component
+      const healthAdoptionYear = adoptionAtYear(year, healthAdoption, 0.08);
+      // 5 care pathways: ~44 sustained at full adoption -> extrapolate to ~180 -> reasoning overhead ~450
+      const healthBase = 44 * (1 / 0.6) * healthAdoptionYear; // normalized to full adoption=1
+      const healthExtrapolated = healthBase / 0.15 * clamp(sampleNormal(0.5, 0.12 * unc), 0.2, 0.8); // A90 correction
+      const healthWithOverhead = healthExtrapolated * clamp(sampleLogNormal(2.5, 0.25 * unc), 1.2, 5); // reasoning
+      const healthRedundant = healthWithOverhead * 1.3;
+      const tier2Health = healthRedundant * growthFactor;
+
+      // Domain AI (geospatial, fraud, climate, other)
+      const domainScale = adoptionAtYear(year, 1.0, 0.3);
+      const tier2Domain = domainAI * domainScale * growthFactor;
+
+      // Complex reasoning tasks
+      const reasoningTasks = 20 * domainScale * growthFactor; // ~20 H100-eq at base
+      const tier2 = tier2Health + tier2Domain + reasoningTasks;
+
+      // === TIER 3: Fine-tuning ===
+      const ftOrgsYear = ftOrgs * (0.3 + 0.7 * yearOffset / 3); // ramp up
+      const jobsPerOrg = 6;
+      const ragH = 30;
+      const totalFtH = ftOrgsYear * (jobsPerOrg * ftGpuH + ragH);
+      const tier3Sustained = totalFtH / 8760;
+      // Burst: jobs run in days, not year-round. Burst ~ 10-30x sustained
+      const tier3 = clamp(tier3Sustained * 15, 20, 5000) * growthFactor;
+
+      // === TIER 4: Sovereign training ===
+      let tier4 = 0;
+      if (amb !== 'none') {
+        // Ramp: small in 2026, building to full in 2029
+        const ramp = clamp((yearOffset - 0.5) / 2.5, 0.1, 1.0);
+        // Growth beyond 2029
+        const postGrowth = year > 2029 ? Math.pow(1.15, year - 2029) : 1;
+        // Convert total H100-hours to burst GPU-eq:
+        // If main run takes 4 months, annualized ~ totalH / (0.5 * 8760)
+        const annualized = totalTrainH / (0.5 * 8760);
+        tier4 = annualized * ramp * postGrowth;
+      }
+
+      allTier1[yi].push(Math.round(tier1));
+      allTier2[yi].push(Math.round(tier2));
+      allTier3[yi].push(Math.round(tier3));
+      allTier4[yi].push(Math.round(tier4));
+      allTotal[yi].push(Math.round(tier1 + tier2 + tier3 + tier4));
+    }
+  }
+
+  // Compute percentiles
+  function percentile(arr, p) {
+    const sorted = [...arr].sort((a, b) => a - b);
+    const idx = Math.floor(p / 100 * (sorted.length - 1));
+    return sorted[idx];
+  }
+
+  function stats(arr) {
+    return {
+      p10: percentile(arr, 10),
+      p25: percentile(arr, 25),
+      p50: percentile(arr, 50),
+      p75: percentile(arr, 75),
+      p90: percentile(arr, 90),
+      mean: Math.round(arr.reduce((a, b) => a + b, 0) / arr.length)
+    };
+  }
+
+  const result = {
+    years: years,
+    total: years.map((_, i) => stats(allTotal[i])),
+    tier1: years.map((_, i) => stats(allTier1[i])),
+    tier2: years.map((_, i) => stats(allTier2[i])),
+    tier3: years.map((_, i) => stats(allTier3[i])),
+    tier4: years.map((_, i) => stats(allTier4[i])),
+    // 2029 distribution for probability calc
+    total2029: allTotal[3]
+  };
+
+  self.postMessage(result);
+}
+
+self.onmessage = function(e) {
+  simulate(e.data);
+};
+`;
+
+const blob = new Blob([workerCode], { type: 'application/javascript' });
+const workerUrl = URL.createObjectURL(blob);
+let worker = null;
+
+// === UI BINDINGS ===
+const sliders = {
+  adoption: { el: 'adoption', display: 'v_adoption', fmt: v => v + '%' },
+  agentShare: { el: 'agentShare', display: 'v_agentShare', fmt: v => v + '%' },
+  agentTokens: { el: 'agentTokens', display: 'v_agentTokens', fmt: v => Math.round(v) + 'K' },
+  bgAgents: { el: 'bgAgents', display: 'v_bgAgents', fmt: v => Number(v).toLocaleString('sv-SE') },
+  healthAdoption: { el: 'healthAdoption', display: 'v_healthAdoption', fmt: v => v + '%' },
+  domainAI: { el: 'domainAI', display: 'v_domainAI', fmt: v => Number(v).toLocaleString('sv-SE') },
+  ftOrgs: { el: 'ftOrgs', display: 'v_ftOrgs', fmt: v => v },
+  ftGpuH: { el: 'ftGpuH', display: 'v_ftGpuH', fmt: v => v },
+  rlBudget: { el: 'rlBudget', display: 'v_rlBudget', fmt: v => v + '%' },
+  overhead: { el: 'overhead', display: 'v_overhead', fmt: v => (v / 10).toFixed(1) + 'x' },
+  demandGrowth: { el: 'demandGrowth', display: 'v_demandGrowth', fmt: v => v + '%' },
+  iterations: { el: 'iterations', display: 'v_iterations', fmt: v => Number(v).toLocaleString('sv-SE') },
+  uncertainty: { el: 'uncertainty', display: 'v_uncertainty', fmt: v => v + '%' },
+};
+
+for (const [key, cfg] of Object.entries(sliders)) {
+  const el = document.getElementById(cfg.el);
+  el.addEventListener('input', () => {
+    document.getElementById(cfg.display).textContent = cfg.fmt(el.value);
+    if (key === 'iterations') {
+      document.getElementById('iterCount').textContent = cfg.fmt(el.value);
+    }
+  });
+}
+
+document.getElementById('modelAmb').addEventListener('change', (e) => {
+  const labels = { none: 'Ingen', '70b': '70B', '200b': '200B+', '400b': '400B+' };
+  document.getElementById('v_modelAmb').textContent = labels[e.target.value];
+});
+
+// === CHARTS ===
+let fanChart = null;
+let tierChart = null;
+
+function initCharts() {
+  const ctx1 = document.getElementById('fanChart').getContext('2d');
+  fanChart = new Chart(ctx1, {
+    type: 'line',
+    data: { labels: [], datasets: [] },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: true, labels: { color: '#8b8fa3', font: { family: "'SF Mono', monospace", size: 10 } } },
+        tooltip: {
+          backgroundColor: '#1a1d27',
+          borderColor: '#2a2d3a',
+          borderWidth: 1,
+          titleColor: '#e2e4ea',
+          bodyColor: '#8b8fa3',
+          bodyFont: { family: "'SF Mono', monospace", size: 11 },
+          callbacks: {
+            label: function(ctx) {
+              if (ctx.dataset.label && !ctx.dataset.label.includes('band')) {
+                return ctx.dataset.label + ': ' + Number(ctx.raw).toLocaleString('sv-SE') + ' H100-eq';
+              }
+              return null;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { ticks: { color: '#8b8fa3', font: { family: "'SF Mono', monospace" } }, grid: { color: '#2a2d3a' } },
+        y: {
+          ticks: {
+            color: '#8b8fa3',
+            font: { family: "'SF Mono', monospace" },
+            callback: v => v >= 1000 ? (v / 1000).toFixed(0) + 'K' : v
+          },
+          grid: { color: '#2a2d3a' },
+          title: { display: true, text: 'H100-ekvivalenter', color: '#8b8fa3', font: { family: "'SF Mono', monospace", size: 11 } }
+        }
+      }
+    }
+  });
+
+  const ctx2 = document.getElementById('tierChart').getContext('2d');
+  tierChart = new Chart(ctx2, {
+    type: 'bar',
+    data: { labels: [], datasets: [] },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { labels: { color: '#8b8fa3', font: { family: "'SF Mono', monospace", size: 10 } } },
+        tooltip: {
+          backgroundColor: '#1a1d27',
+          borderColor: '#2a2d3a',
+          borderWidth: 1,
+          titleColor: '#e2e4ea',
+          bodyColor: '#8b8fa3',
+          bodyFont: { family: "'SF Mono', monospace", size: 11 },
+          callbacks: { label: ctx => ctx.dataset.label + ': ' + Number(ctx.raw).toLocaleString('sv-SE') }
+        }
+      },
+      scales: {
+        x: { stacked: true, ticks: { color: '#8b8fa3', font: { family: "'SF Mono', monospace" } }, grid: { color: '#2a2d3a' } },
+        y: {
+          stacked: true,
+          ticks: {
+            color: '#8b8fa3',
+            font: { family: "'SF Mono', monospace" },
+            callback: v => v >= 1000 ? (v / 1000).toFixed(0) + 'K' : v
+          },
+          grid: { color: '#2a2d3a' },
+          title: { display: true, text: 'H100-eq (median)', color: '#8b8fa3', font: { family: "'SF Mono', monospace", size: 11 } }
+        }
+      }
+    }
+  });
+}
+
+function updateCharts(result) {
+  const years = result.years;
+  const labels = years.map(String);
+
+  // Fan chart: p10-p90 bands + median line + budget ceiling
+  const p10 = result.total.map(s => s.p10);
+  const p25 = result.total.map(s => s.p25);
+  const p50 = result.total.map(s => s.p50);
+  const p75 = result.total.map(s => s.p75);
+  const p90 = result.total.map(s => s.p90);
+
+  // Budget ceiling (Metod C): ~AI share of IT budget
+  const budgetCeiling = [350, 700, 1200, 1750, 2200, 3250];
+
+  fanChart.data.labels = labels;
+  fanChart.data.datasets = [
+    {
+      label: 'p90',
+      data: p90,
+      borderColor: 'transparent',
+      backgroundColor: 'rgba(108,140,255,0.07)',
+      fill: '+1',
+      pointRadius: 0,
+      tension: 0.3,
+    },
+    {
+      label: 'p75',
+      data: p75,
+      borderColor: 'transparent',
+      backgroundColor: 'rgba(108,140,255,0.12)',
+      fill: '+1',
+      pointRadius: 0,
+      tension: 0.3,
+    },
+    {
+      label: 'Median (p50)',
+      data: p50,
+      borderColor: 'rgba(108,140,255,0.95)',
+      backgroundColor: 'transparent',
+      borderWidth: 2.5,
+      fill: false,
+      pointRadius: 4,
+      pointBackgroundColor: 'rgba(108,140,255,0.95)',
+      tension: 0.3,
+    },
+    {
+      label: 'p25',
+      data: p25,
+      borderColor: 'transparent',
+      backgroundColor: 'rgba(108,140,255,0.12)',
+      fill: '-1',
+      pointRadius: 0,
+      tension: 0.3,
+    },
+    {
+      label: 'p10',
+      data: p10,
+      borderColor: 'transparent',
+      backgroundColor: 'rgba(108,140,255,0.07)',
+      fill: '-1',
+      pointRadius: 0,
+      tension: 0.3,
+    },
+    {
+      label: 'Budgettak (Metod C)',
+      data: budgetCeiling,
+      borderColor: 'rgba(255,108,140,0.6)',
+      backgroundColor: 'transparent',
+      borderWidth: 1.5,
+      borderDash: [6, 4],
+      fill: false,
+      pointRadius: 0,
+      tension: 0.3,
+    },
+    {
+      label: 'Repo bas-scenario',
+      data: [900, 2200, 4500, 9000, 13000, 18000],
+      borderColor: 'rgba(108,255,160,0.5)',
+      backgroundColor: 'transparent',
+      borderWidth: 1.5,
+      borderDash: [3, 3],
+      fill: false,
+      pointRadius: 0,
+      tension: 0.3,
+    }
+  ];
+  fanChart.update();
+
+  // Tier stacked bar
+  tierChart.data.labels = labels;
+  tierChart.data.datasets = [
+    { label: 'Tier 1 — Inference', data: result.tier1.map(s => s.p50), backgroundColor: 'rgba(108,140,255,0.7)' },
+    { label: 'Tier 2 — Specialiserad', data: result.tier2.map(s => s.p50), backgroundColor: 'rgba(255,108,140,0.7)' },
+    { label: 'Tier 3 — Finjustering', data: result.tier3.map(s => s.p50), backgroundColor: 'rgba(255,200,108,0.7)' },
+    { label: 'Tier 4 — Suveran traning', data: result.tier4.map(s => s.p50), backgroundColor: 'rgba(108,255,160,0.7)' },
+  ];
+  tierChart.update();
+
+  // Table
+  const tbody = document.getElementById('tierTableBody');
+  tbody.innerHTML = '';
+  for (let i = 0; i < years.length; i++) {
+    const t1 = result.tier1[i].p50;
+    const t2 = result.tier2[i].p50;
+    const t3 = result.tier3[i].p50;
+    const t4 = result.tier4[i].p50;
+    const tot = result.total[i].p50;
+    const fmt = v => Number(v).toLocaleString('sv-SE');
+    tbody.innerHTML += '<tr><td>' + years[i] + '</td><td>' + fmt(t1) + '</td><td>' + fmt(t2) + '</td><td>' + fmt(t3) + '</td><td>' + fmt(t4) + '</td><td><strong>' + fmt(tot) + '</strong></td></tr>';
+  }
+
+  // Summary cards — 2029 (index 3)
+  const s = result.total[3];
+  const fmt = v => Number(v).toLocaleString('sv-SE');
+  document.getElementById('r_gpu').textContent = fmt(s.p50);
+  document.getElementById('r_gpu_range').textContent = 'p10: ' + fmt(s.p10) + ' — p90: ' + fmt(s.p90);
+
+  // Cost: ~220 KSEK per H100-eq/year (weighted average)
+  const costPerGpu = 220; // KSEK
+  const costMedian = Math.round(s.p50 * costPerGpu / 1000);
+  const costLo = Math.round(s.p10 * costPerGpu / 1000);
+  const costHi = Math.round(s.p90 * costPerGpu / 1000);
+  document.getElementById('r_cost').textContent = fmt(costMedian);
+  document.getElementById('r_cost_range').textContent = fmt(costLo) + ' — ' + fmt(costHi) + ' MSEK';
+
+  // Power: ~0.7 kW per H100-eq (facility, PUE ~1.25, accounting for newer gen)
+  const kwPerGpu = 0.7;
+  const powerMedian = (s.p50 * kwPerGpu / 1000).toFixed(1);
+  const powerLo = (s.p10 * kwPerGpu / 1000).toFixed(1);
+  const powerHi = (s.p90 * kwPerGpu / 1000).toFixed(1);
+  document.getElementById('r_power').textContent = powerMedian;
+  document.getElementById('r_power_range').textContent = powerLo + ' — ' + powerHi + ' MW';
+
+  // Probability of exceeding budget ceiling (Metod C ~1750)
+  const budgetCeiling2029 = 1750;
+  const exceedCount = result.total2029.filter(v => v > budgetCeiling2029).length;
+  const prob = Math.round(exceedCount / result.total2029.length * 100);
+  document.getElementById('r_prob').textContent = prob + '%';
+
+  // Budget note
+  const budgetNote = document.getElementById('budgetNote');
+  if (prob > 80) {
+    budgetNote.textContent = 'I ' + prob + '% av simuleringarna overstiger behovet vad nuvarande IT-budgetlogik (Metod C: ~1 750 H100-eq) kan finansiera. Huvudscenariot forutsatter ny finansiering — riktade satsningar, EU-medel och offentlig-privat samverkan.';
+  } else if (prob > 50) {
+    budgetNote.textContent = 'I ' + prob + '% av scenarierna overstiger behovet budgettaket. Ny finansiering behovs i de flesta fall.';
+  } else {
+    budgetNote.textContent = 'Med dessa parametrar ryms behovet inom budgettaket i ' + (100 - prob) + '% av scenarierna.';
+  }
+}
+
+// === RUN SIMULATION ===
+function runSimulation() {
+  const btn = document.getElementById('runBtn');
+  const status = document.getElementById('status');
+  btn.disabled = true;
+  status.textContent = 'Kor ' + document.getElementById('iterations').value + ' iterationer...';
+
+  if (worker) worker.terminate();
+  worker = new Worker(workerUrl);
+
+  worker.onmessage = function(e) {
+    updateCharts(e.data);
+    btn.disabled = false;
+    status.textContent = 'Klar. ' + document.getElementById('iterations').value + ' iterationer genomforda.';
+  };
+
+  worker.postMessage({
+    adoption: +document.getElementById('adoption').value,
+    agentShare: +document.getElementById('agentShare').value,
+    agentTokens: +document.getElementById('agentTokens').value,
+    bgAgents: +document.getElementById('bgAgents').value,
+    healthAdoption: +document.getElementById('healthAdoption').value,
+    domainAI: +document.getElementById('domainAI').value,
+    ftOrgs: +document.getElementById('ftOrgs').value,
+    ftGpuH: +document.getElementById('ftGpuH').value,
+    modelAmb: document.getElementById('modelAmb').value,
+    rlBudget: +document.getElementById('rlBudget').value,
+    overhead: +document.getElementById('overhead').value,
+    demandGrowth: +document.getElementById('demandGrowth').value,
+    iterations: +document.getElementById('iterations').value,
+    uncertainty: +document.getElementById('uncertainty').value,
+  });
+}
+
+// Init
+initCharts();
+// Auto-run on load
+setTimeout(runSimulation, 300);
+</script>
+</body>
+</html>
