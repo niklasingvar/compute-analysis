@@ -195,6 +195,16 @@ const translations = {
     risk4Hospital: "Regionala datacenter kan inte expandera utan tillräcklig elkapacitet.",
     risk4Citizen: "AI-infrastruktur konkurrerar om samma elnät som bostäder och industri. Planering måste ske nu.",
 
+    // Jobs
+    jobsTitle: "Jobb som skapas",
+    jobsSubtitle: "AI-investeringar skapar nya roller — inte bara compute-kostnader",
+    jobsTotal: "bruttojobb i sjukvårdens AI-implementation till 2029",
+    jobsDirect: "Direkta roller",
+    jobsDirectList: "Klinisk informatik, MLOps, AI-säkerhet & compliance, verksamhetsnära produktägare, förändringsledning",
+    jobsIndirect: "Indirekta roller",
+    jobsIndirectList: "Systemintegratörer, domänkonsulter, utbildare, oberoende granskning, leverantörsstöd",
+    jobsNote: "Bruttojobb — nettot påverkas av hur snabbt administrativa uppgifter automatiseras och hur omställning fungerar i praktiken.",
+
     // Recommendations
     recsTitle: "Tre rekommendationer",
     rec1Title: "Starta upphandling nu",
@@ -413,6 +423,15 @@ const translations = {
     risk4Minister: "Data centers need grid connections. Lead times for new connections in Sweden: 2–5 years. That's longer than GPU lead times.",
     risk4Hospital: "Regional data centers can't expand without sufficient power capacity.",
     risk4Citizen: "AI infrastructure competes for the same grid as homes and industry. Planning must happen now.",
+
+    jobsTitle: "Jobs created",
+    jobsSubtitle: "AI investments create new roles — not just compute costs",
+    jobsTotal: "gross jobs in healthcare AI implementation by 2029",
+    jobsDirect: "Direct roles",
+    jobsDirectList: "Clinical informatics, MLOps, AI safety & compliance, product owners, change management",
+    jobsIndirect: "Indirect roles",
+    jobsIndirectList: "System integrators, domain consultants, trainers, independent auditing, vendor support",
+    jobsNote: "Gross jobs — net impact depends on how fast administrative tasks are automated and how workforce transition works in practice.",
 
     recsTitle: "Three recommendations",
     rec1Title: "Start procurement now",

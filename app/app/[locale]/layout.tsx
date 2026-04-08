@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
 import { isValidLocale, t } from "@/lib/i18n";
+import AgentationWrapper from "@/components/AgentationWrapper";
 import "../globals.css";
 
 const geistSans = Geist({
@@ -48,6 +49,7 @@ export default async function LocaleLayout({
     >
       <body className="min-h-screen flex flex-col bg-bg-base text-text-primary">
         {children}
+        <AgentationWrapper />
       </body>
     </html>
   );

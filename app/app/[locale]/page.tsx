@@ -114,6 +114,30 @@ export default async function Page({
           </div>
         </section>
 
+        {/* Jobs created */}
+        <section className="py-14 px-4 bg-bg-surface">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="text-2xl font-bold tracking-tight text-text-primary mb-2">{t(locale, "jobsTitle")}</h2>
+            <p className="text-sm text-text-secondary mb-6">{t(locale, "jobsSubtitle")}</p>
+            <div className="flex items-baseline gap-3 mb-6">
+              <span className="text-4xl font-black tabular-nums text-accent-gold">~1 000</span>
+              <span className="text-sm text-text-secondary">{t(locale, "jobsTotal")}</span>
+            </div>
+            <div className="grid sm:grid-cols-2 gap-4 mb-4">
+              <div className="p-3 rounded-lg border border-border bg-bg-elevated">
+                <div className="text-xs font-mono uppercase tracking-widest text-accent-blue mb-2">{t(locale, "jobsDirect")}</div>
+                <p className="text-xs text-text-secondary leading-relaxed">{t(locale, "jobsDirectList")}</p>
+              </div>
+              <div className="p-3 rounded-lg border border-border bg-bg-elevated">
+                <div className="text-xs font-mono uppercase tracking-widest text-accent-blue mb-2">{t(locale, "jobsIndirect")}</div>
+                <p className="text-xs text-text-secondary leading-relaxed">{t(locale, "jobsIndirectList")}</p>
+              </div>
+            </div>
+            <p className="text-[11px] text-text-muted italic">{t(locale, "jobsNote")}</p>
+            <Fn href={`${REPO_URL}/blob/main/14-jobb.md`} label="14-jobb.md" />
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="py-10 px-4 bg-accent-gold">
           <div className="max-w-3xl mx-auto text-center">
