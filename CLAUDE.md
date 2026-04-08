@@ -10,7 +10,8 @@ Policyanalys + webbapp. Två delar:
 
 - **Stack**: Next.js 16.2 (App Router, Turbopack), React 19, Tailwind CSS 4, TypeScript
 - **i18n**: Route-baserad med `[locale]` segment (`/sv`, `/en`). Proxy (`proxy.ts`, ej middleware — Next.js 16 breaking change) hanterar redirect.
-- **Data**: Scenariodata hårdkodad i `app/lib/data.ts`, härledd från `06-sammanfattning.md` och `03-berakningsmodell.md`
+- **Data**: Formeldriven beräkningsmodell i `app/lib/data.ts` med sektortoggle (offentlig, sjukvård, försvar, privat), antagnandesliders och energimodell. Härledd från `03-berakningsmodell.md`, `11-kompletterande-perspektiv.md` och `13-sjukvard-compute-per-vardkedja.md`
+- **Chart**: Recharts (stacked area chart) i `app/components/ComputeChart.tsx`
 - **Översättningar**: `app/lib/i18n.ts` — inline translations, ingen extern i18n-lib
 - **Deploy**: Vercel — project settings: `rootDirectory: app`, `framework: nextjs`. Ingen `vercel.json` behövs.
 - **Params**: I Next.js 16 är `params` en Promise — alltid `await params` i pages/layouts
@@ -24,6 +25,10 @@ Policyanalys + webbapp. Två delar:
 - Vercel: sätt `rootDirectory: app` i project settings, INTE via `vercel.json`. `vercel.json` i rot + rootDirectory → dubbel-nesting-bug (`app/app/.next`)
 - Vercel deploy: `vercel deploy --prod --token $VERCEL_TOKEN --yes` från repo-root
 - Production URL: https://compute-analysis.vercel.app/
+- Recharts `ResponsiveContainer` loggar width/height-varning under SSR (ignorera — fungerar client-side)
+- Recharts Tooltip `formatter`/`labelFormatter` kräver `unknown`-typer, inte `number`/`string`
+- Tailwind CSS 4 `@theme inline` block: registrera CSS-variabler som `--color-*` för att använda som Tailwind-klasser (t.ex. `bg-accent-gold`)
+- Split-view layout: `lg:sticky lg:top-20 lg:self-start` för sticky left panel, `lg:overflow-y-auto` om panelen är lång
 
 ## Konventioner
 
