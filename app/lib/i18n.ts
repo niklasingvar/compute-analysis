@@ -15,44 +15,70 @@ const translations = {
 
     // Nav
     langSwitch: "English",
-    langSwitchShort: "EN",
+    navTitle1: "AI Compute",
+    navTitle2: "Sverige",
 
     // Hero
-    heroTitle: "Hur mycket AI-kapacitet behöver Sverige?",
-    heroSubtitle:
-      "Utforska scenarier för offentlig sektors compute-behov 2026–2031",
+    heroTitle1: "Hur mycket AI-kapacitet",
+    heroTitle2: "behöver Sverige?",
     heroLead:
-      "Svensk offentlig sektor behöver planera för betydande AI-beräkningskapacitet. Dra i reglagen nedan för att se hur olika antaganden påverkar behovet.",
+      "Dra i reglagen. Se vad som händer med Sveriges compute-behov när du ändrar antagandena.",
 
-    // Scenario labels
-    scenarioLow: "Låg",
-    scenarioBase: "Bas",
-    scenarioHigh: "Hög",
-    scenarioLabel: "Ambitionsnivå",
-
-    // Interactive widget
-    yearLabel: "Fokusår",
+    // Big number
     computeNeed: "Compute-behov",
     unit: "H100-ekvivalenter",
     annualCost: "Årskostnad",
     powerNeed: "Effektbehov",
-    strategicMeaning: "Strategisk innebörd",
 
-    // Scenario descriptions
-    lowDesc:
-      "Defensivt minimum — mestadels molnbaserad inference, begränsad nationell kontroll",
-    baseDesc:
-      "Bred AI-användning + meningsfull nationell modellförmåga och suverän träning",
-    highDesc:
-      "Offensiv ambition — omfattande suverän kapacitet, ledande nordisk AI-nation",
+    // Year
+    yearLabel: "År",
 
     // Tiers
     tier1: "Copilots & agenter",
     tier2: "Specialiserad inference",
     tier3: "Finjustering",
     tier4: "Suverän träning",
-    tierExplainer:
-      "Compute-behovet byggs upp av fyra lager. Tier 4 (suverän träning) är det största enskilda politiska valet.",
+
+    // Presets
+    presetLabel: "Snabbval",
+    presetLow: "Låg",
+    presetBase: "Bas",
+    presetHigh: "Hög",
+    presetLowConsequence:
+      "Defensivt minimum. Sverige köper AI som tjänst — billigare initialt, men fullt beroende av utländska leverantörer. Ingen kontroll över modeller för känsliga data.",
+    presetBaseConsequence:
+      "Bred AI-användning plus meningsfull nationell modellförmåga. Kräver riktade statliga satsningar utöver befintlig IT-budget — men ger handlingsfrihet.",
+    presetHighConsequence:
+      "Offensiv ambition. Sverige bygger ledande nordisk AI-kapacitet med omfattande suverän träning. Hög kostnad, men maximal strategisk handlingsfrihet och exportpotential.",
+
+    // Sovereignty toggle
+    sovereigntyLabel: "Suverän AI-träning",
+    sovereigntySubtitle: "Träning av svenska/EU-ägda grundmodeller",
+    sovereigntyOnBadge: "Sverige behåller kontrollen",
+    sovereigntyOffBadge: "Beroende av utländska leverantörer",
+    sovereigntyOffWarning:
+      "Utan suverän träningskapacitet blir Sverige helt beroende av amerikanska och kinesiska AI-leverantörer för känsliga data inom sjukvård, rättsväsende och myndighetsutövning. Utländska aktörer kan diktera pris, villkor och tillgänglighet — och Sverige förlorar möjligheten att träna modeller anpassade för svensk lag, språk och offentlig domän.",
+    sovereigntyOffCta: "Läs mer om suveränitetsanalysen",
+
+    // Assumption sliders
+    assumptionsLabel: "Justera antaganden",
+    assumptionsCollapsed: "Visa antaganden",
+
+    sliderAdoptionLabel: "Adoptionsgrad",
+    sliderAdoptionExplainer:
+      "Andelen av ~500 000 kunskapsarbetare i offentlig sektor som använder AI-verktyg dagligen 2029. Historiskt har bred IT-adoption i svensk offentlig sektor tagit 7–10 år. 62% på fyra år förutsätter nationella ramavtal, ledningsmandat och kompetensprogram.",
+
+    sliderAgentLabel: "Agentandel",
+    sliderAgentExplainer:
+      "Andelen aktiva AI-användare som kör autonoma agenter snarare än enkla copilot-assistenter. Agenter kör ~10× mer compute per dag — de arbetar självständigt i bakgrunden, gör verktygsanrop och hanterar hela arbetsflöden. En ökning från 25% till 40% agentandel höjer Tier 1 med ~50%.",
+
+    sliderHealthcareLabel: "Sjukvårdens AI-adoption",
+    sliderHealthcareExplainer:
+      "Hur djupt sjukvården embracerar AI-diagnostik: bildanalys (röntgen, patologi, MR), kliniskt beslutsstöd, genomik och kronisk övervakning. 55% motsvarar att majoriteten av regionerna har AI i ordinarie diagnostik — inte bara piloter. Sjukvården driver merparten av Tier 2.",
+
+    sliderFineTuningLabel: "Organisationer som finjusterar",
+    sliderFineTuningExplainer:
+      "Antal myndigheter, regioner och kommuner som aktivt finjusterar AI-modeller på egna data 2029. Finjustering kräver dedikerad GPU-kapacitet under kortare perioder. 80 organisationer motsvarar de stora myndigheterna plus hälften av regionerna.",
 
     // CTA
     ctaPrimary: "Bidra via PR på GitHub",
@@ -60,7 +86,7 @@ const translations = {
     ctaExplainer:
       "Alla antaganden och beräkningar är öppna. Hjälp oss förbättra analysen.",
 
-    // Narrative sections
+    // Narrative
     narrativeTitle: "Varför detta spelar roll",
     conclusion1Title: "Mer än copilots",
     conclusion1Text:
@@ -80,7 +106,7 @@ const translations = {
     whyNowText:
       "GPU-leveranser har 12–18 månaders ledtid. Datacenter kräver nätanslutning och miljötillstånd. Ramavtal måste upphandlas. Varje kvartal utan beslut är ett kvartal utan kapacitet 2028–2029 — precis när efterfrågan väntas accelerera.",
 
-    // Risk table
+    // Risks
     riskTitle: "Risker",
     riskNoFunding: "Utebliven nyfinansiering",
     riskNoFundingDesc:
@@ -111,13 +137,13 @@ const translations = {
     sourcesRepo: "Öppna hela analysen på GitHub",
     sourcesMethodTitle: "Triangulering",
     sourcesMethod:
-      "Varje central siffra belyses från minst två spår med olika metodansats: botten-upp (användningsfall × adoption × compute), topp-ned (internationella jämförelser) och storbolagstriangulering (global marknadskostnad).",
+      "Varje central siffra belyses från minst två spår med olika metodansats: botten-upp, topp-ned och storbolagstriangulering.",
 
     // Footer
     footerText: "Öppen analys — alla antaganden och beräkningar är publika.",
     footerLicense: "Bidra via GitHub",
 
-    // Document links
+    // Doc links
     docFramework: "Ramverk & metodik",
     docAssumptions: "Antaganden (A1–A90)",
     docModel: "Beräkningsmodell",
@@ -140,44 +166,70 @@ const translations = {
 
     // Nav
     langSwitch: "Svenska",
-    langSwitchShort: "SV",
+    navTitle1: "AI Compute",
+    navTitle2: "Sweden",
 
     // Hero
-    heroTitle: "How much AI capacity does Sweden need?",
-    heroSubtitle:
-      "Explore scenarios for public sector compute needs 2026–2031",
+    heroTitle1: "How much AI capacity",
+    heroTitle2: "does Sweden need?",
     heroLead:
-      "Sweden's public sector needs to plan for significant AI compute capacity. Adjust the controls below to see how different assumptions affect the need.",
+      "Pull the levers. See what happens to Sweden's compute need when you change the assumptions.",
 
-    // Scenario labels
-    scenarioLow: "Low",
-    scenarioBase: "Base",
-    scenarioHigh: "High",
-    scenarioLabel: "Ambition level",
-
-    // Interactive widget
-    yearLabel: "Focus year",
+    // Big number
     computeNeed: "Compute need",
     unit: "H100 equivalents",
     annualCost: "Annual cost",
     powerNeed: "Power need",
-    strategicMeaning: "Strategic meaning",
 
-    // Scenario descriptions
-    lowDesc:
-      "Defensive minimum — mostly cloud-based inference, limited national control",
-    baseDesc:
-      "Broad AI usage + meaningful national model capability and sovereign training",
-    highDesc:
-      "Offensive ambition — extensive sovereign capacity, leading Nordic AI nation",
+    // Year
+    yearLabel: "Year",
 
     // Tiers
     tier1: "Copilots & agents",
     tier2: "Specialized inference",
     tier3: "Fine-tuning",
     tier4: "Sovereign training",
-    tierExplainer:
-      "Compute needs are built from four tiers. Tier 4 (sovereign training) is the single largest policy choice.",
+
+    // Presets
+    presetLabel: "Presets",
+    presetLow: "Low",
+    presetBase: "Base",
+    presetHigh: "High",
+    presetLowConsequence:
+      "Defensive minimum. Sweden buys AI as a service — cheaper initially, but fully dependent on foreign providers. No control over models for sensitive data.",
+    presetBaseConsequence:
+      "Broad AI usage plus meaningful national model capability. Requires targeted state funding beyond existing IT budgets — but provides strategic autonomy.",
+    presetHighConsequence:
+      "Offensive ambition. Sweden builds leading Nordic AI capacity with extensive sovereign training. High cost, but maximum strategic freedom and export potential.",
+
+    // Sovereignty toggle
+    sovereigntyLabel: "Sovereign AI training",
+    sovereigntySubtitle: "Training Swedish/EU-owned foundation models",
+    sovereigntyOnBadge: "Sweden retains control",
+    sovereigntyOffBadge: "Dependent on foreign providers",
+    sovereigntyOffWarning:
+      "Without sovereign training capacity, Sweden becomes fully dependent on American and Chinese AI providers for sensitive data in healthcare, justice, and public administration. Foreign actors can dictate price, terms, and availability — and Sweden loses the ability to train models adapted for Swedish law, language, and public domain.",
+    sovereigntyOffCta: "Read the sovereignty analysis",
+
+    // Assumption sliders
+    assumptionsLabel: "Adjust assumptions",
+    assumptionsCollapsed: "Show assumptions",
+
+    sliderAdoptionLabel: "Adoption rate",
+    sliderAdoptionExplainer:
+      "Share of ~500,000 knowledge workers in public sector using AI tools daily by 2029. Historically, broad IT adoption in Swedish public sector has taken 7–10 years. 62% in four years requires national framework agreements, leadership mandates, and competence programs.",
+
+    sliderAgentLabel: "Agent share",
+    sliderAgentExplainer:
+      "Share of active AI users running autonomous agents rather than simple copilot assistants. Agents use ~10× more compute per day — they work independently in the background, make tool calls, and handle entire workflows. An increase from 25% to 40% agent share raises Tier 1 by ~50%.",
+
+    sliderHealthcareLabel: "Healthcare AI adoption",
+    sliderHealthcareExplainer:
+      "How deeply healthcare embraces AI diagnostics: image analysis (X-ray, pathology, MRI), clinical decision support, genomics, and chronic monitoring. 55% means the majority of regions have AI in routine diagnostics — not just pilots. Healthcare drives most of Tier 2.",
+
+    sliderFineTuningLabel: "Organizations fine-tuning",
+    sliderFineTuningExplainer:
+      "Number of agencies, regions, and municipalities actively fine-tuning AI models on their own data by 2029. Fine-tuning requires dedicated GPU capacity during shorter periods. 80 organizations corresponds to the large agencies plus half the regions.",
 
     // CTA
     ctaPrimary: "Contribute via PR on GitHub",
@@ -185,7 +237,7 @@ const translations = {
     ctaExplainer:
       "All assumptions and calculations are open. Help us improve the analysis.",
 
-    // Narrative sections
+    // Narrative
     narrativeTitle: "Why this matters",
     conclusion1Title: "More than copilots",
     conclusion1Text:
@@ -205,7 +257,7 @@ const translations = {
     whyNowText:
       "GPU deliveries have 12–18 month lead times. Data centers require grid connections and permits. Framework agreements must be procured. Every quarter without a decision means a quarter without capacity in 2028–2029 — precisely when demand is expected to accelerate.",
 
-    // Risk table
+    // Risks
     riskTitle: "Risks",
     riskNoFunding: "No new funding",
     riskNoFundingDesc:
@@ -236,13 +288,13 @@ const translations = {
     sourcesRepo: "Open the full analysis on GitHub",
     sourcesMethodTitle: "Triangulation",
     sourcesMethod:
-      "Each key figure is illuminated from at least two tracks with different methodological approaches: bottom-up (use cases × adoption × compute), top-down (international comparisons), and big-company triangulation (global market cost).",
+      "Each key figure is illuminated from at least two tracks with different methodological approaches: bottom-up, top-down, and big-company triangulation.",
 
     // Footer
     footerText: "Open analysis — all assumptions and calculations are public.",
     footerLicense: "Contribute on GitHub",
 
-    // Document links
+    // Doc links
     docFramework: "Framework & methodology",
     docAssumptions: "Assumptions (A1–A90)",
     docModel: "Calculation model",
@@ -263,8 +315,4 @@ export type TranslationKey = keyof (typeof translations)["sv"];
 
 export function t(locale: Locale, key: TranslationKey): string {
   return translations[locale][key] ?? translations.sv[key] ?? key;
-}
-
-export function getTranslations(locale: Locale) {
-  return translations[locale];
 }

@@ -1,199 +1,448 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import type { Locale } from "@/lib/i18n";
 import { t } from "@/lib/i18n";
 import {
   years,
-  getComputeNeed,
+  computeFromAssumptions,
   getAnnualCost,
   getPowerMW,
-  getTierBreakdown,
   formatNumber,
-  type Scenario,
+  defaultAssumptions,
+  presets,
+  leverRanges,
+  type Assumptions,
+  type Preset,
+  REPO_URL,
 } from "@/lib/data";
 
-const SCENARIO_COLORS = {
-  low: { bg: "bg-blue-100 dark:bg-blue-900/30", bar: "bg-blue-500", text: "text-blue-700 dark:text-blue-300" },
-  base: { bg: "bg-amber-100 dark:bg-amber-900/30", bar: "bg-amber-500", text: "text-amber-700 dark:text-amber-300" },
-  high: { bg: "bg-rose-100 dark:bg-rose-900/30", bar: "bg-rose-500", text: "text-rose-700 dark:text-rose-300" },
-};
-
 export default function ComputeWidget({ locale }: { locale: Locale }) {
-  const [scenario, setScenario] = useState<Scenario>("base");
-  const [yearIndex, setYearIndex] = useState(3); // 2029 default
+  const [assumptions, setAssumptions] = useState<Assumptions>({
+    ...defaultAssumptions,
+  });
+  const [yearIndex, setYearIndex] = useState(3); // 2029
+  const [slidersOpen, setSlidersOpen] = useState(false);
+  const [activeSlider, setActiveSlider] = useState<string | null>(null);
+  const [activePreset, setActivePreset] = useState<Preset | null>("base");
+  const [presetPopover, setPresetPopover] = useState<Preset | null>(null);
+
   const year = years[yearIndex];
+  const result = computeFromAssumptions(assumptions, year);
+  const cost = getAnnualCost(result.total);
+  const power = getPowerMW(result.total);
 
-  const gpus = getComputeNeed(scenario, year);
-  const cost = getAnnualCost(gpus);
-  const power = getPowerMW(gpus);
-  const tiers = getTierBreakdown(scenario, year);
-  const tierTotal = tiers.tier1 + tiers.tier2 + tiers.tier3 + tiers.tier4;
+  const updateAssumption = useCallback(
+    <K extends keyof Assumptions>(key: K, value: Assumptions[K]) => {
+      setAssumptions((prev) => ({ ...prev, [key]: value }));
+      setActivePreset(null); // custom configuration
+    },
+    []
+  );
 
-  const scenarios: Scenario[] = ["low", "base", "high"];
-  const scenarioLabels: Record<Scenario, string> = {
-    low: t(locale, "scenarioLow"),
-    base: t(locale, "scenarioBase"),
-    high: t(locale, "scenarioHigh"),
+  const applyPreset = useCallback((key: Preset) => {
+    setAssumptions({ ...presets[key] });
+    setActivePreset(key);
+    setPresetPopover(null);
+  }, []);
+
+  const tierColors = {
+    tier1: "bg-tier1",
+    tier2: "bg-tier2",
+    tier3: "bg-tier3",
+    tier4: assumptions.sovereignty ? "bg-tier4" : "bg-tier4-off",
   };
-  const scenarioDescs: Record<Scenario, string> = {
-    low: t(locale, "lowDesc"),
-    base: t(locale, "baseDesc"),
-    high: t(locale, "highDesc"),
-  };
 
-  const tierLabels = [
-    { key: "tier1" as const, label: t(locale, "tier1"), color: "bg-sky-500" },
-    { key: "tier2" as const, label: t(locale, "tier2"), color: "bg-emerald-500" },
-    { key: "tier3" as const, label: t(locale, "tier3"), color: "bg-violet-500" },
-    { key: "tier4" as const, label: t(locale, "tier4"), color: "bg-orange-500" },
-  ];
+  const tierLabels = {
+    tier1: t(locale, "tier1"),
+    tier2: t(locale, "tier2"),
+    tier3: t(locale, "tier3"),
+    tier4: t(locale, "tier4"),
+  };
 
   return (
-    <div className="w-full max-w-4xl mx-auto">
-      {/* Scenario selector */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-          {t(locale, "scenarioLabel")}
-        </label>
-        <div className="flex gap-2">
-          {scenarios.map((s) => (
-            <button
-              key={s}
-              onClick={() => setScenario(s)}
-              className={`flex-1 py-3 px-4 rounded-lg text-sm font-semibold transition-all ${
-                scenario === s
-                  ? `${SCENARIO_COLORS[s].bg} ${SCENARIO_COLORS[s].text} ring-2 ring-current`
-                  : "bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700"
+    <div className="w-full max-w-4xl mx-auto space-y-6">
+      {/* === SOVEREIGNTY TOGGLE === */}
+      <div
+        className={`rounded-2xl border-2 p-5 transition-all duration-500 ${
+          assumptions.sovereignty
+            ? "border-accent-gold/30 bg-bg-surface"
+            : "border-accent-danger sovereignty-warning bg-accent-danger/5"
+        }`}
+      >
+        <div className="flex items-center justify-between gap-4">
+          <div className="flex-1">
+            <div className="font-semibold text-text-primary text-lg">
+              {t(locale, "sovereigntyLabel")}
+            </div>
+            <div className="text-sm text-text-secondary mt-0.5">
+              {t(locale, "sovereigntySubtitle")}
+            </div>
+          </div>
+          <button
+            role="switch"
+            aria-checked={assumptions.sovereignty}
+            onClick={() =>
+              updateAssumption("sovereignty", !assumptions.sovereignty)
+            }
+            className={`relative w-16 h-9 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue ${
+              assumptions.sovereignty ? "bg-accent-gold" : "bg-border-light"
+            }`}
+          >
+            <span
+              className={`absolute top-1 w-7 h-7 rounded-full bg-white shadow-md transition-all duration-300 ${
+                assumptions.sovereignty ? "left-8" : "left-1"
               }`}
-            >
-              {scenarioLabels[s]}
-            </button>
-          ))}
+            />
+          </button>
         </div>
-        <p className="mt-2 text-sm text-gray-500 dark:text-gray-400 italic">
-          {scenarioDescs[scenario]}
-        </p>
-      </div>
 
-      {/* Year slider */}
-      <div className="mb-8">
-        <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-2">
-          {t(locale, "yearLabel")}: <span className="text-gray-900 dark:text-gray-100 font-bold text-lg">{year}</span>
-        </label>
-        <input
-          type="range"
-          min={0}
-          max={years.length - 1}
-          value={yearIndex}
-          onChange={(e) => setYearIndex(Number(e.target.value))}
-          className="w-full h-2 rounded-lg appearance-none cursor-pointer accent-gray-900 dark:accent-gray-100"
-        />
-        <div className="flex justify-between text-xs text-gray-400 mt-1">
-          {years.map((y) => (
-            <span key={y} className={y === year ? "font-bold text-gray-700 dark:text-gray-300" : ""}>
-              {y}
+        {/* Sovereignty badge */}
+        <div className="mt-3">
+          {assumptions.sovereignty ? (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-gold/15 text-accent-gold text-sm font-medium">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+                />
+              </svg>
+              {t(locale, "sovereigntyOnBadge")}
             </span>
-          ))}
+          ) : (
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-danger/15 text-accent-danger text-sm font-medium">
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"
+                />
+              </svg>
+              {t(locale, "sovereigntyOffBadge")}
+            </span>
+          )}
+        </div>
+
+        {/* Sovereignty warning */}
+        {!assumptions.sovereignty && (
+          <div className="mt-4 p-4 rounded-xl bg-accent-danger/10 border border-accent-danger/30 section-fade">
+            <p className="text-sm text-text-primary leading-relaxed">
+              {t(locale, "sovereigntyOffWarning")}
+            </p>
+            <a
+              href={`${REPO_URL}/blob/main/08-suveranitet.md`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 mt-3 text-sm text-accent-danger hover:text-accent-danger/80 font-medium"
+            >
+              {t(locale, "sovereigntyOffCta")}
+              <svg
+                className="w-3.5 h-3.5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                />
+              </svg>
+            </a>
+          </div>
+        )}
+      </div>
+
+      {/* === YEAR CHIPS === */}
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-text-secondary font-medium mr-1">
+          {t(locale, "yearLabel")}
+        </span>
+        {years.map((y, i) => (
+          <button
+            key={y}
+            onClick={() => setYearIndex(i)}
+            className={`px-3 py-1.5 rounded-lg text-sm font-mono font-semibold transition-all ${
+              y === year
+                ? "bg-accent-blue text-white"
+                : "bg-bg-surface text-text-secondary hover:bg-bg-elevated hover:text-text-primary"
+            }`}
+          >
+            {y}
+          </button>
+        ))}
+      </div>
+
+      {/* === BIG NUMBER === */}
+      <div className="text-center py-6">
+        <div className="text-sm font-medium text-text-secondary mb-2 tracking-wide uppercase font-mono">
+          {t(locale, "computeNeed")} {year}
+        </div>
+        <div
+          className={`text-7xl md:text-8xl lg:text-9xl font-black tabular-nums tracking-tighter number-transition ${
+            assumptions.sovereignty ? "text-accent-gold" : "text-text-secondary"
+          }`}
+        >
+          {formatNumber(result.total)}
+        </div>
+        <div className="text-sm text-text-muted mt-2">{t(locale, "unit")}</div>
+
+        {/* Cost + Power stats */}
+        <div className="flex justify-center gap-8 mt-6">
+          <div>
+            <div className="text-2xl font-bold tabular-nums text-text-primary">
+              ~{formatNumber(cost)}
+            </div>
+            <div className="text-xs text-text-muted uppercase tracking-wide font-mono">
+              MSEK / {t(locale, "annualCost").toLowerCase()}
+            </div>
+          </div>
+          <div className="w-px bg-border" />
+          <div>
+            <div className="text-2xl font-bold tabular-nums text-text-primary">
+              ~{power}
+            </div>
+            <div className="text-xs text-text-muted uppercase tracking-wide font-mono">
+              MW / {t(locale, "powerNeed").toLowerCase()}
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Big number display */}
-      <div className={`rounded-2xl p-6 mb-6 ${SCENARIO_COLORS[scenario].bg}`}>
-        <div className="text-center">
-          <div className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-            {t(locale, "computeNeed")} {year}
-          </div>
-          <div className={`text-5xl md:text-7xl font-black tabular-nums tracking-tight ${SCENARIO_COLORS[scenario].text}`}>
-            {formatNumber(gpus)}
-          </div>
-          <div className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-            {t(locale, "unit")}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 mt-6 pt-4 border-t border-gray-200/50 dark:border-gray-700/50">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              ~{formatNumber(cost)} <span className="text-sm font-normal">MSEK</span>
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              {t(locale, "annualCost")}
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              ~{power} <span className="text-sm font-normal">MW</span>
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">
-              {t(locale, "powerNeed")}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tier breakdown */}
-      <div className="rounded-xl border border-gray-200 dark:border-gray-800 p-4">
-        <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
-          {t(locale, "tierExplainer")}
-        </p>
-        <div className="space-y-2">
-          {tierLabels.map(({ key, label, color }) => {
-            const value = tiers[key];
-            const pct = tierTotal > 0 ? (value / tierTotal) * 100 : 0;
+      {/* === STACKED TIER BAR === */}
+      <div className="space-y-3">
+        <div className="h-8 rounded-lg overflow-hidden flex">
+          {(["tier1", "tier2", "tier3", "tier4"] as const).map((tier) => {
+            const val = result[tier];
+            const pct = result.total > 0 ? (val / result.total) * 100 : 0;
+            if (pct < 0.5) return null;
             return (
-              <div key={key} className="flex items-center gap-3">
-                <div className="w-36 text-xs text-gray-600 dark:text-gray-400 shrink-0">
-                  {label}
-                </div>
-                <div className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-full h-5 overflow-hidden">
-                  <div
-                    className={`${color} h-full rounded-full transition-all duration-500 ease-out`}
-                    style={{ width: `${Math.max(pct, 2)}%` }}
-                  />
-                </div>
-                <div className="w-20 text-right text-xs tabular-nums text-gray-600 dark:text-gray-400">
-                  {formatNumber(value)}
-                </div>
+              <div
+                key={tier}
+                className={`${tierColors[tier]} transition-all duration-500 ease-out`}
+                style={{ width: `${pct}%` }}
+                title={`${tierLabels[tier]}: ${formatNumber(val)}`}
+              />
+            );
+          })}
+        </div>
+
+        {/* Tier legend */}
+        <div className="flex flex-wrap gap-x-5 gap-y-2">
+          {(["tier1", "tier2", "tier3", "tier4"] as const).map((tier) => {
+            const val = result[tier];
+            const dimmed = tier === "tier4" && !assumptions.sovereignty;
+            return (
+              <div
+                key={tier}
+                className={`flex items-center gap-2 transition-opacity duration-300 ${
+                  dimmed ? "opacity-30" : ""
+                }`}
+              >
+                <div
+                  className={`w-3 h-3 rounded-sm ${tierColors[tier]}`}
+                />
+                <span className="text-xs text-text-secondary">
+                  {tierLabels[tier]}
+                </span>
+                <span className="text-xs font-mono font-semibold text-text-primary tabular-nums">
+                  {formatNumber(val)}
+                </span>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Timeline mini-chart */}
-      <div className="mt-6 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
-        <div className="flex items-end justify-between gap-1 h-32">
-          {years.map((y) => {
-            const val = getComputeNeed(scenario, y);
-            const maxVal = getComputeNeed("high", 2031);
-            const height = (val / maxVal) * 100;
-            const isActive = y === year;
-            return (
-              <button
-                key={y}
-                onClick={() => setYearIndex(years.indexOf(y))}
-                className="flex-1 flex flex-col items-center gap-1 group cursor-pointer"
-              >
-                <span className={`text-xs tabular-nums transition-all ${
-                  isActive ? "font-bold text-gray-900 dark:text-gray-100" : "text-gray-400 opacity-0 group-hover:opacity-100"
-                }`}>
-                  {formatNumber(val)}
-                </span>
-                <div
-                  className={`w-full rounded-t transition-all duration-300 ${
-                    isActive ? SCENARIO_COLORS[scenario].bar : "bg-gray-200 dark:bg-gray-700 group-hover:bg-gray-300 dark:group-hover:bg-gray-600"
-                  }`}
-                  style={{ height: `${Math.max(height, 3)}%` }}
-                />
-                <span className={`text-xs ${isActive ? "font-bold text-gray-900 dark:text-gray-100" : "text-gray-400"}`}>
-                  {y}
-                </span>
-              </button>
-            );
-          })}
-        </div>
+      {/* === PRESETS === */}
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-text-secondary font-medium mr-1">
+          {t(locale, "presetLabel")}
+        </span>
+        {(["low", "base", "high"] as const).map((key) => (
+          <div key={key} className="relative">
+            <button
+              onClick={() => applyPreset(key)}
+              onMouseEnter={() => setPresetPopover(key)}
+              onMouseLeave={() => setPresetPopover(null)}
+              className={`px-4 py-1.5 rounded-lg text-sm font-semibold transition-all ${
+                activePreset === key
+                  ? "bg-accent-blue text-white"
+                  : "bg-bg-surface text-text-secondary hover:bg-bg-elevated hover:text-text-primary"
+              }`}
+            >
+              {t(locale, key === "low" ? "presetLow" : key === "base" ? "presetBase" : "presetHigh")}
+            </button>
+            {/* Consequence popover */}
+            {presetPopover === key && (
+              <div className="absolute z-50 bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 rounded-xl bg-bg-elevated border border-border-light shadow-2xl section-fade">
+                <p className="text-xs text-text-secondary leading-relaxed">
+                  {t(
+                    locale,
+                    key === "low"
+                      ? "presetLowConsequence"
+                      : key === "base"
+                        ? "presetBaseConsequence"
+                        : "presetHighConsequence"
+                  )}
+                </p>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
+                  <div className="w-2.5 h-2.5 rotate-45 bg-bg-elevated border-r border-b border-border-light" />
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
+
+      {/* === ASSUMPTION SLIDERS === */}
+      <div className="rounded-2xl border border-border bg-bg-surface overflow-hidden">
+        <button
+          onClick={() => setSlidersOpen(!slidersOpen)}
+          className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-bg-elevated/50 transition-colors"
+        >
+          <span className="font-semibold text-text-primary">
+            {t(locale, slidersOpen ? "assumptionsLabel" : "assumptionsCollapsed")}
+          </span>
+          <svg
+            className={`w-5 h-5 text-text-secondary transition-transform duration-300 ${
+              slidersOpen ? "rotate-180" : ""
+            }`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M19 9l-7 7-7-7"
+            />
+          </svg>
+        </button>
+
+        {slidersOpen && (
+          <div className="px-5 pb-5 space-y-5 section-fade">
+            <SliderRow
+              id="adoptionRate"
+              label={t(locale, "sliderAdoptionLabel")}
+              explainer={t(locale, "sliderAdoptionExplainer")}
+              value={assumptions.adoptionRate}
+              range={leverRanges.adoptionRate}
+              format={(v) => `${Math.round(v * 100)}%`}
+              onChange={(v) => updateAssumption("adoptionRate", v)}
+              active={activeSlider === "adoptionRate"}
+              onFocus={() => setActiveSlider("adoptionRate")}
+            />
+            <SliderRow
+              id="agentShare"
+              label={t(locale, "sliderAgentLabel")}
+              explainer={t(locale, "sliderAgentExplainer")}
+              value={assumptions.agentShare}
+              range={leverRanges.agentShare}
+              format={(v) => `${Math.round(v * 100)}%`}
+              onChange={(v) => updateAssumption("agentShare", v)}
+              active={activeSlider === "agentShare"}
+              onFocus={() => setActiveSlider("agentShare")}
+            />
+            <SliderRow
+              id="healthcareAdoption"
+              label={t(locale, "sliderHealthcareLabel")}
+              explainer={t(locale, "sliderHealthcareExplainer")}
+              value={assumptions.healthcareAdoption}
+              range={leverRanges.healthcareAdoption}
+              format={(v) => `${Math.round(v * 100)}%`}
+              onChange={(v) => updateAssumption("healthcareAdoption", v)}
+              active={activeSlider === "healthcareAdoption"}
+              onFocus={() => setActiveSlider("healthcareAdoption")}
+            />
+            <SliderRow
+              id="fineTuningOrgs"
+              label={t(locale, "sliderFineTuningLabel")}
+              explainer={t(locale, "sliderFineTuningExplainer")}
+              value={assumptions.fineTuningOrgs}
+              range={leverRanges.fineTuningOrgs}
+              format={(v) => `${Math.round(v)}`}
+              onChange={(v) => updateAssumption("fineTuningOrgs", v)}
+              active={activeSlider === "fineTuningOrgs"}
+              onFocus={() => setActiveSlider("fineTuningOrgs")}
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// --- Slider sub-component ---
+
+function SliderRow({
+  id,
+  label,
+  explainer,
+  value,
+  range,
+  format,
+  onChange,
+  active,
+  onFocus,
+}: {
+  id: string;
+  label: string;
+  explainer: string;
+  value: number;
+  range: { min: number; max: number; step: number };
+  format: (v: number) => string;
+  onChange: (v: number) => void;
+  active: boolean;
+  onFocus: () => void;
+}) {
+  return (
+    <div>
+      <div className="flex items-center justify-between mb-2">
+        <label
+          htmlFor={id}
+          className="text-sm font-medium text-text-primary"
+        >
+          {label}
+        </label>
+        <span className="text-sm font-mono font-bold text-accent-blue tabular-nums">
+          {format(value)}
+        </span>
+      </div>
+      <input
+        id={id}
+        type="range"
+        min={range.min}
+        max={range.max}
+        step={range.step}
+        value={value}
+        onChange={(e) => onChange(Number(e.target.value))}
+        onFocus={onFocus}
+        onMouseDown={onFocus}
+        onTouchStart={onFocus}
+      />
+      {active && (
+        <div className="mt-2 pl-3 border-l-2 border-accent-blue/50 section-fade">
+          <p className="text-xs text-text-secondary leading-relaxed">
+            {explainer}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
