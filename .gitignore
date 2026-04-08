@@ -1,0 +1,22 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+app/node_modules/
+
+# Next.js build
+app/.next/
+app/out/
+
+# Misc
+.DS_Store
+*.swp
+*.swo
+
+# Vercel
+.vercel
+
+# Claude
+.claude/

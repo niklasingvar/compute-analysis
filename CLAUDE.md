@@ -2,7 +2,28 @@
 
 ## Projekttyp
 
-Policyanalys — inga kodfiler, enbart markdown-dokument.
+Policyanalys + webbapp. Två delar:
+1. **Markdown-dokument** (rot): analysfiler `01-ramverk.md` … `13-sjukvard-compute-per-vardkedja.md`
+2. **Webbapp** (`/app`): Next.js 16 på Vercel — interaktiv presentation av analysen
+
+## Webbapp — arkitektur
+
+- **Stack**: Next.js 16.2 (App Router, Turbopack), React 19, Tailwind CSS 4, TypeScript
+- **i18n**: Route-baserad med `[locale]` segment (`/sv`, `/en`). Proxy (`proxy.ts`, ej middleware — Next.js 16 breaking change) hanterar redirect.
+- **Data**: Scenariodata hårdkodad i `app/lib/data.ts`, härledd från `06-sammanfattning.md` och `03-berakningsmodell.md`
+- **Översättningar**: `app/lib/i18n.ts` — inline translations, ingen extern i18n-lib
+- **Deploy**: Vercel — project settings: `rootDirectory: app`, `framework: nextjs`. Ingen `vercel.json` behövs.
+- **Params**: I Next.js 16 är `params` en Promise — alltid `await params` i pages/layouts
+
+### Gotchas (O6)
+
+- Next.js 16: `middleware.ts` → `proxy.ts`, exportera `proxy` (inte `middleware`)
+- Next.js 16: `params` är `Promise<{...}>` — måste awaitas
+- Root layout (`app/app/layout.tsx`) returnerar bara `children` — HTML-wrapper i `[locale]/layout.tsx`
+- `create-next-app` genererar `AGENTS.md` och `CLAUDE.md` i app-dir — ta bort dem
+- Vercel: sätt `rootDirectory: app` i project settings, INTE via `vercel.json`. `vercel.json` i rot + rootDirectory → dubbel-nesting-bug (`app/app/.next`)
+- Vercel deploy: `vercel deploy --prod --token $VERCEL_TOKEN --yes` från repo-root
+- Production URL: https://compute-analysis.vercel.app/
 
 ## Konventioner
 
