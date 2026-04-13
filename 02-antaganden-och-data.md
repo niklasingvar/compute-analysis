@@ -119,6 +119,8 @@ Följande antaganden används endast för komplementanalysen i [13-sjukvard-comp
 | A92 | Direkt bemanning per AI-lösning i klinisk drift      | ~3–8 årsarbetskrafter        | OECD 2025 "Digital and AI skills in health occupations"; NHS-archetyper för AI-roller | H          |
 | A93 | Indirekt jobbmultiplier (leverantörer/integration)   | 0,5–1,0x direkta jobb        | WEF Future of Jobs 2025 (teknikdriven jobbskapande riktning) + OECD/EU deployment-studier | H          |
 
+**Webbapp:** I den interaktiva presentationen sätts A91, A92 och A93 utifrån **ett** scenarioindex som följer reglaget för sjukvårdens AI-adoption gentemot samma låg/bas/hög-ändpunkter som snabbvalen, så att basläget matchar tabellen i [14-jobb.md](14-jobb.md). Tier 3-reglaget (antal organisationer som finjusterar) påverkar **inte** A91–A93. Årsskalning före 2029 följer samma adoptionskurva som huvudsimuleringen; se [14-jobb.md](14-jobb.md) avsnitt om webbappen.
+
 ## E. Tier 3 – Finjustering och anpassning
 
 | #   | Antagande                                          | Värde                                       | Källa                                                | Känslighet |

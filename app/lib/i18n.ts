@@ -205,6 +205,8 @@ const translations = {
     jobsTitle: "Jobb som skapas",
     jobsSubtitle: "AI-investeringar skapar nya roller — inte bara compute-kostnader",
     jobsKpiLabel: "Bruttojobb",
+    jobsKpiHint:
+      "A91–A93 via reglaget Sjukvårdens AI-adoption. Finjustering (Tier 3) påverkar inte denna siffra.",
     jobsTotal: "bruttojobb i sjukvårdens AI-implementation till 2029 i basscenariot",
     jobsDirect: "Direkta roller",
     jobsDirectList: "Klinisk informatik, MLOps, AI-säkerhet & compliance, verksamhetsnära produktägare, förändringsledning",
@@ -440,6 +442,8 @@ const translations = {
     jobsTitle: "Jobs created",
     jobsSubtitle: "AI investments create new roles — not just compute costs",
     jobsKpiLabel: "Gross jobs",
+    jobsKpiHint:
+      "A91–A93 via the healthcare adoption slider. Fine-tuning (Tier 3) does not affect this figure.",
     jobsTotal: "gross jobs in healthcare AI implementation by 2029 in the base case",
     jobsDirect: "Direct roles",
     jobsDirectList: "Clinical informatics, MLOps, AI safety & compliance, product owners, change management",

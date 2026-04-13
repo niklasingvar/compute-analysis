@@ -36,7 +36,11 @@ Att vänta är inte neutralt. Offentlig sektor står inte stilla under tiden, ut
 
 I en marknad med långa ledtider och stark allokering till stora kunder är sen efterfrågan sällan billig efterfrågan. Små köpare med svag framförhållning riskerar att få sämre villkor, längre väntan och mindre handlingsutrymme.
 
-### 5. Billigare compute betyder inte nödvändigtvis lägre behov
+### 5. Kapabilitetssprång sker plötsligt och stänger beslutsfönster
+
+Mythos-episoden i april 2026 visade att frontier-modellers kapabiliteter kan ta ett steg som få förutsåg — även bland insatta bedömare (L12). Inom loppet av veckor gick cybersäkerhetslandskapet från "AI hittar en del buggar" till "en modell kan autonomt exploatera i princip vilken viktig mjukvara som helst". Bedömningen att liknande kapabilitet sprids till illasinnade aktörer inom 6–9 månader (L14) understryker att beslutsfönster för defensiva investeringar stängs snabbt. En avvaktande strategi exponerar Sverige inte enbart för den gradvisa kostnad som beskrivs ovan utan även för risken att stå utan infrastruktur när nästa kapabilitetssprång kräver omedelbar defensiv respons.
+
+### 6. Billigare compute betyder inte nödvändigtvis lägre behov
 
 När modeller blir bättre öppnas fler användningsfall. Effektiviseringen äts därför ofta upp av högre adoption, fler agentiska arbetsflöden och större kontextfönster. Det är därför huvudscenariot i [03-berakningsmodell.md](03-berakningsmodell.md) fortfarande växer trots tekniska förbättringar.
 

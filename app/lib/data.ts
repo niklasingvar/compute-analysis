@@ -77,7 +77,12 @@ export const leverRanges = {
 
 // --- Sector computation (delegates to shared kernel in simulation.ts) ---
 
-import { computeDeterministic, defaultAdvanced, type AdvancedParams } from "./simulation";
+import {
+  adoptionAtYear,
+  computeDeterministic,
+  defaultAdvanced,
+  type AdvancedParams,
+} from "./simulation";
 export type { AdvancedParams };
 
 export interface SectorResult {
@@ -144,42 +149,29 @@ function normalize(v: number, lo: number, hi: number): number {
   return clamp((v - lo) / (hi - lo), 0, 1);
 }
 
-function adoptionRamp(target: number, year: Year): number {
-  const t = year - 2026;
-  const midpoint = 2.5;
-  const k = 1.5;
-  const curve = 1 / (1 + Math.exp(-k * (t - midpoint)));
-  const val = target * curve / (1 / (1 + Math.exp(-k * (3 - midpoint))));
-  return Math.min(val, Math.min(target * 1.15, 0.95));
-}
-
 function scenarioInterp(low: number, base: number, high: number, n: number): number {
   if (n <= 0.5) return lerp(low, base, n / 0.5);
   return lerp(base, high, (n - 0.5) / 0.5);
 }
 
 export function computeHealthcareJobs(a: Assumptions, year: Year): JobsResult {
-  // A91-A93 from 14-jobb.md, tied to healthcare adoption over time.
-  const volumeN = normalize(
+  // A91–A93 from 14-jobb.md: ett gemensamt scenarioindex (låg–bas–hög) så tabellen
+  // återges vid preset-bokändpunkter. Kopplas till reglaget "Sjukvårdens AI-adoption"
+  // mot samma värden som snabbval låg/bas/hög — inte till finjustering (Tier 3).
+  const scenarioN = normalize(
     a.healthcareAdoption,
     presets.low.healthcareAdoption,
     presets.high.healthcareAdoption
   );
-  const complexityN = normalize(
-    a.fineTuningOrgs,
-    presets.low.fineTuningOrgs,
-    presets.high.fineTuningOrgs
-  );
-  const ecosystemN = (volumeN + complexityN) / 2;
 
-  const aiSolutions2029 = scenarioInterp(80, 120, 160, volumeN); // A91
-  const staffingPerSolution = scenarioInterp(3, 5, 8, complexityN); // A92
-  const indirectMultiplier = scenarioInterp(0.5, 0.7, 1.0, ecosystemN); // A93
+  const aiSolutions2029 = scenarioInterp(80, 120, 160, scenarioN); // A91
+  const staffingPerSolution = scenarioInterp(3, 5, 8, scenarioN); // A92
+  const indirectMultiplier = scenarioInterp(0.5, 0.7, 1.0, scenarioN); // A93
 
-  const displayYear = year > 2029 ? 2029 : year;
-  const adoptionShare =
-    adoptionRamp(a.healthcareAdoption, displayYear) /
-    adoptionRamp(a.healthcareAdoption, 2029);
+  const capYear = year > 2029 ? 2029 : year;
+  const ramp2029 = adoptionAtYear(a.healthcareAdoption, 2029);
+  const rampY = adoptionAtYear(a.healthcareAdoption, capYear);
+  const adoptionShare = ramp2029 > 1e-9 ? Math.min(1, rampY / ramp2029) : 0;
   const aiSolutions = aiSolutions2029 * adoptionShare;
 
   const direct = Math.round(aiSolutions * staffingPerSolution);

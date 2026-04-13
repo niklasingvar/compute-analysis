@@ -104,6 +104,29 @@ Därför är ren konsumtion av utländsk frontier-AI en övergångsstrategi – 
 
 ---
 
+## Cybersäkerhet, modellexklusivitet och mellammaktsfällan
+
+I april 2026 visade Anthropics Mythos att frontier-modeller kan hitta och automatiskt exploatera zero-day-sårbarheter i i princip all viktig mjukvara — varje större operativsystem, webbläsare och kryptobibliotek — med minimal mänsklig styrning (L12). Modellen hittade tusentals allvarliga och kritiska sårbarheter, inklusive 27 år gamla buggar i säkerhetsklassade system som OpenBSD. Det är inte en teoretisk risk: arbetet producerade fungerande exploits, inte enbart varningar.
+
+Anthropic valde att inte släppa Mythos till allmänheten. I stället lanserades **Project Glasswing** — ett begränsat samarbete med tolv kärnpartners (Amazon, Apple, Broadcom, Cisco, CrowdStrike, Google, JP Morgan, Linux Foundation, Microsoft, NVIDIA, Palo Alto Networks och Anthropic själva) samt ytterligare drygt 40 organisationer som bygger eller underhåller kritisk mjukvaruinfrastruktur (L13). Uppgiften: använda Mythos för att hitta och patcha sårbarheter innan illasinnade aktörer gör det.
+
+### Implikationer för Sverige och EU
+
+Tre konsekvenser framträder:
+
+**1. Cybersäkerhetsförsvar kräver nu frontier-compute.**
+Systematisk säkerhetsgranskning av mjukvara med frontier-modeller är inte längre en framtidsfråga utan pågår i stor skala — men enbart inom amerikanska företag och deras närmaste partners. Sverige och EU har i dagsläget inte tillgång till Mythos och saknar egen modellkapacitet på jämförbar nivå. Befintliga modeller (Opus 4.6, GPT-5.4) kan hitta många sårbarheter men saknar Mythos förmåga att autonomt kedja ihop och exploatera dem, vilket innebär att de ger ett sämre försvarsvärde (L14).
+
+**2. Mellammaktsfällan: inhemsk mjukvara utan frontier-granskning skapar unika sårbarheter.**
+EU:s och enskilda medlemsstaters krav på inhemska mjukvarulösningar — exempelvis Frankrikes Zoom-ersättare eller nationella molntjänster — syftar till digital suveränitet. Men i ljuset av frontier-modellers förmåga att granska kod skapas en paradox: mjukvara som enbart används av ett enskilt land eller en liten grupp organisationer omfattas sannolikt inte av Glasswing eller liknande initiativ. Varken USA eller Kina har incitament att patcha sådan mjukvara — men de har incitament att exploatera den. Inhemska mjukvarumandat kan därmed minska snarare än öka den reella digitala suveräniteten (L14).
+
+**3. Modellexklusivitet skapar ett nytt beroendelager.**
+Mythos är den första frontier-modellen där vikterna själva bedöms som en känslig tillgång vars stöld utgör en allvarlig säkerhetsrisk (L13). Det innebär att de mest kapabla modellerna kan komma att förbli exklusiva under allt längre perioder — uppskattningsvis månader snarare än veckor. Under denna period har amerikanska bolag tillgång till ett cybersäkerhetsövertag som europeiska aktörer inte kan nå, vare sig via API eller egna modeller. Det förstärker det beroende som beskrivs i avsnittet om leverantörsmakt ovan och ger det en säkerhetspolitisk dimension utöver den juridiska.
+
+Sammantaget understryker Glasswing-episoden att suverän compute-kapacitet inte bara handlar om modellutveckling och databehandling. Det handlar i allt högre grad om att kunna bedriva cybersäkerhetsförsvar på den nivå som krävs för att skydda nationell digital infrastruktur.
+
+---
+
 ## Slutsats
 
 Beslut om compute bör prövas mot båda nivåerna: tillräcklig volym _och_ tillräcklig strategisk ambition. Ett Sverige som enbart säkrar driftskapacitet "hänger med" — men bygger inte förmåga att agera konkurrenskraftigt och självständigt där det spelar roll. Kvantitativa underlag, antaganden och internationella jämförelser finns i [01](01-ramverk.md)–[07](07-teknisk-bilaga.md); en konkret genomgång av bygga vs. köpa vs. hybrid i [09-tanke-exempel.md](09-tanke-exempel.md).

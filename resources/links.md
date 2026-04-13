@@ -82,3 +82,30 @@ Dokumentet [08-suveranitet.md](../08-suveranitet.md) hänvisar till posterna ned
 - Utgivare: Europeiska kommissionen (digital strategi)
 - URL: https://digital-strategy.ec.europa.eu/en/policies/artificial-intelligence
 - Användning i 08: Regulatorisk kontext för AI-tjänster, compliance och europeisk styrning (kompletterar juridiken kring data och molntjänster).
+
+### L12 – Anthropic: Mythos System Card och cybersäkerhetsrapport
+
+- Titel: Claude Mythos Preview System Card; Assessing Claude Mythos Preview's Cybersecurity Capabilities (tillhörande teknisk rapport)
+- Utgivare: Anthropic
+- Publicerad: april 2026
+- URL: https://www.anthropic.com/research/mythos-system-card (modellkort); https://www.anthropic.com/research/mythos-cyber-report (cybersäkerhetsrapport)
+- Fulltext: [resources/r2.md](r2.md) (sammanfattning av JP Morgan Asset Management)
+- Användning i 08, 10, 11: Frontier-modellens förmåga att autonomt hitta och exploatera zero-day-sårbarheter; modellexklusivitet; cybersäkerhet som compute-drivare.
+
+### L13 – Anthropic: Project Glasswing
+
+- Titel: Project Glasswing – begränsad utrullning av Mythos för cybersäkerhetsförsvar
+- Utgivare: Anthropic
+- Publicerad: april 2026
+- URL: https://www.anthropic.com/research/project-glasswing
+- Fulltext: [resources/r2.md](r2.md) (sammanfattning av JP Morgan Asset Management)
+- Användning i 08, 11: Illustrerar hur frontier-compute styr tillgång till cybersäkerhetsförsvar; modellexklusivitet; europeiskt beroende av amerikanska patchpartners.
+
+### L14 – Zvi Mowshowitz: Claude Mythos #2 – Cybersecurity and Project Glasswing
+
+- Titel: Claude Mythos #2: Cybersecurity and Project Glasswing
+- Utgivare: Zvi Mowshowitz (Don't Worry About the Vase / Substack)
+- Publicerad: 10 april 2026
+- URL: https://thezvi.substack.com/
+- Fulltext: [resources/r1.md](r1.md)
+- Användning i 08, 10, 11: Mellammaktsfällan (inhemsk mjukvara skapar unika sårbarheter); compute-marknadsdynamik (säljarmarknad); kapabilitetssprångets plötslighet och diffusionstakt.

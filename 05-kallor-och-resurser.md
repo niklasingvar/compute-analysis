@@ -32,7 +32,7 @@ Detta dokument är ett **riskbaserat källregister**. Målet är inte att lista 
 | SKR / Kolada | Primär | https://www.kolada.se/ | Volymankare för regioner, kommuner och verksamhetsdata i Tier 2 |
 | AI-kommissionens Färdplan för Sverige (SOU 2025:12) | Primär | https://www.regeringen.se/rattsliga-dokument/statens-offentliga-utredningar/2025/02/sou-202512/ | Svensk policyankare för behov av beräkningskraft, samordning och nationell riktning |
 | GPT-SW3 – AI Sweden | Primär | https://www.ai.se/en/project/gpt-sw3 | Empirisk svensk referens för nationell modellförmåga och suverän träning |
-| AI Sweden Vårdkarta 2025 | Primär | https://www.ai.se/en | Bas för A87 och A91: antal AI-initiativ i vården och andel i klinisk drift |
+| AI Sweden Vårdkarta 2025 | Primär | https://www.ai.se/en | Bas för A87 och A91: antal AI-initiativ i vården och andel i klinisk drift; webbappens jobbmodell följer [14-jobb.md](14-jobb.md) |
 | OECD – Digital and AI skills in health occupations (2025) | Semiprimar | https://www.oecd.org/en/publications/digital-and-ai-skills-in-health-occupations_5fbd42ab-en.html | Stöd för A92: efterfrågan på nya digitala/AI-roller i vården |
 | EU-kommissionen – Study on the deployment of AI in healthcare (2025) | Semiprimar | https://op.europa.eu/en/publication-detail/-/publication/9ddf7bf8-62bf-11f0-bf4e-01aa75ed71a1/language-en | Stöd för A92–A93: arbetskraftsberedskap, implementeringshinder och skalning |
 | NHS – Specialist AI skills within the NHS | Semiprimar | https://digital-transformation.hee.nhs.uk/support-for-organisations/research-and-publications/dart-ed/horizon-scanning/developing-healthcare-workers-confidence-in-ai/chapter-4-workforce-transformation/specialist-ai-skills-within-the-nhs | Operativ rolltaxonomi för klinisk AI-drift (A92) |
@@ -79,7 +79,18 @@ För strategidokumentet [08-suveranitet.md](08-suveranitet.md) används det nyck
 
 ---
 
-## 6. Källor som används med försiktighet
+## 6. Cybersäkerhet, modellexklusivitet och mellammaktsdynamik
+
+| Källa | Evidensnivå | URL | Vad den används till |
+|------|-------------|-----|----------------------|
+| Anthropic – Mythos System Card (april 2026) | Primär | https://www.anthropic.com/research/mythos-system-card | Modellens cybersäkerhetskapabiliteter; zero-day-fynd; modellexklusivitet som säkerhetsfråga |
+| Anthropic – Project Glasswing (april 2026) | Primär | https://www.anthropic.com/research/project-glasswing | Begränsad utrullning till 12+40 partners; patching av globala mjukvaruekosystem; compute-krav för defensiv granskning |
+| Zvi Mowshowitz – Claude Mythos #2 (april 2026) | Sekundär | https://thezvi.substack.com/ | Mellammaktsfällan (inhemsk mjukvara skapar unika sårbarheter); compute-säljarmarknad; kapabilitetssprångets plötslighet |
+| Michael Cembalest / JP Morgan – "Misanthropic" (april 2026) | Sekundär | (internt distribuerad; fulltext i resources/r2.md) | Sammanfattning av Glasswing-dynamik; kostnadsdata; jämförande modellprestanda för cybersäkerhet |
+
+---
+
+## 7. Källor som används med försiktighet
 
 - **SemiAnalysis** används för supply-chain- och marknadslogik, inte som ensam grund för huvudscenariot. Därför kombineras det med offentliga policykällor, officiella projektsidor och interna härledningar.
 - **Bloomberg** används för marknadsuppgifter som Anthropics run-rate. Dessa uppgifter får stödja riktningen i resonemanget men ska inte ensamma bära en central 2029-siffra.
@@ -87,7 +98,7 @@ För strategidokumentet [08-suveranitet.md](08-suveranitet.md) används det nyck
 
 ---
 
-## 7. Praktisk läsanvisning
+## 8. Praktisk läsanvisning
 
 - **För den kvantitativa modellen**: börja i [02-antaganden-och-data.md](02-antaganden-och-data.md), använd sedan detta dokument för att kontrollera källtyp och URL.
 - **För den strategiska argumentationen**: använd [resources/links.md](resources/links.md) tillsammans med [08-suveranitet.md](08-suveranitet.md).

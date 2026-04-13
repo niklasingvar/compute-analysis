@@ -30,6 +30,16 @@ Totala jobb    = Direkta jobb + Indirekta jobb
 | A92: Direkt bemanning per lösning (årsarbetskrafter) | 3 | 5 | 8 | OECD/EU/NHS indikerar behov av tvärfunktionella team för säker klinisk implementering |
 | A93: Indirekt multiplier | 0,5x | 0,7x | 1,0x | Leverantörsled, integration, validering, utbildning och revision skalar med driftvolym |
 
+### Koppling till interaktiv modell (webbappen)
+
+Webbappen (`app/`) använder **samma formel** som rutan ovan. För att siffror, dokument och kod ska gå ihop:
+
+- **Ett gemensamt scenarioindex** interpolerar A91, A92 och A93 **samtidigt** mellan låg-, bas- och högvärdena i tabellen. Indexet styrs av reglaget *Sjukvårdens AI-adoption*, mappat linjärt mot samma bokändpunkter som snabbvalen låg / bas / högs `healthcareAdoption` (0,30 → 0,55 → 0,80). Vid standardvärden (bas) blir resultatet **identiskt** med tabellraden nedan (120 × 5 FTE; indirekt 0,7× → **1 020** bruttojobb 2029).
+- **Finjusteringsreglaget** (Tier 3 i compute-modellen) **påverkar inte** A91–A93; det skulle blanda in en annan mekanism än de källor som motiverar A92 (klinisk driftorganisation per lösning).
+- För **år före 2029** skalas endast *antal lösningar i drift* med samma **logistiska adoptionskurva** som övrig modell (`adoptionAtYear` i `app/lib/simulation.ts`), normaliserad mot nivån 2029. A92 och A93 förblir vid valt scenario. För **2030–2031** visas samma bruttojobb som 2029 (jobbkapitlet extrapolerar inte volymen efter 2029).
+
+Implementation: `computeHealthcareJobs` i `app/lib/data.ts`.
+
 ---
 
 ## Resultat 2029: bruttojobb
@@ -104,3 +114,4 @@ OECD:s riktning för vårdyrken är i huvudsak augmentation: fler digitala och A
 - Compute-modellen i [03-berakningsmodell.md](03-berakningsmodell.md) svarar på **hur mycket kapacitet** som behövs.
 - Sjukvårdsfördjupningen i [13-sjukvard-compute-per-vardkedja.md](13-sjukvard-compute-per-vardkedja.md) visar **var compute uppstår**.
 - Detta kapitel visar **vilka arbetsroller** som typiskt byggs upp när kapaciteten omsätts i drift.
+- Webbappen återanvänder **samma** A91–A93-formel och samma årsadoptionskurva som beräkningskärnan; se avsnittet *Koppling till interaktiv modell* ovan.

@@ -75,6 +75,19 @@ Det förändrar inte det svenska behovet i modellen. Men det förändrar hur bes
 
 ---
 
+## 7. Cybersäkerhet som ny compute-drivare
+
+Frontier-modellers förmåga att autonomt granska mjukvara och hitta exploaterbara sårbarheter — demonstrerad i stor skala genom Project Glasswing i april 2026 (L12) — skapar en ny kategori av compute-efterfrågan som inte fångas i huvudmodellens Tier 1–3.
+
+Två typer av behov uppstår:
+
+- **Defensiv kodgranskning.** Svensk offentlig sektor använder tusentals mjukvarukomponenter — operativsystem, databashanterare, webbramverk, kryptobibliotek. Systematisk säkerhetsgranskning med frontier-modeller kräver substantiell inference-kapacitet. Anthropic rapporterar kostnader i storleksordningen tiotals tusen dollar per genomsökning av enskilda open source-projekt (L14). En systematisk genomgång av en stor organisations mjukvarustack skulle kräva upprepade sådana skanningar.
+- **Patchcykelförkortning.** Rekommendationen från frontier-labbens egna cybersäkerhetsavdelningar är att börja granska kod redan med befintliga modeller (Opus 4.6, GPT-5.4) för att bygga kunskap och verktygskedjor — inte vänta tills Mythos-kapabla modeller blir allmänt tillgängliga (L13). Det förutsätter tillgång till beräkningskraft.
+
+Det samlade compute-behovet för cybersäkerhetsgranskning är svårt att kvantifiera på samma sätt som Tier 1–3, men det talar för att huvudscenariot snarare underskattar än överskattar det totala behovet — särskilt om Sverige väljer att granska inhemsk och öppen mjukvara proaktivt snarare än att passivt invänta patchar från amerikanska partners.
+
+---
+
 ## Slutsats
 
 De kompletterande perspektiven försvagar inte huvudtesen. De justerar snarare hur den ska läsas:

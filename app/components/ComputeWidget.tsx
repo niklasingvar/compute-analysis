@@ -495,11 +495,22 @@ export default function ComputeWidget({ locale }: { locale: Locale }) {
                   <div className="text-lg font-bold tabular-nums text-text-primary">~{displayEnergy}</div>
                   <div className="text-[10px] font-mono uppercase text-text-muted">MW</div>
                 </div>
-                <div>
+                <div className="max-w-56">
                   <div className="text-lg font-bold tabular-nums text-text-primary">~{formatNumber(jobs.total)}</div>
                   <div className="text-[10px] font-mono uppercase text-text-muted">
                     {t(locale, "jobsKpiLabel")} {jobsYear}
                   </div>
+                  <p className="text-[10px] text-text-muted leading-snug mt-1.5">
+                    {t(locale, "jobsKpiHint")}{" "}
+                    <a
+                      href={`${REPO_URL}/blob/main/14-jobb.md`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-accent-blue hover:underline font-mono"
+                    >
+                      14-jobb.md →
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>

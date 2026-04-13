@@ -111,11 +111,9 @@ const deterministicSampler: Sampler = {
 };
 
 // --- Logistic S-curve for adoption ramp ---
+// Exporterad så jobbmodellen i data.ts kan använda samma kurva som Tier 1/2 (14-jobb.md).
 
-function adoptionAtYear(
-  target: number,
-  year: Year
-): number {
+export function adoptionAtYear(target: number, year: Year): number {
   const t = year - 2026; // 0..5
   const midpoint = 2.5; // mid-2028
   const k = 1.5;

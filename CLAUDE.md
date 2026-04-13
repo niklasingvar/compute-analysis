@@ -3,7 +3,7 @@
 ## Projekttyp
 
 Policyanalys + webbapp. Två delar:
-1. **Markdown-dokument** (rot): analysfiler `01-ramverk.md` … `13-sjukvard-compute-per-vardkedja.md`
+1. **Markdown-dokument** (rot): analysfiler `01-ramverk.md` … `14-jobb.md`
 2. **Webbapp** (`/app`): Next.js 16 på Vercel — interaktiv presentation av analysen
 
 ## Webbapp — arkitektur
@@ -11,6 +11,7 @@ Policyanalys + webbapp. Två delar:
 - **Stack**: Next.js 16.2 (App Router, Turbopack), React 19, Tailwind CSS 4, TypeScript
 - **i18n**: Route-baserad med `[locale]` segment (`/sv`, `/en`). Proxy (`proxy.ts`, ej middleware — Next.js 16 breaking change) hanterar redirect.
 - **Data**: Formeldriven beräkningsmodell i `app/lib/data.ts` med sektortoggle (offentlig, sjukvård, försvar, privat), antagnandesliders och energimodell. Härledd från `03-berakningsmodell.md`, `11-kompletterande-perspektiv.md` och `13-sjukvard-compute-per-vardkedja.md`
+- **Jobb (brutto, vård):** `computeHealthcareJobs` i `app/lib/data.ts` följer `14-jobb.md` (A91–A93). Ett gemensamt scenarioindex från reglaget *Sjukvårdens AI-adoption* (samma ändpunkter som låg/bas/hög-snabbval) interpolerar lösningar, FTE/lösning och indirekt multiplier **samtidigt** så bas = tabellens ~1 020 år 2029. Årsskalning före 2029 använder exporterad `adoptionAtYear` från `app/lib/simulation.ts`. Finjusteringsreglaget påverkar inte jobbantaganden.
 - **Chart**: Recharts (stacked area chart) i `app/components/ComputeChart.tsx`
 - **Översättningar**: `app/lib/i18n.ts` — inline translations, ingen extern i18n-lib
 - **Deploy**: Vercel — project settings: `rootDirectory: app`, `framework: nextjs`. Ingen `vercel.json` behövs.
@@ -29,6 +30,27 @@ Policyanalys + webbapp. Två delar:
 - Recharts Tooltip `formatter`/`labelFormatter` kräver `unknown`-typer, inte `number`/`string`
 - Tailwind CSS 4 `@theme inline` block: registrera CSS-variabler som `--color-*` för att använda som Tailwind-klasser (t.ex. `bg-accent-gold`)
 - Split-view layout: `lg:sticky lg:top-20 lg:self-start` för sticky left panel, `lg:overflow-y-auto` om panelen är lång
+
+### Hydration (React / Next.js) — undvik mismatch helt
+
+Målet är **ingen** “Hydration failed… server rendered HTML didn't match the client” i konsolen. Det är ett hårt krav för `app/`-koden.
+
+**Gör aldrig i render (varken RSC eller `"use client"`-träd som SSR:as):**
+
+- Grena på miljö: `if (typeof window !== "undefined")`, `typeof document`, etc.
+- Ostabil data: `Date.now()`, `Math.random()`, `performance.now()`, ny `Date()` utan fast värde.
+- `toLocaleString` / `Intl` utan **explicit** `locale` (samma sträng som på servern för samma `locale`-route).
+- Olika komponentträd / attribut mellan första serverrender och första klientrender (t.ex. `className={condition ? "…" : undefined}` där `condition` bara blir sann i webbläsaren).
+
+**Mönster som är OK:**
+
+- Samma JSX och samma props på server som på första klient-paint. State som bara ändras i `useEffect` körs **efter** hydration — då får UI uppdateras utan mismatch.
+- Om något **måste** skilja sig åt före interaktion: håll första render identisk; flytta skillnaden till `useEffect` + `useState`, eller rendera bara på klient med dynamisk import (`ssr: false`) om hela delen är rent klient-only.
+- `suppressHydrationWarning` endast som sista utväg och helst på **lövnoder** (t.ex. känd tidzon/locale-fris), inte som default-lösning.
+
+**Vid dev med Turbopack:** om mismatch dyker upp direkt efter en ändring i en Client Component, kan SSR-bunt och klient-bunt vara ur synk — **starta om dev-servern** innan du jagar falska buggar.
+
+**Referens:** [https://react.dev/link/hydration-mismatch](https://react.dev/link/hydration-mismatch)
 
 ## Konventioner
 
@@ -95,6 +117,7 @@ Tre lager:
 11-kompletterande-perspektiv.md   # Praktiker-stresstest (elnät, tokens/capita, NVIDIA-kö)
 12-upprevidering-utmaning.md      # Stresstest: varför även huvudscenariot kan vara för lågt
 13-sjukvard-compute-per-vardkedja.md # Sjukvårdens AI-compute: botten-upp per vårdkedja (stödjer Tier 2)
+14-jobb.md                        # Bruttojobb vård-AI (A91–A93); samma logik som jobb-KPI i webbappen
 ```
 
 ### Kvalitetskontroll
